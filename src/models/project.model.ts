@@ -12,7 +12,7 @@ interface ProjectAttributes {
 	id: number;
 }
 
-interface ProjectCreationAttributes extends Optional<ProjectAttributes, "id"> {}
+type ProjectCreationAttributes = Optional<ProjectAttributes, "id">;
 
 /**
  * Class Register
@@ -39,7 +39,7 @@ export class Project
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 
-	public static modelInit(sequlize: Sequelize) {
+	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
 				/**

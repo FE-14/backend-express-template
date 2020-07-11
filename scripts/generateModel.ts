@@ -46,7 +46,7 @@ const contentToWrite = [
 	`	public static readonly tableName = "${modelName}s";`,
 	`	public static readonly modelName = "${modelName}";`,
 	`	public static readonly modelNamePlural = "${modelName}s";`,
-	`	public static readonly defaultScope = {};`,
+	"	public static readonly defaultScope = {};",
 	"",
 	"	/**",
 	"	 * Register model parameter",
