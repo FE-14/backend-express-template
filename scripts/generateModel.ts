@@ -20,7 +20,7 @@ if (argv.name) {
 
 const contentToWrite = [
 	'import { Optional, Sequelize, DataTypes } from "sequelize";',
-	'import { BaseModel } from "../keys/model";',
+	'import { BaseModel } from "../keys";',
 	'import { sequelize } from ".";',
 	"",
 	"/**",

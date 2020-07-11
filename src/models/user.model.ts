@@ -8,7 +8,7 @@ import {
 	HasManyCountAssociationsMixin,
 	Association,
 } from "sequelize";
-import { BaseModel } from "../keys/model";
+import { BaseModel } from "../keys";
 import { sequelize, Project } from ".";
 
 /**

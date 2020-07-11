@@ -1,5 +1,5 @@
 import { Optional, Sequelize, DataTypes } from "sequelize";
-import { BaseModel } from "../keys/model";
+import { BaseModel } from "../keys";
 import { sequelize, User } from ".";
 
 /**
