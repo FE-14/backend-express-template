@@ -7,7 +7,7 @@
 		"dev": "nodemon --config=nodemon.json",
 		"start:dev": "node -r ts-node/register ./src/server.ts",
 		"build": "tsc",
-		"start": "node server.js",
+		"start": "node ./dist/server.js",
 		"clean": "rm -Rf dist",
 		"generate:migration": "ts-node ./scripts/generateMigration",
 		"generate:seeder": "ts-node ./scripts/generateSeeder",

@@ -5,7 +5,7 @@
 		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
-	"plugins": ["prettier"],
+	"plugins": ["@typescript-eslint"],
 	"rules": {
 		"semi": ["error", "always"],
 		"quotes": ["error", "double"],
@@ -17,7 +17,6 @@
 				"ignoreParameters": true
 			}
 		],
-		"@typescript-eslint/no-unused-vars": "warn",
-		"prettier/prettier": 2
+		"@typescript-eslint/no-unused-vars": "warn"
 	}
 }
