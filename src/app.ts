@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import bodyParser from "body-parser";
 import morgan from "morgan";
 // import { logger } from "./utils";
 import { errorHandler } from "./middleware";
@@ -10,6 +11,11 @@ const app = express();
  * initial setup express
  */
 app.use(morgan("common"));
+
+/**
+ * Setup middleware
+ */
+app.use(bodyParser.json());
 
 /**
  * Register All route

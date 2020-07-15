@@ -8,8 +8,8 @@ import * as configDb from "../config/database";
 const nodeEnv: string = process.env.NODE_ENV || "development";
 const loadConfig = configDb.development;
 export const sequelize = new Sequelize(
-	loadConfig.database!,
-	loadConfig.username!,
+	loadConfig.database,
+	loadConfig.username,
 	loadConfig.password,
 	loadConfig
 );

@@ -10,3 +10,16 @@ export const get = asyncHandler(async (req: Request, res: Response) => {
 		data: users,
 	});
 });
+
+export const createUser = asyncHandler(async (req: Request, res: Response) => {
+	const { username, password, firstName } = req.body;
+	const user = await User.create({
+		username,
+		password,
+		firstName,
+	});
+	res.json({
+		message: "success",
+		data: user,
+	});
+});

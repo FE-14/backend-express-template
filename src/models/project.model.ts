@@ -1,5 +1,5 @@
 import { Optional, Sequelize, DataTypes } from "sequelize";
-import { BaseModel } from "../keys";
+import { BaseModel } from "../utils";
 import { sequelize, User } from ".";
 
 /**
@@ -71,4 +71,4 @@ Project.modelInit(sequelize);
 /**
  * Define the associtaion
  */
-Project.belongsTo(User);
+// Project.belongsTo(User);

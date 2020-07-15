@@ -8,7 +8,7 @@ import {
 	HasManyCountAssociationsMixin,
 	Association,
 } from "sequelize";
-import { BaseModel } from "../keys";
+import { BaseModel } from "../utils";
 import { sequelize, Project } from ".";
 
 /**
@@ -24,7 +24,7 @@ interface UserAttributes {
 	firstName: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+type UserCreationAttributes = Optional<UserAttributes, "id">;
 
 /**
  * Class Register
@@ -67,7 +67,7 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 		projects: Association<User, Project>;
 	};
 
-	public static modelInit(sequlize: Sequelize) {
+	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
 				id: {
@@ -98,4 +98,4 @@ User.modelInit(sequelize);
 /**
  * Define the associtaion
  */
-User.hasMany(Project);
+// User.hasMany(Project);
