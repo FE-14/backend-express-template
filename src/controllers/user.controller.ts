@@ -6,9 +6,7 @@ import { User } from "../models";
 
 export const get = asyncHandler(async (req: Request, res: Response) => {
 	const users = await User.findAll();
-	res.json({
-		data: users,
-	});
+	res.json(users);
 });
 
 export const createUser = asyncHandler(async (req: Request, res: Response) => {

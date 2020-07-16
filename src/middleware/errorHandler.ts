@@ -6,7 +6,7 @@ export const errorHandler = (
 	_: Request,
 	res: Response,
 	_2: NextFunction
-) => {
+): void => {
 	let error: ErrorResponse = { ...err, statusCode: 500 };
 	error.message = err.message;
 
