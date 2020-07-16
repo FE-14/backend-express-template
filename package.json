@@ -6,7 +6,7 @@
 		"ts-node": "ts-node",
 		"dev": "nodemon --config=nodemon.json",
 		"start:dev": "node -r ts-node/register ./src/server.ts",
-		"build": "tsc",
+		"build": "yarn clean && tsc",
 		"start": "node ./dist/server.js",
 		"clean": "rm -Rf dist",
 		"generate:migration": "ts-node ./scripts/generateMigration",

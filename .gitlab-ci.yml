@@ -1,0 +1,10 @@
+stage:
+  - build
+
+build_code:
+  image: "node:lts-alpine"
+  stage: build
+  environment: development
+  srcipt:
+    - yarn install
+    - yarn build
