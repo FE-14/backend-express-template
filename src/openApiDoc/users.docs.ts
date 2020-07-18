@@ -112,11 +112,9 @@ const paths: Paths = {
 				{
 					name: "name",
 					in: "query",
-					content: {
-						"application/json": {
-							schema: {
-								type: "string",
-							},
+					schema: {
+						name: {
+							type: "string",
 						},
 					},
 				},

@@ -64,7 +64,7 @@ export interface Response {
 export interface ParameterItem {
 	name: string;
 	in: "query" | "path";
-	content: Content;
+	schema: Schemas;
 }
 
 /**
