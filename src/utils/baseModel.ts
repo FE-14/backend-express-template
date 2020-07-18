@@ -1,4 +1,5 @@
-import { Model, ModelCtor, FindOptions, Sequelize } from "sequelize";
+/* eslint-disable @typescript-eslint/ban-types */
+import { Model, FindOptions, Sequelize } from "sequelize";
 
 /**
  * Abstract class to be extended by models
@@ -17,7 +18,14 @@ export abstract class BaseModel<
 	/**
 	 * Method to initialize the model
 	 */
-	public static modelInit(sequelize: Sequelize) {
+	public static modelInit(sequelize: Sequelize): void {
+		throw new Error("modelPrepare not implemented");
+	}
+
+	/**
+	 * Method to install association
+	 */
+	public static setAssociation(): void {
 		throw new Error("modelPrepare not implemented");
 	}
 }

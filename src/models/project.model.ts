@@ -1,6 +1,5 @@
 import { Optional, Sequelize, DataTypes } from "sequelize";
 import { BaseModel } from "../utils";
-import { sequelize, User } from ".";
 
 /**
  * Schema Model Definition
@@ -64,11 +63,6 @@ export class Project
 			}
 		);
 	}
+
+	public static setAssociation(): void {}
 }
-
-Project.modelInit(sequelize);
-
-/**
- * Define the associtaion
- */
-// Project.belongsTo(User);

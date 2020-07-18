@@ -9,7 +9,7 @@ import {
 	Association,
 } from "sequelize";
 import { BaseModel } from "../utils";
-import { sequelize, Project } from ".";
+import { Project } from "./index";
 
 /**
  * Schema Model Definition
@@ -67,6 +67,10 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 		projects: Association<User, Project>;
 	};
 
+	/**
+	 * Model Initiation function
+	 * @param sequlize
+	 */
 	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
@@ -91,11 +95,11 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			}
 		);
 	}
+
+	/**
+	 * Set Association Model
+	 */
+	public static setAssociation(): void {
+		this.hasMany(Project);
+	}
 }
-
-User.modelInit(sequelize);
-
-/**
- * Define the associtaion
- */
-// User.hasMany(Project);
