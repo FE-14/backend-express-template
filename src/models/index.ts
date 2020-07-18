@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import * as configDb from "../config/database";
+import { development } from "../config/database";
 import { User } from "./user.model";
 import { Project } from "./project.model";
 
@@ -7,8 +7,7 @@ import { Project } from "./project.model";
  * Sequelize setup
  * TODO fix node env implementation
  */
-const nodeEnv: string = process.env.NODE_ENV || "development";
-const loadConfig = configDb.development;
+const loadConfig = development;
 export const sequelize = new Sequelize(
 	loadConfig.database,
 	loadConfig.username,
@@ -37,7 +36,6 @@ export const startModel = async () => {
 
 /**
  * Export file to make import path more clean
- * TODO this file use load and init all models
  */
 export * from "./user.model";
 export * from "./project.model";

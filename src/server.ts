@@ -1,11 +1,12 @@
 import app from "./app";
 import { Express } from "express";
 import { startModel } from "./models";
+import { envConfig } from "./utils";
 
 /**
  * Load port configution from environment variable
  */
-const { PORT } = process.env;
+const { PORT } = envConfig;
 
 /**
  * port initization

@@ -1,16 +1,20 @@
 import { Options } from "sequelize";
+import { envConfig } from "../utils";
 
-const development: Options = {
-	username: process.env.DB_USERNAME || "lanius",
-	password: process.env.DB_PASSWORD || "lanius",
-	host: process.env.DB_HOST || "localhost",
-	port: +(process.env.DB_PORT || 54321),
-	database: process.env.DB_NAME || "esim_database",
-	dialect: process.env.DB_DIALECT ? "postgres" : "postgres",
+const {
+	DB_USERNAME,
+	DB_PASSWORD,
+	DB_HOST,
+	DB_PORT,
+	DB_NAME,
+	DB_DIALECT,
+} = envConfig;
+
+export const development: Options = {
+	username: DB_USERNAME,
+	password: DB_PASSWORD,
+	host: DB_HOST,
+	port: +DB_PORT,
+	database: DB_NAME,
+	dialect: DB_DIALECT ? "postgres" : "postgres",
 };
-
-module.exports = {
-	development,
-};
-
-export { development };
