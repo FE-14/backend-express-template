@@ -1,8 +1,8 @@
 /**
  * Import from all docs files
  */
-import User from "./users.docs";
 import { Response } from "../keys/apidoc";
+import User from "./users.docs";
 
 /**
  * Register doc to load
@@ -26,7 +26,7 @@ const apiDoc = {
 	},
 	servers: [
 		{
-			url: "http://localhost:8000",
+			url: "/",
 		},
 	],
 	security: ["basicAuth"],
@@ -90,4 +90,6 @@ allDocs.forEach((doc) => {
 	apiDoc.components.schemas = { ...apiDoc.components.schemas, ...doc.schema };
 });
 
-export default apiDoc;
+export default (): Record<string, unknown> => {
+	return apiDoc;
+};

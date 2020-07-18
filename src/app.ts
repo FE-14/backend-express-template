@@ -28,7 +28,7 @@ app.use("/api/v1", router);
 /**
  * Register Api document
  */
-app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));
+app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc()));
 
 /**
  * use error handler

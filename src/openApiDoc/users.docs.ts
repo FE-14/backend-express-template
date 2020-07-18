@@ -89,9 +89,19 @@ const paths: Paths = {
 					content: {
 						"application/json": {
 							schema: {
-								type: "array",
-								items: {
-									$ref: "#/components/schemas/User",
+								type: "object",
+								title: "Get.User.Response",
+								properties: {
+									message: {
+										type: "string",
+									},
+									data: {
+										type: "array",
+										title: "Users",
+										items: {
+											$ref: "#/components/schemas/User",
+										},
+									},
 								},
 							},
 						},
