@@ -16,3 +16,11 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
 	const user: Omit<User, "id"> = req.body;
 	succeesResponse(res, await User.create(user));
 });
+
+/**
+ * get single user
+ */
+export const getUser = asyncHandler(async (req: Request, res: Response) => {
+	const id: number = +req.params.id;
+	succeesResponse(res, await User.findByPk(id));
+});

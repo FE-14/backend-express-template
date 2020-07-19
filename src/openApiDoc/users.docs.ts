@@ -1,4 +1,5 @@
 import { Schemas, Paths, ApiDoc } from "../keys/apidoc";
+import { getSchemaResponse, getSchemaRequest } from "../utils";
 
 /**
  * Set Tag for this doc
@@ -55,18 +56,7 @@ const paths: Paths = {
 					description: "User Model Instance",
 					content: {
 						"application/json": {
-							schema: {
-								type: "object",
-								title: "Post.User.Response",
-								properties: {
-									message: {
-										type: "string",
-									},
-									data: {
-										$ref: "#/components/schemas/User",
-									},
-								},
-							},
+							schema: getSchemaResponse("User", "User", "object"),
 						},
 					},
 				},
@@ -74,9 +64,7 @@ const paths: Paths = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							$ref: "#/components/schemas/NewUser",
-						},
+						schema: getSchemaRequest("NewUser"),
 					},
 				},
 			},
@@ -88,22 +76,7 @@ const paths: Paths = {
 					description: "Array of User Model Instance",
 					content: {
 						"application/json": {
-							schema: {
-								type: "object",
-								title: "Get.User.Response",
-								properties: {
-									message: {
-										type: "string",
-									},
-									data: {
-										type: "array",
-										title: "Users",
-										items: {
-											$ref: "#/components/schemas/User",
-										},
-									},
-								},
-							},
+							schema: getSchemaResponse("User", "User", "array"),
 						},
 					},
 				},
@@ -115,6 +88,32 @@ const paths: Paths = {
 					schema: {
 						name: {
 							type: "string",
+						},
+					},
+				},
+			],
+		},
+	},
+	"/api/v1/users/{id}": {
+		get: {
+			tags: [tag],
+			responses: {
+				200: {
+					description: "User Mode Intance",
+					content: {
+						"application/json": {
+							schema: getSchemaResponse("User", "User", "object"),
+						},
+					},
+				},
+			},
+			parameters: [
+				{
+					name: "id",
+					in: "path",
+					schema: {
+						id: {
+							type: "number",
 						},
 					},
 				},

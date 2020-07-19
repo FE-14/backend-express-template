@@ -1,5 +1,5 @@
 import { Schemas, Paths, ApiDoc } from "../keys/apidoc";
-import { getSchemaResponse } from "../utils";
+import { getSchemaResponse, getSchemaRequest } from "../utils";
 
 /**
  * set Tag
@@ -50,11 +50,7 @@ const paths: Paths = {
 					description: "Project Model Instance",
 					content: {
 						"application/json": {
-							schema: getSchemaResponse(
-								"Project",
-								"#/components/schemas/Project",
-								"array"
-							),
+							schema: getSchemaResponse("Project", "Project", "array"),
 						},
 					},
 				},
@@ -65,9 +61,7 @@ const paths: Paths = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							$ref: "#/components/schemas/NewProject",
-						},
+						schema: getSchemaRequest("NewProject"),
 					},
 				},
 			},
@@ -76,11 +70,7 @@ const paths: Paths = {
 					description: "Project Model Instance",
 					content: {
 						"application/json": {
-							schema: getSchemaResponse(
-								"Project",
-								"#/components/schemas/Project",
-								"object"
-							),
+							schema: getSchemaResponse("Project", "Project", "object"),
 						},
 					},
 				},

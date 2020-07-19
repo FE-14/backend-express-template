@@ -20,11 +20,11 @@ export const succeesResponse = (res: Response, data: DataType): Response => {
 /**
  * to build schema api docs on response section
  * @param title string of title
- * @param schemaModelRef string of path to component schema
+ * @param schemaName string name on schema object
  */
 export const getSchemaResponse = (
 	title: string,
-	schemaModelRef: string,
+	schemaName: string,
 	typeDataResp: "array" | "object"
 ): ItemModel => {
 	title = typeDataResp === "array" ? title + "s" : title;
@@ -33,10 +33,10 @@ export const getSchemaResponse = (
 			? {
 					type: "array",
 					items: {
-						$ref: schemaModelRef,
+						$ref: "#/components/schemas/" + schemaName,
 					},
 			  }
-			: { $ref: schemaModelRef };
+			: { $ref: "#/components/schemas/" + schemaName };
 
 	return {
 		type: "object",
@@ -47,5 +47,15 @@ export const getSchemaResponse = (
 			},
 			data,
 		},
+	};
+};
+
+/**
+ * Get shcemas ref from Object Name
+ * @param schemaName string of schema object
+ */
+export const getSchemaRequest = (schemaName: string): ItemModel => {
+	return {
+		$ref: "#/components/schemas/" + schemaName,
 	};
 };
