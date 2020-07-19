@@ -14,7 +14,7 @@
 		"generate:model": "ts-node ./scripts/generateModel",
 		"migrate": "yarn build && sequelize db:migrate",
 		"migrate:undo": "yarn build && sequelize db:migrate:undo:all",
-		"seed": "yarn build && sequelize db:seed",
+		"seed": "yarn build && sequelize db:seed:all",
 		"lint": "eslint . --ext .ts"
 	},
 	"repository": "git@gitlab.com:mv-lanius/products/service0/boiler-plate-be-ts.git",
