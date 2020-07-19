@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 
 // import { logger } from "./utils";
 import { errorHandler } from "./middleware";
@@ -14,6 +15,7 @@ const app = express();
  * initial setup express
  */
 app.use(morgan("dev"));
+app.use(cors());
 
 /**
  * Setup middleware
@@ -41,7 +43,7 @@ app.use(errorHandler);
  */
 app.get("*", async (req: Request, res: Response) => {
 	res.json({
-		message: `This is reponse for coming request to ${req.path}`,
+		message: "sorry bos, alamat yang anda tuju tidak terdaftar",
 	});
 });
 
