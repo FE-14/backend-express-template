@@ -1,10 +1,16 @@
 import { Router } from "express";
-import { get, createUser, getUser } from "../controllers/user.controller";
+import { checkSchema } from "express-validator";
+import {
+	get,
+	createUser,
+	getUser,
+	newUserValidatorSchema,
+} from "../controllers/user.controller";
 
 const router = Router();
 
 router.get("/", get);
-router.post("/", createUser);
+router.post("/", checkSchema(newUserValidatorSchema), createUser);
 router.get("/:id", getUser);
 
 export default router;
