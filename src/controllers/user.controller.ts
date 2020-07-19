@@ -1,21 +1,18 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../utils";
+import { asyncHandler, succeesResponse } from "../utils";
 import { User } from "../models";
 
+/**
+ * Get all data from user table
+ */
 export const get = asyncHandler(async (req: Request, res: Response) => {
-	const users = await User.findAll();
-	res.json(users);
+	succeesResponse(res, await User.findAll());
 });
 
+/**
+ * create user to table user
+ */
 export const createUser = asyncHandler(async (req: Request, res: Response) => {
-	const { username, password, firstName } = req.body;
-	const user = await User.create({
-		username,
-		password,
-		firstName,
-	});
-	res.json({
-		message: "success",
-		data: user,
-	});
+	const user: Omit<User, "id"> = req.body;
+	succeesResponse(res, await User.create(user));
 });

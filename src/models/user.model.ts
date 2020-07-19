@@ -100,6 +100,6 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	 * Set Association Model
 	 */
 	public static setAssociation(): void {
-		this.hasMany(Project);
+		this.hasMany(Project, { foreignKey: "userId", as: "projects" });
 	}
 }

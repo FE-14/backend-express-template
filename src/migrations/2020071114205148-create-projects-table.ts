@@ -1,7 +1,7 @@
 import { QueryInterface, DataTypes } from "sequelize";
 import { Project } from "../models";
 
-export const up = async (query: QueryInterface) => {
+export const up = async (query: QueryInterface): Promise<void> => {
 	try {
 		return query.createTable(Project.tableName, {
 			id: {
@@ -16,17 +16,21 @@ export const up = async (query: QueryInterface) => {
 			name: {
 				type: DataTypes.STRING,
 			},
+			createdAt: {
+				type: DataTypes.DATE,
+			},
+			updatedAt: {
+				type: DataTypes.DATE,
+			},
 		});
 	} catch (error) {
 		return Promise.reject(error);
 	}
 };
 
-export const down = async (query: QueryInterface) => {
+export const down = async (query: QueryInterface): Promise<void> => {
 	try {
-		/**
-		 * code wher migration revert to run
-		 */
+		return query.dropTable(Project.tableName);
 	} catch (error) {
 		return Promise.reject(error);
 	}

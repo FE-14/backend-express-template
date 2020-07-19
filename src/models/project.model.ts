@@ -9,6 +9,8 @@ interface ProjectAttributes {
 	 * sample attribute
 	 */
 	id: number;
+	userId: number;
+	name: string;
 }
 
 type ProjectCreationAttributes = Optional<ProjectAttributes, "id">;
@@ -31,6 +33,8 @@ export class Project
 	 * Register model parameter
 	 */
 	public id!: number; // sample, replace if needed
+	public userId!: number;
+	public name!: string;
 
 	/**
 	 * Register default parameter
@@ -50,6 +54,8 @@ export class Project
 					primaryKey: true,
 					autoIncrement: true,
 				},
+				userId: new DataTypes.INTEGER(),
+				name: new DataTypes.STRING(),
 			},
 			{
 				sequelize: sequlize,

@@ -3,11 +3,12 @@
  */
 import { Response } from "../keys/apidoc";
 import User from "./users.docs";
+import Project from "./projects.docs";
 
 /**
  * Register doc to load
  */
-const allDocs = [User];
+const allDocs = [User, Project];
 
 /**
  * Master swagger doc

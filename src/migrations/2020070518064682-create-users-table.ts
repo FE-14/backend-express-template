@@ -1,6 +1,6 @@
 import { QueryInterface, DataTypes } from "sequelize";
 
-export const up = async (query: QueryInterface) => {
+export const up = async (query: QueryInterface): Promise<void> => {
 	try {
 		return query.createTable("Users", {
 			id: {
@@ -32,11 +32,9 @@ export const up = async (query: QueryInterface) => {
 	}
 };
 
-export const down = async (query: QueryInterface) => {
+export const down = async (query: QueryInterface): Promise<void> => {
 	try {
-		/**
-		 * code wher migration revert to run
-		 */
+		return query.dropTable("Users");
 	} catch (error) {
 		return Promise.reject(error);
 	}

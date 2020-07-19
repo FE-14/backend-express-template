@@ -20,8 +20,7 @@ if (argv.name) {
 
 const contentToWrite = [
 	'import { Optional, Sequelize, DataTypes } from "sequelize";',
-	'import { BaseModel } from "../keys";',
-	'import { sequelize } from ".";',
+	'import { BaseModel } from "../utils";',
 	"",
 	"/**",
 	" * Schema Model Definition",
@@ -84,14 +83,10 @@ const contentToWrite = [
 	"			}",
 	"		);",
 	"	}",
+	"",
+	"	public static setAssociation(): void {}",
 	"}",
 	"",
-	`${modelName}.modelInit(sequelize);`,
-	"",
-	"/**",
-	" * Define the associtaion",
-	" */",
-	`${modelName}.hasMany(Project);// sample, replace if needed`,
 ];
 
 /**
