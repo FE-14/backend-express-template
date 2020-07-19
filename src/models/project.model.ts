@@ -4,7 +4,7 @@ import { BaseModel } from "../utils";
 /**
  * Schema Model Definition
  */
-interface ProjectAttributes {
+export interface ProjectAttributes {
 	/**
 	 * sample attribute
 	 */
@@ -13,7 +13,7 @@ interface ProjectAttributes {
 	name: string;
 }
 
-type ProjectCreationAttributes = Optional<ProjectAttributes, "id">;
+export type ProjectCreationAttributes = Optional<ProjectAttributes, "id">;
 
 /**
  * Class Register

@@ -14,7 +14,7 @@ import { Project } from "./index";
 /**
  * Schema Model Definition
  */
-interface UserAttributes {
+export interface UserAttributes {
 	/**
 	 * sample attribute
 	 */
@@ -24,7 +24,7 @@ interface UserAttributes {
 	firstName: string;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, "id">;
+export type UserCreationAttributes = Optional<UserAttributes, "id">;
 
 /**
  * Class Register
