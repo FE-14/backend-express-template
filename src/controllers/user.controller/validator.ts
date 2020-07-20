@@ -14,12 +14,11 @@ export const newUserValidatorSchema: Schema = {
 		isAlphanumeric: true,
 		isLength: {
 			options: {
-				min: 8,
+				min: 5,
 			},
 		},
 	},
 	firstName: {
 		exists: true,
-		isString: true,
 	},
 };

@@ -5,6 +5,7 @@ import { Router } from "express";
  */
 import Users from "./users.router";
 import Projects from "./project.router";
+import Auth from "./auth.router";
 
 const router = Router();
 
@@ -13,5 +14,6 @@ const router = Router();
  */
 router.use("/users", Users);
 router.use("/projects", Projects);
+router.use("/auths", Auth);
 
 export default router;

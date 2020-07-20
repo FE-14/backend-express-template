@@ -4,11 +4,12 @@
 import { Response } from "../keys/apidoc";
 import User from "./users.docs";
 import Project from "./projects.docs";
+import Auth from "./auth.docs";
 
 /**
  * Register doc to load
  */
-const allDocs = [User, Project];
+const allDocs = [Auth, User, Project];
 
 /**
  * Master swagger doc
@@ -27,7 +28,7 @@ const apiDoc = {
 	},
 	servers: [
 		{
-			url: "/",
+			url: "/api/v1",
 		},
 	],
 	security: ["basicAuth"],

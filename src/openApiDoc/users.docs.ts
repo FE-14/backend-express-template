@@ -48,7 +48,7 @@ const schema: Schemas = {
  * Define Paths
  */
 const paths: Paths = {
-	"/api/v1/users": {
+	"/users": {
 		post: {
 			tags: [tag],
 			responses: {
@@ -94,7 +94,7 @@ const paths: Paths = {
 			],
 		},
 	},
-	"/api/v1/users/{id}": {
+	"/users/{id}": {
 		get: {
 			tags: [tag],
 			responses: {

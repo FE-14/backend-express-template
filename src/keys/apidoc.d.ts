@@ -89,7 +89,7 @@ export type Paths = {
 /**
  * set Type for mmethod
  */
-type MethodName = "get" | "post";
+type MethodName = "get" | "post" | "put" | "patch" | "delete";
 
 /**
  * Document per file

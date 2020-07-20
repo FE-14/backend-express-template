@@ -9,6 +9,9 @@ import {
 
 const router = Router();
 
+/**
+ * Register all route here
+ */
 router.get("/", get);
 router.post("/", checkSchema(newUserValidatorSchema), createUser);
 router.get("/:id", getUser);

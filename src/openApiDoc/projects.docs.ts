@@ -42,7 +42,7 @@ const schema: Schemas = {
  * set paths
  */
 const paths: Paths = {
-	"/api/v1/projects": {
+	"/projects": {
 		get: {
 			tags: [tag],
 			responses: {
