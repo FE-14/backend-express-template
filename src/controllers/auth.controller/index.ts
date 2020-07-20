@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { compare, compareSync } from "bcrypt";
+import { compare, compareSync } from "bcryptjs";
 import { validationResult } from "express-validator";
 import { sign } from "jsonwebtoken";
 import {
@@ -52,9 +52,7 @@ export const loginHandler = asyncHandler(
 			return next(new ErrorResponse("Login Failed", 401));
 		}
 
-		const hashResult = await compareSync(user.password, bodyLogin.password);
-		console.log(user.password);
-		console.log(hashResult);
+		const hashResult = await compare(user.password, bodyLogin.password);
 		if (!hashResult) {
 			return next(new ErrorResponse("Login Failed", 401));
 		}

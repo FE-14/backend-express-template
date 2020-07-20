@@ -6,7 +6,7 @@ import {
 } from "../../utils";
 import { User } from "../../models";
 import { validationResult } from "express-validator";
-import { genSalt, hash } from "bcrypt";
+import { genSalt, hash } from "bcryptjs";
 
 /**
  * for re exporting validator
