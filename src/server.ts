@@ -3,6 +3,7 @@ import cors from "cors";
 import App from "./app";
 import dotEnv from 'dotenv'
 import WelcomeController from "./controllers/welcome.controller";
+import { startModel } from "./models";
 
 dotEnv.config()
 
@@ -19,6 +20,7 @@ const { app } = new App({
 
 const PORT = Number(process.env.APP_PORT) || 4000;
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', async () => {
+    await startModel()
     console.log(`[LISTEN] starting http://localhost:${PORT}/api/v1`)
 })
