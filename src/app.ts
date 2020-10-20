@@ -19,7 +19,7 @@ class App {
   private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
     controllers.forEach(controller => {
       this.app.use('/api/v1', controller.router)
-      this.app.use('*', async (req: Request, res: Response) {
+      this.app.use('*', async (req: Request, res: Response) => {
         res.json({
           message: 'sorry bos, alamat yang anda tuju tidak terdaftar'
         })
