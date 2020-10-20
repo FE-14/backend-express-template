@@ -1,24 +1,24 @@
 {
-	"name": "boiler-plate-be-ts",
-	"version": "1.0.0",
+	"name": "boilerplate-express-typescript",
+	"version": "0.0.1",
 	"main": "index.js",
 	"scripts": {
 		"ts-node": "ts-node",
 		"dev": "nodemon --config=nodemon.json",
-		"start:dev": "node -r ts-node/register ./src/server.ts",
+		"start:dev": "yarn build && yarn migrate && yarn seed && node -r ts-node/register ./src/server.ts",
 		"build": "yarn clean && tsc",
 		"start": "node ./dist/server.js",
-		"clean": "rm -Rf dist",
+		"clean": "rimraf dist",
 		"generate:migration": "ts-node ./scripts/generateMigration",
 		"generate:seeder": "ts-node ./scripts/generateSeeder",
 		"generate:model": "ts-node ./scripts/generateModel",
-		"migrate": "yarn build && sequelize db:migrate",
-		"migrate:undo": "yarn build && sequelize db:migrate:undo:all",
-		"seed": "yarn build && sequelize db:seed:all",
+		"migrate": "sequelize db:migrate",
+		"migrate:undo": "sequelize db:migrate:undo:all",
+		"seed": "sequelize db:seed:all",
 		"lint": "eslint . --ext .ts"
 	},
 	"repository": "git@gitlab.com:mv-lanius/products/service0/boiler-plate-be-ts.git",
-	"author": "Arif Surahman <as.redbios@gmail.com>",
+	"author": "Machine Vision <www.machinevision.global>",
 	"license": "MIT",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
@@ -33,7 +33,7 @@
 		"morgan": "^1.10.0",
 		"pg": "^8.2.1",
 		"pg-hstore": "^2.3.3",
-		"sequelize": "^6.3.0",
+		"sequelize": "^6.3.5",
 		"swagger-ui-express": "^4.1.4",
 		"winston": "^3.3.3",
 		"yargs": "^15.4.0"
@@ -56,6 +56,7 @@
 		"eslint-config-prettier": "^6.11.0",
 		"eslint-plugin-prettier": "^3.1.4",
 		"nodemon": "^2.0.4",
+		"rimraf": "^3.0.2",
 		"ts-node": "^8.10.2",
 		"typescript": "^3.9.6"
 	}
