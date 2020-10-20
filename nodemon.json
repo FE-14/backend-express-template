@@ -2,6 +2,6 @@
 	"$schema": "https://json.schemastore.org/nodemon",
 	"ignore": ["node_modules", ".vscode"],
 	"watch": ["src"],
-	"exec": "yarn start:dev",
+	"exec": "ts-node src/server.ts",
 	"ext": "ts"
 }
