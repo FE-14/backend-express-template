@@ -1,25 +1,24 @@
-import app from "./app";
-import { Express } from "express";
-import { startModel } from "./models";
-import { envConfig } from "./utils";
+import bodyParser from "body-parser";
+import cors from "cors";
+import App from "./app";
+import dotEnv from 'dotenv'
+import WelcomeController from "./controllers/welcome.controller";
 
-/**
- * Load port configution from environment variable
- */
-const { PORT } = envConfig;
+dotEnv.config()
 
-/**
- * port initization
- */
-const port = +(PORT || 3000);
+const { app } = new App({
+    controllers: [
+        new WelcomeController()
+    ],
+    middleWares: [
+        bodyParser.json(),
+        bodyParser.urlencoded({ extended: true }),
+        cors()
+    ]
+})
 
-/**
- * Server start with listening the port
- */
-const appStart = async (appExp: Express, port: number) => {
-	await startModel();
-	await appExp.listen(port, () => {
-		console.log(`Server is ready receive the request on port ${port} 🚀🚀🚀`);
-	});
-};
-appStart(app, port);
+const PORT = Number(process.env.APP_PORT) || 4000;
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[LISTEN] starting http://localhost:${PORT}/api/v1`)
+})
