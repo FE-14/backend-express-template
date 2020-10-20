@@ -1,50 +1,31 @@
-import express, { Request, Response } from "express";
-import bodyParser from "body-parser";
-import morgan from "morgan";
-import swaggerUi from "swagger-ui-express";
-import cors from "cors";
+import express, { Application, Request, Response } from 'express'
 
-// import { logger } from "./utils";
-import { errorHandler } from "./middleware";
-import router from "./routers";
-import apiDoc from "./openApiDoc";
+class App {
+  public app: Application
 
-const app = express();
+  constructor(appInit: { middleWares: any; controllers: any; }) {
+    this.app = express()
 
-/**
- * initial setup express
- */
-app.use(morgan("dev"));
-app.use(cors());
+    this.middlewares(appInit.middleWares)
+    this.routes(appInit.controllers)
+  }
 
-/**
- * Setup middleware
- */
-app.use(bodyParser.json());
+  private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
+    middleWares.forEach(middleWare => {
+      this.app.use(middleWare)
+    })
+  }
 
-/**
- * Register All route
- */
-app.use("/api/v1", router);
+  private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
+    controllers.forEach(controller => {
+      this.app.use('/api/v1', controller.router)
+      this.app.use('*', async (req: Request, res: Response) {
+        res.json({
+          message: 'sorry bos, alamat yang anda tuju tidak terdaftar'
+        })
+      })
+    })
+  }
+}
 
-/**
- * Register Api document
- */
-app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc()));
-
-/**
- * use error handler
- */
-app.use(errorHandler);
-
-/**
- * test case
- * TODO replace with unsigned route handler
- */
-app.get("*", async (req: Request, res: Response) => {
-	res.json({
-		message: "sorry bos, alamat yang anda tuju tidak terdaftar",
-	});
-});
-
-export default app;
+export default App
