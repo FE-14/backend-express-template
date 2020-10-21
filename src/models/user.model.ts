@@ -2,16 +2,11 @@ import {
 	Optional,
 	Sequelize,
 	DataTypes,
+	QueryInterface,
 } from "sequelize";
 import { BaseModel } from "../utils";
 
-/**
- * Schema Model Definition
- */
 export interface UserAttributes {
-	/**
-	 * sample attribute
-	 */
 	id: number;
 	username: string;
 	password: string;
@@ -20,9 +15,6 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Optional<UserAttributes, "id">;
 
-/**
- * Class Register
- */
 export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	implements UserAttributes {
 	public static readonly tableName = "users";
@@ -64,4 +56,36 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	}
 
 	public static setAssociation(): void {}
+
+	public static createTable(query: QueryInterface) {
+		return query.createTable(this.tableName, {
+			id: {
+				type: DataTypes.INTEGER,
+				primaryKey: true,
+				allowNull: false,
+				autoIncrement: true,
+			},
+			username: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			password: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			firstName: {
+				type: DataTypes.STRING,
+			},
+			createdAt: {
+				type: DataTypes.DATE,
+			},
+			updatedAt: {
+				type: DataTypes.DATE,
+			},
+		})
+	}
+
+	public static dropTable(query: QueryInterface) {
+		return query.dropTable(this.tableName)
+	}
 }

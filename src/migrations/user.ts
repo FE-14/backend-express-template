@@ -1,32 +1,10 @@
 import { QueryInterface, DataTypes } from "sequelize";
+import { User } from "../models";
+
 
 export const up = async (query: QueryInterface): Promise<void> => {
 	try {
-		return query.createTable("users", {
-			id: {
-				type: DataTypes.INTEGER,
-				primaryKey: true,
-				allowNull: false,
-				autoIncrement: true,
-			},
-			username: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
-			password: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
-			firstName: {
-				type: DataTypes.STRING,
-			},
-			createdAt: {
-				type: DataTypes.DATE,
-			},
-			updatedAt: {
-				type: DataTypes.DATE,
-			},
-		});
+		return User.createTable(query)
 	} catch (error) {
 		return Promise.reject(error);
 	}
@@ -34,7 +12,7 @@ export const up = async (query: QueryInterface): Promise<void> => {
 
 export const down = async (query: QueryInterface): Promise<void> => {
 	try {
-		return query.dropTable("users");
+		return User.createTable(query);
 	} catch (error) {
 		return Promise.reject(error);
 	}
