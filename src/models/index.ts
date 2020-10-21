@@ -1,25 +1,27 @@
-import { Sequelize } from "sequelize";
-import { development } from "../config/database";
+import { Sequelize, Options } from "sequelize";
+import config from "../config/database.json";
 import { User } from "./user.model";
-import { Project } from "./project.model";
 
 /**
  * Sequelize setup
  * TODO fix node env implementation
  */
-const loadConfig = development;
+const loadConfig = config;
 export const sequelize = new Sequelize(
-	loadConfig.database,
-	loadConfig.username,
-	loadConfig.password,
-	loadConfig
+	loadConfig.development.database,
+	loadConfig.development.username,
+	loadConfig.development.password,
+	{
+		dialect: "postgres",
+		host: loadConfig.development.host
+	}
 );
 
 /**
  * Import All Model
  */
 
-const models = [User, Project];
+const models = [User];
 
 /**
  * Initialize all model
@@ -38,4 +40,3 @@ export const startModel = async () => {
  * Export file to make import path more clean
  */
 export * from "./user.model";
-export * from "./project.model";

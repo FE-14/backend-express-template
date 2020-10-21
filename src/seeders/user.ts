@@ -4,7 +4,7 @@ import { hash, genSalt } from "bcryptjs";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const up = async (query: QueryInterface): Promise<object | number> => {
 	try {
-		const users = await query.bulkInsert("Users", [
+		const users = await query.bulkInsert("users", [
 			{
 				username: "username",
 				password: await hash("password", await genSalt()),
@@ -22,7 +22,7 @@ export const up = async (query: QueryInterface): Promise<object | number> => {
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const down = async (query: QueryInterface): Promise<object | number> => {
 	try {
-		const users = await query.bulkDelete("Users", {
+		const users = await query.bulkDelete("users", {
 			username: "username",
 			firstName: "first_name",
 		});

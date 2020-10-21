@@ -2,14 +2,8 @@ import {
 	Optional,
 	Sequelize,
 	DataTypes,
-	HasManyGetAssociationsMixin,
-	HasManyAddAssociationMixin,
-	HasManyHasAssociationMixin,
-	HasManyCountAssociationsMixin,
-	Association,
 } from "sequelize";
 import { BaseModel } from "../utils";
-import { Project } from "./index";
 
 /**
  * Schema Model Definition
@@ -31,46 +25,19 @@ export type UserCreationAttributes = Optional<UserAttributes, "id">;
  */
 export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	implements UserAttributes {
-	/**
-	 * Define Main Model Information
-	 */
-	public static readonly tableName = "Users";
-	public static readonly modelName = "User";
-	public static readonly modelNamePlural = "Users";
+	public static readonly tableName = "users";
+	public static readonly modelName = "user";
+	public static readonly modelNamePlural = "users";
 	public static readonly defaultScope = {};
-
-	/**
-	 * Register model parameter
-	 */
 	public id!: number;
 	public username!: string;
 	public password!: string;
 	public firstName!: string;
-
-	/**
-	 * Register default parameter
-	 */
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 
-	/**
-	 * function to relation to project
-	 */
-	public getProjects!: HasManyGetAssociationsMixin<Project>;
-	public addProject!: HasManyAddAssociationMixin<Project, number>;
-	public hasProject!: HasManyHasAssociationMixin<Project, number>;
-	public countProjects!: HasManyCountAssociationsMixin;
+	public static associations: {};
 
-	public readonly projects?: Project[];
-
-	public static associations: {
-		projects: Association<User, Project>;
-	};
-
-	/**
-	 * Model Initiation function
-	 * @param sequlize
-	 */
 	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
@@ -96,10 +63,5 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 		);
 	}
 
-	/**
-	 * Set Association Model
-	 */
-	public static setAssociation(): void {
-		this.hasMany(Project, { foreignKey: "userId", as: "projects" });
-	}
+	public static setAssociation(): void {}
 }

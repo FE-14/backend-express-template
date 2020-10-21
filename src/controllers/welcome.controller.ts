@@ -14,10 +14,14 @@ class WelcomeController implements IControllerBase {
   }
 
   private async index(req: Request, res: Response) {
-    res.json({
-      success: true,
-      message: 'Welcome to API v1'
-    })
+    try {
+      res.json({
+        success: true,
+        message: 'Welcome to API v1'
+      })
+    } catch(e) {
+      Promise.reject(e)
+    }
   }
 }
 

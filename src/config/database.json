@@ -1,0 +1,30 @@
+{
+	"local": {
+		"username": "postgres",
+		"password": "laniuslab",
+		"database": "dummy",
+		"host": "192.168.1.50",
+		"dialect": "postgres"
+	},
+	"development": {
+		"username": "postgres",
+		"password": "laniuslab",
+		"database": "dummy",
+		"host": "192.168.1.50",
+		"dialect": "postgres"
+	},
+	"test": {
+		"username": "postgres",
+		"password": "laniuslab",
+		"database": "dummy",
+		"host": "192.168.1.50",
+		"dialect": "postgres"
+	},
+	"production": {
+		"username": "postgres",
+		"password": "laniuslab",
+		"database": "dummy",
+		"host": "192.168.1.50",
+		"dialect": "postgres"
+	}
+}
