@@ -6,9 +6,9 @@ export const up = async (query: QueryInterface): Promise<object | number> => {
 	try {
 		const users = await query.bulkInsert("users", [
 			{
-				username: "username",
-				password: await hash("password", await genSalt()),
-				firstName: "first_name",
+				username: "admin",
+				password: await hash("admin", await genSalt()),
+				firstName: "Admin",
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},

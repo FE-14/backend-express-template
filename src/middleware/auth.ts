@@ -19,10 +19,6 @@ export const authenticate = asyncHandler(
 
 		try {
 			const decode = jwt.verify(token, JWT_SECRET);
-
-			/**
-			 * TODO: add logic to get user data from backbone and pass to target service
-			 */
 			next();
 		} catch (error) {
 			return next(new ErrorResponse("Not authenticated", 401));

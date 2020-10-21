@@ -6,13 +6,15 @@ import dotEnv from 'dotenv'
 import WelcomeController from "./controllers/welcome.controller";
 import { startModel } from "./models";
 import UserController from "./controllers/user.controller";
+import AuthController from "./controllers/auth.controller";
 
 dotEnv.config()
 
 const { app } = new App({
     controllers: [
         new WelcomeController(),
-        new UserController()
+        new UserController(),
+        new AuthController()
     ],
     middleWares: [
         bodyParser.json(),
