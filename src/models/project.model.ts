@@ -1,13 +1,7 @@
 import { Optional, Sequelize, DataTypes } from "sequelize";
 import { BaseModel } from "../utils";
 
-/**
- * Schema Model Definition
- */
 export interface ProjectAttributes {
-	/**
-	 * sample attribute
-	 */
 	id: number;
 	userId: number;
 	name: string;
@@ -15,40 +9,24 @@ export interface ProjectAttributes {
 
 export type ProjectCreationAttributes = Optional<ProjectAttributes, "id">;
 
-/**
- * Class Register
- */
 export class Project
 	extends BaseModel<ProjectAttributes, ProjectCreationAttributes>
 	implements ProjectAttributes {
-	/**
-	 * Define Main Model Information
-	 */
 	public static readonly tableName = "Projects";
 	public static readonly modelName = "Project";
 	public static readonly modelNamePlural = "Projects";
 	public static readonly defaultScope = {};
 
-	/**
-	 * Register model parameter
-	 */
 	public id!: number; // sample, replace if needed
 	public userId!: number;
 	public name!: string;
 
-	/**
-	 * Register default parameter
-	 */
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 
 	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
-				/**
-				 * Register all parameter to
-				 * sequelize object
-				 */
 				id: {
 					type: DataTypes.INTEGER,
 					primaryKey: true,
@@ -70,5 +48,5 @@ export class Project
 		);
 	}
 
-	public static setAssociation(): void {}
+	public static setAssociation(): void { }
 }
