@@ -9,7 +9,6 @@ import * as express from "express";
 import modelInit from "./models";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import swaggerUi from "swagger-ui-express";
-import {auth} from "./middleware/auth";
 // import controllers from "./controllers";
 
 dotEnv.config();
@@ -43,7 +42,23 @@ const apiDoc: any = {
             url: "/api/v1",
         },
     ],
-    security: ["basicAuth"],
+    authAction: {
+		JWT: {
+			name: "JWT",
+			schema: {
+				type: "apiKey",
+				in: "header",
+				name: "Authorization",
+				description: "sda",
+			},
+			value: "Bearer <JWT>",
+		},
+	},
+	security: [
+		{
+			Bearer: [""],
+		},
+	],
     paths: {},
     components: {
         schemas: {
@@ -60,12 +75,12 @@ const apiDoc: any = {
             },
         },
         securitySchemes: {
-            bearerAuth: {
-                type: "http",
-                scheme: "bearer",
-                bearerFormat: "JWT",
-            },
-        },
+			Bearer: {
+				type: "http",
+				scheme: "bearer",
+				bearerFormat: "JWT",
+			},
+		},
     },
 };
 
@@ -73,24 +88,20 @@ const apiDoc: any = {
 const initController = async () => {
     const dir = await fs.readdirSync("./src/mycontroller");
     for (const file of dir) {
-        console.log(`${__dirname}/mycontroller/${file}`);
         const module = await import(`${__dirname}/mycontroller/${file}`).then((module) => {
             const controller = module.default;
             const instance = new controller();
             const prefix = Reflect.getMetadata("prefix", controller);
             const routes: Array<RouteDefinition> = Reflect.getMetadata("routes", controller);
             routes.forEach(route => {
-                console.log(`/api/v1${prefix}${route.path}`);
                 app[route.requestMethod](`/api/v1${prefix}${route.path}`, route.middlewares, (req: express.Request, res: express.Response) => {
                     instance[route.methodName](req, res);
                 });
-                console.log(route);
                 const paths = route.apiDoc.paths;
                 const routePaths = Object.keys(paths);
                 for (const path of routePaths) {
                     const currentPath = `${prefix}${path}`;
                     if (typeof apiDoc.paths[currentPath] == "undefined") {
-                        console.log(currentPath);
                         apiDoc.paths[currentPath] = paths[path];
                     } else {
                         apiDoc.paths[currentPath] = { ...apiDoc.paths[currentPath], ...paths[path] };
@@ -101,16 +112,12 @@ const initController = async () => {
                 const routeSchemas = Object.keys(schemas);
                 for (const schema of routeSchemas) {
                     if (typeof apiDoc.components.schemas[schema] == "undefined") {
-                        console.log(schema);
                         apiDoc.components.schemas[schema] = schemas[schema];
-                    } else {
-                        console.log("fb");
                     }
                 }
             });
         });
     }
-    console.log(apiDoc);
 };
 
 const main = async () => {
@@ -126,7 +133,7 @@ const main = async () => {
         }).status(500);
     });
     app.listen(PORT, "0.0.0.0", () => {
-        console.log(`[LISTEN] starting http://localhost:${PORT}/api/v1`);
+        console.log(`[LISTEN] 🚀🚀🚀  starting http://localhost:${PORT}/api/v1`);
     });
 };
 
