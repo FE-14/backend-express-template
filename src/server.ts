@@ -108,11 +108,13 @@ const initController = async () => {
                     }
                 }
 
-                const schemas = route.apiDoc.schema;
-                const routeSchemas = Object.keys(schemas);
-                for (const schema of routeSchemas) {
-                    if (typeof apiDoc.components.schemas[schema] == "undefined") {
-                        apiDoc.components.schemas[schema] = schemas[schema];
+                const schemas = route.apiDoc.schemas;
+                for (const schema of schemas) {
+                    const routeSchemas = Object.keys(schema);
+                    for (const currentSchema of routeSchemas) {
+                        if (typeof apiDoc.components.schemas[currentSchema] == "undefined") {
+                            apiDoc.components.schemas[currentSchema] = schema[currentSchema];
+                        }
                     }
                 }
             });

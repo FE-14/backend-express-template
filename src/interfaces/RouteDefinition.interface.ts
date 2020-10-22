@@ -1,4 +1,4 @@
-import {ApiDoc} from "../keys/apidoc";
+import {Paths, Schemas} from "../keys/apidoc";
 export interface RouteDefinition {
   // Path to our route
   path: string;
@@ -6,6 +6,6 @@ export interface RouteDefinition {
   requestMethod: "get" | "post" | "delete" | "options" | "put" | "patch";
   // Method name within our class responsible for this route
   methodName: string;
-  apiDoc?: ApiDoc,
+  apiDoc?: { paths: Paths, schemas: Schemas[]},
   middlewares?: any[]
 }
