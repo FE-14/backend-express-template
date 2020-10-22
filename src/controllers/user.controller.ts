@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
 import { User } from '../models'
 import IControllerBase from '../interfaces/IControllerBase.interface'
-import { authenticate } from '../middleware/auth'
+import { auth } from '../middleware/auth'
 
-class WelcomeController implements IControllerBase {
+class UserController implements IControllerBase {
     public path = '/users'
     public router = express.Router()
 
@@ -12,7 +12,7 @@ class WelcomeController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get('/', authenticate, this.index)
+        this.router.get('/', auth, this.index)
     }
 
     private async index(req: Request, res: Response) {
@@ -27,4 +27,4 @@ class WelcomeController implements IControllerBase {
     }
 }
 
-export default WelcomeController
+export default UserController

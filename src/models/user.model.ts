@@ -30,6 +30,9 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 
 	public static associations: {};
 
+	public static setAssociation(): void { }
+
+
 	public static modelInit(sequlize: Sequelize): void {
 		this.init(
 			{
@@ -54,8 +57,6 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			}
 		);
 	}
-
-	public static setAssociation(): void {}
 
 	public static createTable(query: QueryInterface) {
 		return query.createTable(this.tableName, {

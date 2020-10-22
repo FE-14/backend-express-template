@@ -12,7 +12,7 @@ export const up = async (query: QueryInterface): Promise<void> => {
 
 export const down = async (query: QueryInterface): Promise<void> => {
 	try {
-		return User.createTable(query);
+		return User.dropTable(query);
 	} catch (error) {
 		return Promise.reject(error);
 	}

@@ -11,6 +11,7 @@ import AuthController from "./controllers/auth.controller";
 dotEnv.config()
 
 const { app } = new App({
+    // TODO: buat dinamis
     controllers: [
         new WelcomeController(),
         new UserController(),

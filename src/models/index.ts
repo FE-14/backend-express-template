@@ -1,24 +1,14 @@
-import { Sequelize, Options } from "sequelize";
-import config from "../config/database.json";
+import { sequelize_postgres } from "../utils/dbConnection";
 import { User } from "./user.model";
 
-const loadConfig = config;
-
-const sequelize = new Sequelize(
-	loadConfig.development.database,
-	loadConfig.development.username,
-	loadConfig.development.password,
-	{
-		dialect: "postgres",
-		host: loadConfig.development.host
-	}
-);
+// TODO: buat jadi dinamis
+// TODO: buat pengaturan konektivitas multi-db paradigma
 
 const models = [User];
 
 const startModel = () => {
 	models.forEach((model) => {
-		model.modelInit(sequelize);
+		model.modelInit(sequelize_postgres);
 	});
 
 	models.forEach((model) => {
@@ -26,4 +16,4 @@ const startModel = () => {
 	});
 };
 
-export { sequelize, startModel, User }
+export { startModel, User }
