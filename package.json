@@ -1,6 +1,6 @@
 {
 	"name": "boilerplate-express-typescript",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"main": "index.js",
 	"scripts": {
 		"start": "yarn build && node dist/server.js",

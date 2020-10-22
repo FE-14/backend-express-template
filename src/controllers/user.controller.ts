@@ -1,9 +1,9 @@
-import express, { Request, Response } from 'express'
-import { User } from '../models'
+import { Request, Response } from 'express'
 import IControllerBase from '../interfaces/IControllerBase.interface'
 import Controller from '../interfaces/Controller.interface'
 import { auth } from '../middleware/auth'
 import { successResponse } from '../utils'
+import User from '../models/user.model'
 
 class UserController extends Controller implements IControllerBase {
     constructor() {

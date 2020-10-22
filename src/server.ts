@@ -3,20 +3,14 @@ import cors from "cors";
 import morgan from 'morgan'
 import App from "./app";
 import dotEnv from 'dotenv'
-import WelcomeController from "./controllers/welcome.controller";
-import { startModel } from "./models";
-import UserController from "./controllers/user.controller";
-import AuthController from "./controllers/auth.controller";
+import modelInit from "./models";
+import controllers from "./controllers";
 
 dotEnv.config()
 
 const { app } = new App({
     // TODO: buat dinamis
-    controllers: [
-        new WelcomeController(),
-        new UserController(),
-        new AuthController()
-    ],
+    controllers: controllers,
     middleWares: [
         bodyParser.json(),
         bodyParser.urlencoded({ extended: true }),
@@ -29,6 +23,6 @@ const { app } = new App({
 const PORT = +(process.env.PORT || 4000);
 
 app.listen(PORT, '0.0.0.0', async () => {
-    await startModel()
+    await modelInit()
     console.log(`[LISTEN] starting http://localhost:${PORT}/api/v1`)
 })

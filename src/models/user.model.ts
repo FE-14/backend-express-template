@@ -15,7 +15,7 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Optional<UserAttributes, "id">;
 
-export class User extends BaseModel<UserAttributes, UserCreationAttributes>
+class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	implements UserAttributes {
 	public static readonly tableName = "users";
 	public static readonly modelName = "user";
@@ -90,3 +90,5 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 		return query.dropTable(this.tableName)
 	}
 }
+
+export default User

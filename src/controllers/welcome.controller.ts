@@ -1,12 +1,13 @@
 import express, { Request, Response } from 'express'
 import { auth } from '../middleware/auth'
 import IControllerBase from '../interfaces/IControllerBase.interface'
+import Controller from '../interfaces/Controller.interface'
 
-class WelcomeController implements IControllerBase {
-  public path = '/'
-  public router = express.Router()
-
+class WelcomeController extends Controller implements IControllerBase {
   constructor() {
+    super()
+
+    this.path = '/'
     this.initRoutes()
   }
 
