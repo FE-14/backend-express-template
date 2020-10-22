@@ -2,14 +2,19 @@
  * Import from all docs files
  */
 import { Response } from "../keys/apidoc";
-import User from "./users.docs";
-import Project from "./projects.docs";
-import Auth from "./auth.docs";
+const fs = require('fs')
 
-/**
- * Register doc to load
- */
-const allDocs = [Auth, User, Project];
+let files = fs.readdirSync(`${__dirname}`);
+files = files.filter((x: string) => {
+    return x != 'index.ts';
+})
+
+let allDocs = files.map((d: string) => {
+    let fileName = `./${d}`.replace('.ts','')
+    let controller = require(fileName);
+
+    return controller['default']
+})
 
 /**
  * Master swagger doc
@@ -87,7 +92,7 @@ export const defaultErrorResponse: Response = {
 /**
  * generate from files
  */
-allDocs.forEach((doc) => {
+allDocs.forEach((doc: any) => {
 	apiDoc.paths = { ...apiDoc.paths, ...doc.paths };
 	apiDoc.components.schemas = { ...apiDoc.components.schemas, ...doc.schema };
 });
