@@ -3,7 +3,7 @@ import { sign } from "jsonwebtoken";
 import { compare, compareSync } from "bcryptjs";
 import { User } from '../models'
 import IControllerBase from '../interfaces/IControllerBase.interface'
-import { envConfig, ErrorResponse, succeesResponse, validationFailResponse } from '../utils';
+import { envConfig, ErrorResponse, successResponse, validationFailResponse } from '../utils';
 import { Schema, validationResult } from 'express-validator';
 
 interface BodyLogin {
@@ -57,7 +57,10 @@ class AuthController implements IControllerBase {
             expiresIn: JWT_EXPIRE
         })
 
-        succeesResponse(res, { token })
+        successResponse({
+            res,
+            data: { token }
+        })
     }
 }
 

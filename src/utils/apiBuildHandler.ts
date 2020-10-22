@@ -10,10 +10,10 @@ export type DataType = object | object[];
  * @param res Reponse from express
  * @param data Model or Array of Model instance
  */
-export const succeesResponse = (res: Response, data: DataType): Response => {
-	return res.status(200).json({
-		message: "success",
-		data,
+export const successResponse = (result: { res: Response; data: any }): Response => {
+	return result.res.status(200).json({
+		success: true,
+		data: result.data
 	});
 };
 

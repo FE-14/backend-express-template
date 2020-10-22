@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { asyncHandler, ErrorResponse } from "../utils";
 import { Request, Response, NextFunction } from "express";
 
 const { JWT_SECRET } = process.env;
 
+// TODO: add expired time when reach thresshold
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
 	const authHeader = req.headers['authorization'];
 	let token: string;
