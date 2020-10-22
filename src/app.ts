@@ -1,4 +1,6 @@
 import express, { Application, Request, Response } from 'express'
+import swaggerUi from "swagger-ui-express"
+import apiDoc from './openApiDoc'
 
 class App {
   public app: Application
@@ -20,6 +22,8 @@ class App {
     controllers.forEach(controller => {
       this.app.use(`/api/v1${controller.path}`, controller.router)
     })
+
+    this.app.use('/explorer', swaggerUi.serve, swaggerUi.setup(apiDoc()))
 
     this.app.use('*', async (req: Request, res: Response) => {
       res.json({
