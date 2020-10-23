@@ -3,55 +3,52 @@ import swaggerUi from "swagger-ui-express";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import { asyncHandler } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
-
+import { swaggerSchemas } from "./models";
 class App {
   public app: Application
 
-  constructor(appInit: { middleWares: any; controllers?: any; }) {
+  constructor(appInit: { middleWares: any; controllers?: any }) {
     this.app = express();
-
+    const schemas = swaggerSchemas;
+    for (const schema of schemas) {
+      const routeSchemas = Object.keys(schema);
+      for (const currentSchema of routeSchemas) {
+        if (typeof apiDoc.components.schemas[currentSchema] == "undefined") {
+          apiDoc.components.schemas[currentSchema] = schema[currentSchema];
+        }
+      }
+    }
     this.middlewares(appInit.middleWares);
     this.routes(appInit.controllers);
   }
 
-  private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
+  private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void }) {
     middleWares.forEach(middleWare => {
       this.app.use(middleWare);
     });
   }
 
-  private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
+  private routes(controllers: { forEach: (arg0: (controller: any) => void) => void }) {
     controllers.forEach(controller => {
-      let instance = new controller();
-      let prefix = Reflect.getMetadata("prefix", controller);
-      let routes: Array<RouteDefinition> = Reflect.getMetadata("routes", controller);
-
+      const instance = new controller();
+      const prefix = Reflect.getMetadata("prefix", controller);
+      const routes: Array<RouteDefinition> = Reflect.getMetadata("routes", controller);
       routes.forEach((route) => {
         this.app[route.requestMethod](`/api/v1${prefix}${route.path}`, route.middlewares, asyncHandler((req: express.Request, res: express.Response) => {
           instance[route.methodName](req, res);
         }));
-        let paths = route.apiDoc.paths;
-        let routePaths = Object.keys(paths);
+        const paths = route.apiDoc.paths;
+        const routePaths = Object.keys(paths);
 
-        for (let path of routePaths) {
-          let currentPath = `${prefix}${path}`;
+        for (const path of routePaths) {
+          const currentPath = `${prefix}${path}`;
           if (typeof apiDoc.paths[currentPath] == "undefined") {
             apiDoc.paths[currentPath] = paths[path];
           } else {
             apiDoc.paths[currentPath] = { ...apiDoc.paths[currentPath], ...paths[path] };
           }
         }
-
-        let schemas = route.apiDoc.schemas;
-        for (let schema of schemas) {
-          let routeSchemas = Object.keys(schema);
-          for (let currentSchema of routeSchemas) {
-            if (typeof apiDoc.components.schemas[currentSchema] == "undefined") {
-              apiDoc.components.schemas[currentSchema] = schema[currentSchema];
-            }
-          }
-        }
-      })
+      });
     });
 
     this.app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));

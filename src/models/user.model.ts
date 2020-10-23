@@ -6,6 +6,7 @@ import {
 } from "sequelize";
 import { BaseModel } from "../utils";
 
+import {Schemas} from "../keys/apidoc";
 export interface UserAttributes {
 	id: number;
 	username: string;
@@ -15,7 +16,7 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Optional<UserAttributes, "id">;
 
-class User extends BaseModel<UserAttributes, UserCreationAttributes>
+export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	implements UserAttributes {
 	public static readonly tableName = "users";
 	public static readonly modelName = "user";
@@ -83,12 +84,45 @@ class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			updatedAt: {
 				type: DataTypes.DATE,
 			},
-		})
+		});
 	}
 
 	public static dropTable(query: QueryInterface) {
-		return query.dropTable(this.tableName)
+		return query.dropTable(this.tableName);
 	}
 }
 
-export default User
+export const swaggerSchemas: Schemas[] = [
+	{
+		User: {
+				title: "",
+				properties: {
+						id: {
+								type: "number",
+						},
+						userId: {
+								type: "number",
+						},
+						name: {
+								type: "string",
+						},
+				},
+		},
+		Project: {
+			title: "",
+			properties: {
+					id: {
+							type: "number",
+					},
+					userId: {
+							type: "number",
+					},
+					name: {
+							type: "string",
+					},
+			},
+	},
+	}
+];
+
+export default User;

@@ -5,7 +5,6 @@ import { successResponse } from "../utils";
 @Controller("/")
 export default class WelcomeController {
   @Get({ path: "", tag: "Welcome" },
-    [],
     {
       responses: [
         {
@@ -21,7 +20,7 @@ export default class WelcomeController {
     return successResponse({
       res,
       data: {
-        message: 'Welcome to API v1'
+        message: "Welcome to API v1"
       }
     });
   }
