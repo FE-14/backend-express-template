@@ -1,10 +1,7 @@
 import { Controller, Get, Put, Post, Delete, Patch } from "../decorator";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
-import { DB } from "../lib/models";
-const {
-    DB_USER
-} = DB;
+import User from "../models/user.model";
 
 @Controller("/user")
 export default class UserController {
@@ -58,7 +55,7 @@ export default class UserController {
             ]
         })
     public async getUsers(req: Request, res: Response): Promise<any> {
-        const a = await DB_USER.findAll();
+        const a = await User.findAll();
         console.log({ a });
         return res.send("User overview");
     }
