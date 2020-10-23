@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import swaggerUi from "swagger-ui-express";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
+import { asyncHandler } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 
 class App {
@@ -26,14 +27,14 @@ class App {
       let routes: Array<RouteDefinition> = Reflect.getMetadata("routes", controller);
 
       routes.forEach((route) => {
-        this.app[route.requestMethod](`/api/v1${prefix}${route.path}`, route.middlewares, (req: express.Request, res: express.Response) => {
+        this.app[route.requestMethod](`/api/v1${prefix}${route.path}`, route.middlewares, asyncHandler((req: express.Request, res: express.Response) => {
           instance[route.methodName](req, res);
-        });
+        }));
         let paths = route.apiDoc.paths;
         let routePaths = Object.keys(paths);
 
-        for (const path of routePaths) {
-          const currentPath = `${prefix}${path}`;
+        for (let path of routePaths) {
+          let currentPath = `${prefix}${path}`;
           if (typeof apiDoc.paths[currentPath] == "undefined") {
             apiDoc.paths[currentPath] = paths[path];
           } else {
@@ -42,9 +43,9 @@ class App {
         }
 
         let schemas = route.apiDoc.schemas;
-        for (const schema of schemas) {
-          const routeSchemas = Object.keys(schema);
-          for (const currentSchema of routeSchemas) {
+        for (let schema of schemas) {
+          let routeSchemas = Object.keys(schema);
+          for (let currentSchema of routeSchemas) {
             if (typeof apiDoc.components.schemas[currentSchema] == "undefined") {
               apiDoc.components.schemas[currentSchema] = schema[currentSchema];
             }
