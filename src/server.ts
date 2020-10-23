@@ -1,15 +1,10 @@
 import "reflect-metadata";
-import fs from "fs";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
 import App from "./app";
 import dotEnv from "dotenv";
-import * as express from "express";
 import modelInit from "./models";
-import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
-import swaggerUi from "swagger-ui-express";
-import { apiDoc } from "./utils/generateApiDoc";
 import controllers from "./controllers";
 
 dotEnv.config();
