@@ -1,9 +1,9 @@
-import { Controller, Get, Put, Post, Delete, Patch } from "../decorator";
+import { Controller, Get, Put, Post, Delete, Patch } from "../decorators";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
 import User from "../models/user.model";
 
-@Controller("/user")
+@Controller("/users")
 export default class UserController {
     @Post({ path: "/", tag: "UserPost" },
         [

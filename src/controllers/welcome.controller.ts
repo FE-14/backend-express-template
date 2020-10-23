@@ -1,43 +1,28 @@
-import express, { Request, Response } from 'express'
-import { auth } from '../middleware/auth'
-import IControllerBase from '../interfaces/IControllerBase.interface'
-import Controller from '../interfaces/Controller.interface'
+import { Controller, Get } from "../decorators";
+import { Request, Response } from "express";
+import { successResponse } from "../utils";
 
-class WelcomeController extends Controller implements IControllerBase {
-  constructor() {
-    super()
-
-    this.path = '/'
-    this.initRoutes()
-  }
-
-  public initRoutes() {
-    this.router.get('/', this.index)
-    this.router.get('/coba', auth, this.coba)
-  }
-
-  private async index(req: Request, res: Response) {
-    try {
-      // TODO: tambahkan ke helper
-      res.json({
-        success: true,
+@Controller("/")
+export default class WelcomeController {
+  @Get({ path: "", tag: "Welcome" },
+    [],
+    {
+      responses: [
+        {
+          200: {
+            description: "Response get object",
+            responseType: "object",
+            schema: "User"
+          }
+        }
+      ]
+    })
+  public async getUsers(req: Request, res: Response): Promise<any> {
+    return successResponse({
+      res,
+      data: {
         message: 'Welcome to API v1'
-      })
-    } catch(e) {
-      Promise.reject(e)
-    }
-  }
-
-  private async coba(req: Request, res: Response) {
-    try {
-      res.json({
-        success: true,
-        message: 'Coba'
-      })
-    } catch(e) {
-      Promise.reject(e)
-    }
+      }
+    });
   }
 }
-
-export default WelcomeController
