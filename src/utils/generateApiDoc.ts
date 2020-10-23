@@ -40,3 +40,61 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
   };
   return apiDoc;
 };
+
+export const apiDoc: any = {
+  openapi: "3.0.0",
+  info: {
+    version: "1.0.0",
+    title: "MV BE Boilerplate",
+    description: "This starting point to develop be using TS",
+    license: {
+      name: "MIT",
+      url: "https://opensource.org/licenses/MIT",
+    },
+  },
+  servers: [
+    {
+      url: "/api/v1",
+    },
+  ],
+  authAction: {
+    JWT: {
+      name: "JWT",
+      schema: {
+        type: "apiKey",
+        in: "header",
+        name: "Authorization",
+        description: "sda",
+      },
+      value: "Bearer <JWT>",
+    },
+  },
+  security: [
+    {
+      Bearer: [""],
+    },
+  ],
+  paths: {},
+  components: {
+    schemas: {
+      ErrorResponse: {
+        type: "object",
+        properties: {
+          status: {
+            type: "string",
+          },
+          message: {
+            type: "string",
+          },
+        },
+      },
+    },
+    securitySchemes: {
+      Bearer: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+};

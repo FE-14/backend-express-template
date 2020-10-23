@@ -1,36 +1,116 @@
+import { Controller, Get, Put, Post, Delete, Patch } from "../decorator";
 import { Request, Response } from "express";
-import IControllerBase from "../interfaces/IControllerBase.interface";
-import Controller from "../interfaces/Controller.interface";
 import { auth } from "../middleware/auth";
-import { successResponse } from "../utils";
-import User from "../models/user.model";
+import { DB } from "../lib/models";
+const {
+    DB_USER
+} = DB;
 
-class UserController extends Controller implements IControllerBase {
-    constructor() {
-        super();
-
-        this.path = "/users";
-        this.initRoutes();
+@Controller("/user")
+export default class UserController {
+    @Post({ path: "/", tag: "UserPost" },
+        [
+            {
+                User: {
+                    title: "",
+                    properties: {
+                        id: {
+                            type: "number",
+                        },
+                        userId: {
+                            type: "number",
+                        },
+                        name: {
+                            type: "string",
+                        },
+                    },
+                },
+            }
+        ],
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response post object",
+                        responseType: "object",
+                        schema: "User"
+                    }
+                }
+            ]
+        },
+        [auth]
+    )
+    public index(req: Request, res: Response): any {
+        return res.send("User overview");
     }
 
-    public initRoutes() {
-        this.router.get("/", this.index);
+    @Get({ path: "/", tag: "UserPost" },
+        [],
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response get object",
+                        responseType: "object",
+                        schema: "User"
+                    }
+                }
+            ]
+        })
+    public async getUsers(req: Request, res: Response): Promise<any> {
+        const a = await DB_USER.findAll();
+        console.log({ a });
+        return res.send("User overview");
     }
 
-    private async index(req: Request, res: Response) {
-        try {
-            return successResponse({
-                res,
-                data: await User.findAll()
-            });
-        } catch (e) {
-            res.json({
-                success: false,
-                message: "Error cannot get data from db."
-            });
-            Promise.reject(e);
-        }
+    @Put({ path: "/", tag: "UserPost" },
+        [],
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response put object",
+                        responseType: "object",
+                        schema: "User"
+                    }
+                }
+            ]
+        })
+    public details(req: Request, res: Response): any {
+        return res.send(`You are looking at the profile of ${req.params.name}`);
+    }
+
+    @Delete({ path: "/", tag: "UserPost" },
+        [],
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response delete array",
+                        responseType: "array",
+                        schema: "User"
+                    }
+                }
+            ]
+        })
+    public delete(req: Request, res: Response): any {
+        return res.send(`You are looking at the profile of ${req.params.name}`);
+    }
+
+    @Patch({ path: "/", tag: "UserPost" },
+        [],
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response patch array",
+                        responseType: "array",
+                        schema: "User"
+                    }
+                }
+            ]
+        })
+    public patchUser(req: Request, res: Response): any {
+        return res.send(`You are looking at the profile of ${req.params.name}`);
     }
 }
-
-export default UserController;
