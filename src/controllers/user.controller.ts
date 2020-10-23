@@ -106,7 +106,8 @@ export default class UserController {
                     }
                 }
             ]
-        })
+        },
+        [auth])
     public patchUser(req: Request, res: Response): any {
         return res.send(`You are looking at the profile of ${req.params.name}`);
     }
