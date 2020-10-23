@@ -42,6 +42,9 @@ export const getSchemaResponse = (
 		type: "object",
 		title: title + ".Response",
 		properties: {
+			success: {
+				type: "boolean"
+			},
 			message: {
 				type: "string",
 			},

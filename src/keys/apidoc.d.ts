@@ -73,6 +73,7 @@ export interface ParameterItem {
 export interface MethodItem {
 	tags: string[];
 	responses?: Response;
+	security?: string[],
 	requestBody?: RequestBody;
 	parameters?: ParameterItem[];
 }

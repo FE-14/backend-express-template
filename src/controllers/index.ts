@@ -1,15 +1,15 @@
 // TODO: swagger masuk controller
-const fs = require('fs')
+import fs from "fs";
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string) => {
-    return x != 'index.ts';
+    return x != 'index.ts' && x != 'auth.controller.ts';
 })
 let controllers = files.map((d: string) => {
     let fileName = `./${d}`.replace('.ts','')
     let controller = require(fileName);
 
-    return new controller['default']
+    return controller['default']
 })
 
 export default controllers

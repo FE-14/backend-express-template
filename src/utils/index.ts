@@ -5,3 +5,4 @@ export * from "./baseModel";
 export * from "./envConfig";
 export * from "./apiBuildHandler";
 export * from "./validationHelper";
+export * from "./generateApiDoc";
