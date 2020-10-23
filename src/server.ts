@@ -9,7 +9,6 @@ import controllers from "./controllers";
 dotEnv.config()
 
 const { app } = new App({
-    // TODO: buat dinamis
     controllers: controllers,
     middleWares: [
         bodyParser.json(),
