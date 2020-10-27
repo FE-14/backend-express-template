@@ -6,5 +6,5 @@ let timestamp = (new Date()).getTime()
 
 files.forEach((file) => {
     let fileName = file.split('.')
-    fs.renameSync(`${migrationDir}/${file}`, `${migrationDir}/${fileName[0]}.${timestamp}.ts`)
+    fs.renameSync(`${migrationDir}/${file}`, `${migrationDir}/${timestamp}.${fileName[1]}.ts`)
 })

@@ -1,8 +1,7 @@
 import { Controller, Post } from "../decorators";
 import { NextFunction, Request, Response } from "express";
-import { envConfig, ErrorResponse, successResponse, validationFailResponse } from '../utils';
+import { envConfig, successResponse } from '../utils';
 import { sign } from "jsonwebtoken";
-import { validationResult } from "express-validator";
 import { compare } from "bcryptjs";
 import BodyLogin from "../interfaces/BodyLogin.interface";
 import ErrorLog from "../interfaces/ErrorLog.interface";
@@ -31,7 +30,7 @@ export default class UserController {
         },
         []
     )
-    public async index(req: Request, res: Response, next: NextFunction): Promise<any> {
+    public async index(req: Request, res: Response): Promise<any> {
         let bodyLogin: BodyLogin = req.body
         let user: User, hashResult: boolean, token: string
 

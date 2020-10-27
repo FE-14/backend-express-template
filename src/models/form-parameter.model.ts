@@ -1,38 +1,38 @@
-import {
-	Optional,
-	Sequelize,
-	DataTypes,
-	QueryInterface,
-} from "sequelize";
+import { Optional, Sequelize, DataTypes, QueryInterface } from "sequelize";
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
-export interface UserAttributes {
+export interface FormParameterAttributes {
 	id: number;
-	username: string;
-	password: string;
-	firstName: string;
+	formId: number;
+	fieldName: string;
+	type: string;
+	unit: string;
 }
 
-export type UserCreationAttributes = Optional<UserAttributes, "id">;
+export type FormParameterCreationAttributes = Optional<
+	FormParameterAttributes,
+	"id"
+>;
 
-export class User extends BaseModel<UserAttributes, UserCreationAttributes>
-	implements UserAttributes {
-	public static readonly tableName = "MT_User";
-	public static readonly modelName = "User";
-	public static readonly modelNamePlural = "Users";
+export class FormParameter
+	extends BaseModel<FormParameterAttributes, FormParameterCreationAttributes>
+	implements FormParameterAttributes {
+	public static readonly tableName = "MT_FormParameter";
+	public static readonly modelName = "FormParameter";
+	public static readonly modelNamePlural = "Forms";
 	public static readonly defaultScope = {};
 	public id!: number;
-	public username!: string;
-	public password!: string;
-	public firstName!: string;
+	public formId: number;
+	public fieldName!: string;
+	public type!: string;
+	public unit!: string;
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
 
-	public static associations: {};
+	// public static associations: {};
 
-	public static setAssociation(): void { }
-
+	public static setAssociation(): void {}
 
 	public static modelInit(sequlize: Sequelize): void {
 		this.init(
@@ -42,12 +42,10 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 					primaryKey: true,
 					autoIncrement: true,
 				},
-				username: {
-					type: new DataTypes.STRING(),
-					unique: true
-				},
-				password: new DataTypes.STRING(),
-				firstName: new DataTypes.STRING(),
+				formId: DataTypes.INTEGER,
+				fieldName: DataTypes.STRING,
+				type: DataTypes.STRING,
+				unit: DataTypes.STRING,
 			},
 			{
 				sequelize: sequlize,
@@ -70,17 +68,10 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 				allowNull: false,
 				autoIncrement: true,
 			},
-			username: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			password: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			firstName: {
-				type: DataTypes.STRING,
-			},
+			formId: DataTypes.INTEGER,
+			fieldName: DataTypes.STRING,
+			type: DataTypes.STRING,
+			unit: DataTypes.STRING,
 			createdAt: {
 				type: DataTypes.DATE,
 			},
@@ -97,35 +88,44 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 
 export const swaggerSchemas: Schemas[] = [
 	{
-		User: {
-			title: "",
+		FormParameter: {
+			title: "FormParameter",
 			properties: {
 				id: {
 					type: "number",
 				},
-				userId: {
+				formId: {
 					type: "number",
 				},
-				name: {
+				fieldName: {
+					type: "string",
+				},
+				type: {
+					type: "string",
+				},
+				unit: {
 					type: "string",
 				},
 			},
 		},
-		Project: {
-			title: "",
+		NewFormParameter: {
+			title: "FormParameter",
 			properties: {
-				id: {
+				formId: {
 					type: "number",
 				},
-				userId: {
-					type: "number",
+				fieldName: {
+					type: "string",
 				},
-				name: {
+				type: {
+					type: "string",
+				},
+				unit: {
 					type: "string",
 				},
 			},
 		},
-	}
+	},
 ];
 
-export default User;
+export default FormParameter;
