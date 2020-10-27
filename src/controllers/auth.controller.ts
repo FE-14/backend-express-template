@@ -105,10 +105,13 @@ export default class UserController {
         try {
             let token = tokenExtractor(req.headers['authorization'])
             let tokenDecode: TokenDecode = jwt.verify(token, JWT_SECRET) as TokenDecode
+            
+            if (!tokenDecode) throw "invalid token"
+
             let userId = tokenDecode.claims.user
             let newToken: string
 
-            token = sign({
+            newToken = sign({
                 claims: { user: userId }
             }, JWT_SECRET, {
                 expiresIn: JWT_EXPIRE
