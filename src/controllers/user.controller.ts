@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
 import { User } from "../models";
 import { genSalt, hash } from "bcryptjs";
+import ErrorLog from "../interfaces/ErrorLog.interface";
 
 @Controller("/users")
 export default class UserController {
@@ -23,17 +24,39 @@ export default class UserController {
                 }
             ]
         },
-        []
+        [auth]
     )
     public async index(req: Request, res: Response): Promise<any> {
-        const salt = await genSalt(12);
-        const password = await hash("baguse", salt);
-        const user = await  User.create({
-            firstName: "baguse",
-            username: "baguse",
-            password
-        });
-        return res.send(user);
+        try {
+            if (!req.body.username || !req.body.password) {
+                throw 'username and password is required'
+            }
+            const currentUser = await User.findOne({
+                where: {
+                    username: req.body.username
+                }
+            })
+
+            if (currentUser) throw 'user exist'
+
+            const salt = await genSalt(12);
+            const password = await hash(req.body.password, salt);
+
+            const user = await User.create({
+                firstName: req.body.firstName,
+                username: req.body.username,
+                password
+            });
+
+            if (!user) throw 'cant create user'
+
+            return res.json(user);
+        } catch (e) {
+            return res.status(500).json({
+                sucess: false,
+                message: e
+            })
+        }
     }
 
     @Get({ path: "/", tag: "UserPost" },

@@ -1,69 +1,76 @@
-import express, { Request, Response, NextFunction } from 'express'
-import { sign } from "jsonwebtoken";
-import { compare, compareSync } from "bcryptjs";
-import IControllerBase from '../interfaces/IControllerBase.interface'
+import { Controller, Post } from "../decorators";
+import { NextFunction, Request, Response } from "express";
 import { envConfig, ErrorResponse, successResponse, validationFailResponse } from '../utils';
-import { Schema, validationResult } from 'express-validator';
-import Controller from '../interfaces/Controller.interface';
-import User from '../models/user.model';
-
-interface BodyLogin {
-	username: string;
-	password: string;
-}
+import { User } from "../models";
+import { sign } from "jsonwebtoken";
+import { validationResult } from "express-validator";
+import { compare } from "bcryptjs";
+import BodyLogin from "../interfaces/BodyLogin.interface";
+import ErrorLog from "../interfaces/ErrorLog.interface";
 
 const { JWT_SECRET, JWT_EXPIRE } = envConfig;
 
-class AuthController extends Controller implements IControllerBase {
-    public loginValidator: Schema = {
-        username: {
-            exists: true,
+@Controller("/auth")
+export default class UserController {
+    @Post({ path: "/login", tag: "Login" },
+        {
+            responses: [
+                {
+                    200: {
+                        description: "Response token",
+                        responseType: "object",
+                        schema: 'User'
+                    },
+                    500: {
+                        description: "Response post object",
+                        responseType: "object",
+                        schema: 'User'
+                    },
+                }
+            ]
         },
-        password: {
-            exists: true,
-        },
-    };
-
-    constructor() {
-        super()
-
-        this.path = '/auth'
-        this.initRoutes()
-    }
-
-    public initRoutes() {
-        this.router.post('/login', this.login)
-    }
-
-    private async login(req: Request, res: Response, next: NextFunction) {
-        let error = validationResult(req)
-        if (!error.isEmpty()) return validationFailResponse(res, error.array())
-
+        []
+    )
+    public async index(req: Request, res: Response, next: NextFunction): Promise<any> {
         let bodyLogin: BodyLogin = req.body
+        let user: User, hashResult: boolean, token: string
 
-        let user = await User.findOne({
-            where: {
-                username: bodyLogin.username
+        try {
+            if (!bodyLogin.username || !bodyLogin.password) {
+                throw { code: 400, message: "User credential not found" }
             }
-        })
 
-        if (!user) return next(new ErrorResponse("Login failed", 401))
+            user = await User.findOne({
+                where: {
+                    username: bodyLogin.username
+                }
+            })
 
-        let hashResult = await compare(user.password, bodyLogin.password)
+            if (!user) throw { code: 400, message: "Not found" }
 
-        if (!hashResult) return next(new ErrorResponse("Login failed", 401))
+            hashResult = await compare(bodyLogin.password, user.password)
 
-        let token = sign({
-            claims: { user: user.id }
-        }, JWT_SECRET, {
-            expiresIn: JWT_EXPIRE
-        })
+            if (!hashResult) throw { code: 400, message: "Password didn't match" }
 
-        successResponse({
-            res,
-            data: { token }
-        })
+            token = sign({
+                claims: { user: user.id }
+            }, JWT_SECRET, {
+                expiresIn: JWT_EXPIRE
+            })
+
+            if (!token) throw { code: 400, message: "Failed to generate token" }
+
+            return successResponse({
+                res,
+                data: { token }
+            })
+        } catch (e) {
+            let error: ErrorLog = e
+            
+            return res.status(error.code).json({
+                success: false,
+                message: error.message
+            })
+        }
     }
 }
-
-export default AuthController

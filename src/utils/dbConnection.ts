@@ -1,7 +1,7 @@
-import { Sequelize, Options } from "sequelize";
-import config from "../config/database.json";
+import { Sequelize } from "sequelize";
+import postgres_config from "../config/postgres.config.json";
 
-const loadConfig = config;
+const loadConfig = postgres_config;
 
 export const sequelize_postgres = new Sequelize(
 	loadConfig.development.database,

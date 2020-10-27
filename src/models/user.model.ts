@@ -6,7 +6,7 @@ import {
 } from "sequelize";
 import { BaseModel } from "../utils";
 
-import {Schemas} from "../keys/apidoc";
+import { Schemas } from "../keys/apidoc";
 export interface UserAttributes {
 	id: number;
 	username: string;
@@ -42,7 +42,10 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 					primaryKey: true,
 					autoIncrement: true,
 				},
-				username: new DataTypes.STRING(),
+				username: {
+					type: new DataTypes.STRING(),
+					unique: true
+				},
 				password: new DataTypes.STRING(),
 				firstName: new DataTypes.STRING(),
 			},
@@ -69,11 +72,11 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			},
 			username: {
 				type: DataTypes.STRING,
-				allowNull: true,
+				allowNull: false,
 			},
 			password: {
 				type: DataTypes.STRING,
-				allowNull: true,
+				allowNull: false,
 			},
 			firstName: {
 				type: DataTypes.STRING,
@@ -95,33 +98,33 @@ export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 export const swaggerSchemas: Schemas[] = [
 	{
 		User: {
-				title: "",
-				properties: {
-						id: {
-								type: "number",
-						},
-						userId: {
-								type: "number",
-						},
-						name: {
-								type: "string",
-						},
+			title: "",
+			properties: {
+				id: {
+					type: "number",
 				},
+				userId: {
+					type: "number",
+				},
+				name: {
+					type: "string",
+				},
+			},
 		},
 		Project: {
 			title: "",
 			properties: {
-					id: {
-							type: "number",
-					},
-					userId: {
-							type: "number",
-					},
-					name: {
-							type: "string",
-					},
+				id: {
+					type: "number",
+				},
+				userId: {
+					type: "number",
+				},
+				name: {
+					type: "string",
+				},
 			},
-	},
+		},
 	}
 ];
 
