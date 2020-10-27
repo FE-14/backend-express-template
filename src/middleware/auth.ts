@@ -4,6 +4,14 @@ import ErrorLog from "../interfaces/ErrorLog.interface";
 
 const { JWT_SECRET } = process.env;
 
+export function tokenExtractor(token: string) {
+	let extracted = token.split(" ")[1]
+
+	if (!extracted) throw "Error no Bearer auth token provided"
+	
+	return extracted
+}
+
 // TODO: add expired time when reach thresshold
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
 	let authHeader: string
@@ -14,12 +22,10 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
 		if (!authHeader) throw 'Error no authorization header'
 
-		token = authHeader.split(" ")[1]
-
-		if (!token) throw 'Error no Bearer auth token provided'
+		token = tokenExtractor(authHeader)
 
 		jwt.verify(token, JWT_SECRET, (err, decoded) => {
-			if (err) throw 'Error unauthenticated'
+			if (err) throw err
 
 			next()
 		})
