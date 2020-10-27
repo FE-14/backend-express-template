@@ -1,12 +1,12 @@
 import { Controller, Post } from "../decorators";
 import { NextFunction, Request, Response } from "express";
 import { envConfig, ErrorResponse, successResponse, validationFailResponse } from '../utils';
-import { User } from "../models";
 import { sign } from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { compare } from "bcryptjs";
 import BodyLogin from "../interfaces/BodyLogin.interface";
 import ErrorLog from "../interfaces/ErrorLog.interface";
+import User from "../models/user.model";
 
 const { JWT_SECRET, JWT_EXPIRE } = envConfig;
 

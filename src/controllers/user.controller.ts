@@ -1,9 +1,8 @@
 import { Controller, Get, Put, Post, Delete, Patch } from "../decorators";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
-import { User } from "../models";
 import { genSalt, hash } from "bcryptjs";
-import ErrorLog from "../interfaces/ErrorLog.interface";
+import User from "../models/user.model";
 
 @Controller("/users")
 export default class UserController {
