@@ -22,7 +22,11 @@ const models = files.map((d: string) => {
 const mongoose_mongo = mongoose
 
 const modelInit = () => {
-	mongoose_mongo.connect(mongoose_mongo_url, { useNewUrlParser: true, useUnifiedTopology: true })
+	try {
+		mongoose_mongo.connect(mongoose_mongo_url, { useNewUrlParser: true, useUnifiedTopology: true })
+	} catch (e) {
+		console.error(Error(e))
+	}
 
 	models.forEach((model: any) => {
 		model.modelInit(sequelize_postgres);

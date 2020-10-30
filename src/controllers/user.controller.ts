@@ -71,9 +71,14 @@ export default class UserController {
             ]
         })
     public async getUsers(req: Request, res: Response): Promise<any> {
-        const a = await User.findAll();
-        console.log({ a });
-        return res.send("User overview");
+        let a = await User.findAll();
+        let result = a.map(d => {
+            delete d.password
+
+            return d
+        })
+
+        return res.json(result);
     }
 
     @Put({ path: "/", tag: "UserPost" },

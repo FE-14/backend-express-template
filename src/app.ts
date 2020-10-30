@@ -7,7 +7,7 @@ import { swaggerSchemas } from "./models";
 class App {
   public app: Application
 
-  constructor(appInit: { middleWares: any; controllers?: any }) {
+  constructor(appInit: { middleWares: any; controllers?: any; actions?: any }) {
     this.app = express();
     const schemas = swaggerSchemas;
     for (const schema of schemas) {
@@ -18,8 +18,16 @@ class App {
         }
       }
     }
+
+    this.actions(appInit.actions)
     this.middlewares(appInit.middleWares);
     this.routes(appInit.controllers);
+  }
+
+  private async actions(actions: { forEach: (arg0: (action: any) => void) => void }) {
+    actions.forEach(async (action) => {
+      await action()
+    });
   }
 
   private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void }) {

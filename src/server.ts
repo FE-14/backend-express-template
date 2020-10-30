@@ -17,12 +17,14 @@ const { app } = new App({
         cors(),
         // TODO: simpan di file, pisah per hari
         morgan("combined"),
+    ],
+    actions: [
+        modelInit
     ]
 });
 
 const PORT = +(process.env.PORT || 4000);
 
-app.listen(PORT, "0.0.0.0", async () => {
-    await modelInit()
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`[LISTEN] 🚀🚀🚀  starting http://localhost:${PORT}/api/v1`);
 });
