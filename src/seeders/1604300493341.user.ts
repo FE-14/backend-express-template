@@ -1,13 +1,13 @@
 import { QueryInterface } from "sequelize";
 import { hash, genSalt } from "bcryptjs";
+import User from '../models/user.model'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const up = async (query: QueryInterface): Promise<object | number> => {
 	try {
-		const users = await query.bulkInsert("users", [
+		const users = await query.bulkInsert(User.tableName, [
 			{
 				username: "admin",
-				password: await hash("admin", await genSalt()),
+				password: await hash("admin", await genSalt(12)),
 				firstName: "Admin",
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -19,13 +19,11 @@ export const up = async (query: QueryInterface): Promise<object | number> => {
 	}
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const down = async (query: QueryInterface): Promise<object | number> => {
 	try {
-		const users = await query.bulkDelete("users", {
-			username: "username",
-			firstName: "first_name",
-		});
+		const users = await query.bulkDelete(User.tableName, {
+			username: "admin",
+		}, {});
 		return Promise.resolve(users);
 	} catch (error) {
 		return Promise.reject(error);

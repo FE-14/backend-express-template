@@ -1,29 +1,12 @@
 import { Controller, Get, Put, Post, Delete, Patch } from "../decorators";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
+import { genSalt, hash } from "bcryptjs";
 import User from "../models/user.model";
 
 @Controller("/users")
 export default class UserController {
     @Post({ path: "/", tag: "UserPost" },
-        [
-            {
-                User: {
-                    title: "",
-                    properties: {
-                        id: {
-                            type: "number",
-                        },
-                        userId: {
-                            type: "number",
-                        },
-                        name: {
-                            type: "string",
-                        },
-                    },
-                },
-            }
-        ],
         {
             responses: [
                 {
@@ -31,18 +14,51 @@ export default class UserController {
                         description: "Response post object",
                         responseType: "object",
                         schema: "User"
-                    }
+                    },
+                    500: {
+                        description: "Response post object",
+                        responseType: "object",
+                        schema: "User"
+                    },
                 }
             ]
         },
         [auth]
     )
-    public index(req: Request, res: Response): any {
-        return res.send("User overview");
+    public async index(req: Request, res: Response): Promise<any> {
+        try {
+            if (!req.body.username || !req.body.password) {
+                throw 'username and password is required'
+            }
+            const currentUser = await User.findOne({
+                where: {
+                    username: req.body.username
+                }
+            })
+
+            if (currentUser) throw 'user exist'
+
+            const salt = await genSalt(12);
+            const password = await hash(req.body.password, salt);
+
+            const user = await User.create({
+                firstName: req.body.firstName,
+                username: req.body.username,
+                password
+            });
+
+            if (!user) throw 'cant create user'
+
+            return res.json(user);
+        } catch (e) {
+            return res.status(500).json({
+                sucess: false,
+                message: e
+            })
+        }
     }
 
     @Get({ path: "/", tag: "UserPost" },
-        [],
         {
             responses: [
                 {
@@ -55,13 +71,17 @@ export default class UserController {
             ]
         })
     public async getUsers(req: Request, res: Response): Promise<any> {
-        const a = await User.findAll();
-        console.log({ a });
-        return res.send("User overview");
+        let a = await User.findAll();
+        let result = a.map(d => {
+            delete d.password
+
+            return d
+        })
+
+        return res.json(result);
     }
 
     @Put({ path: "/", tag: "UserPost" },
-        [],
         {
             responses: [
                 {
@@ -78,7 +98,6 @@ export default class UserController {
     }
 
     @Delete({ path: "/", tag: "UserPost" },
-        [],
         {
             responses: [
                 {
@@ -95,7 +114,6 @@ export default class UserController {
     }
 
     @Patch({ path: "/", tag: "UserPost" },
-        [],
         {
             responses: [
                 {

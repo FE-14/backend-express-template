@@ -1,22 +1,33 @@
-import { sequelize_postgres } from "../utils/dbConnection";
+import { sequelize_postgres, mongoose_mongo_url } from "../utils/dbConnection";
+import { Schemas } from "../keys/apidoc";
+import mongoose from "mongoose";
 
-// TODO: buat pengaturan konektivitas multi-db paradigma
-
-const fs = require('fs')
+const fs = require("fs");
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string) => {
-    return x != 'index.ts';
-})
+	return x != "index.ts";
+});
+export let swaggerSchemas: Schemas[] = [];
+const models = files.map((d: string) => {
+	const fileName = `./${d}`.replace(".ts", "");
+	const model = require(fileName);
+	const schemas = model["swaggerSchemas"];
+	if (typeof schemas != "undefined") {
+		swaggerSchemas = [...swaggerSchemas, ...schemas];
+	}
+	return model["default"];
+});
 
-let models = files.map((d: string) => {
-    let fileName = `./${d}`.replace('.ts','')
-    let model = require(fileName);
-
-    return model['default']
-})
+const mongoose_mongo = mongoose
 
 const modelInit = () => {
+	try {
+		mongoose_mongo.connect(mongoose_mongo_url, { useNewUrlParser: true, useUnifiedTopology: true })
+	} catch (e) {
+		console.error(Error(e))
+	}
+
 	models.forEach((model: any) => {
 		model.modelInit(sequelize_postgres);
 	});
@@ -26,4 +37,5 @@ const modelInit = () => {
 	});
 };
 
-export default modelInit
+export { mongoose_mongo }
+export default modelInit;

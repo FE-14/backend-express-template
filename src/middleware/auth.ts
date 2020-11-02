@@ -1,30 +1,38 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import ErrorLog from "../interfaces/ErrorLog.interface";
 
 const { JWT_SECRET } = process.env;
 
+export function tokenExtractor(token: string) {
+	let extracted = token.split(" ")[1]
+
+	if (!extracted) throw "Error no Bearer auth token provided"
+	
+	return extracted
+}
+
 // TODO: add expired time when reach thresshold
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-	const authHeader = req.headers['authorization'];
-	let token: string;
+	let authHeader: string
+	let token: string
 
-	if (authHeader && authHeader.startsWith("Bearer")) {
-		token = authHeader.split(" ")[1]
-	} else {
-		return res.status(403).send({
-			success: false,
-			message: "Error no auth token provided",
-		});
+	try {
+		authHeader = req.headers['authorization']
+
+		if (!authHeader) throw 'Error no authorization header'
+
+		token = tokenExtractor(authHeader)
+
+		jwt.verify(token, JWT_SECRET, (err, decoded) => {
+			if (err) throw err
+
+			next()
+		})
+	} catch (e) {
+		return res.status(500).json({
+			sucess: false,
+			message: e
+		})
 	}
-
-	jwt.verify(token, JWT_SECRET, (err, decoded) => {
-		if (err) {
-			return res.status(401).send({
-				success: false,
-				message: "Error unauthenticated",
-			});
-		}
-
-		next()
-	})
 }

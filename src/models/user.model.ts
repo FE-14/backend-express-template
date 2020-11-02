@@ -6,6 +6,7 @@ import {
 } from "sequelize";
 import { BaseModel } from "../utils";
 
+import { Schemas } from "../keys/apidoc";
 export interface UserAttributes {
 	id: number;
 	username: string;
@@ -15,11 +16,11 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Optional<UserAttributes, "id">;
 
-class User extends BaseModel<UserAttributes, UserCreationAttributes>
+export class User extends BaseModel<UserAttributes, UserCreationAttributes>
 	implements UserAttributes {
-	public static readonly tableName = "users";
-	public static readonly modelName = "user";
-	public static readonly modelNamePlural = "users";
+	public static readonly tableName = "MT_User";
+	public static readonly modelName = "User";
+	public static readonly modelNamePlural = "Users";
 	public static readonly defaultScope = {};
 	public id!: number;
 	public username!: string;
@@ -41,7 +42,10 @@ class User extends BaseModel<UserAttributes, UserCreationAttributes>
 					primaryKey: true,
 					autoIncrement: true,
 				},
-				username: new DataTypes.STRING(),
+				username: {
+					type: new DataTypes.STRING(),
+					unique: true
+				},
 				password: new DataTypes.STRING(),
 				firstName: new DataTypes.STRING(),
 			},
@@ -68,11 +72,11 @@ class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			},
 			username: {
 				type: DataTypes.STRING,
-				allowNull: true,
+				allowNull: false,
 			},
 			password: {
 				type: DataTypes.STRING,
-				allowNull: true,
+				allowNull: false,
 			},
 			firstName: {
 				type: DataTypes.STRING,
@@ -83,12 +87,45 @@ class User extends BaseModel<UserAttributes, UserCreationAttributes>
 			updatedAt: {
 				type: DataTypes.DATE,
 			},
-		})
+		});
 	}
 
 	public static dropTable(query: QueryInterface) {
-		return query.dropTable(this.tableName)
+		return query.dropTable(this.tableName);
 	}
 }
 
-export default User
+export const swaggerSchemas: Schemas[] = [
+	{
+		User: {
+			title: "",
+			properties: {
+				id: {
+					type: "number",
+				},
+				userId: {
+					type: "number",
+				},
+				name: {
+					type: "string",
+				},
+			},
+		},
+		Project: {
+			title: "",
+			properties: {
+				id: {
+					type: "number",
+				},
+				userId: {
+					type: "number",
+				},
+				name: {
+					type: "string",
+				},
+			},
+		},
+	}
+];
+
+export default User;

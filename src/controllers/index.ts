@@ -3,7 +3,7 @@ import fs from "fs";
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string) => {
-    return x != 'index.ts' && x != 'auth.controller.ts';
+    return x != 'index.ts';
 })
 let controllers = files.map((d: string) => {
     let fileName = `./${d}`.replace('.ts','')
