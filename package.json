@@ -8,8 +8,9 @@
 		"dev": "nodemon",
 		"clean": "rimraf dist",
 		"migrate:update": "ts-node ./src/utils/migrationsUpdater.ts",
+		"seed:update": "ts-node ./src/utils/seedersUpdater.ts",
 		"migrate": "yarn migrate:update && yarn build && ./node_modules/.bin/sequelize db:migrate",
-		"seed": "yarn build && ./node_modules/.bin/sequelize db:seed"
+		"seed": "yarn seed:update && yarn build && ./node_modules/.bin/sequelize db:seed"
 	},
 	"repository": "git@gitlab.com:mv-lanius/products/service0/boiler-plate-be-ts.git",
 	"author": "Machine Vision <www.machinevision.global>",
