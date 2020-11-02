@@ -17,7 +17,7 @@ if (argv.name) {
 }
 
 const contentToWrite = [
-	'import { QueryInterface, DataTypes } from "sequelize";',
+	"import { QueryInterface, DataTypes } from \"sequelize\";",
 	"",
 	"export const up = async (query: QueryInterface): Promise<void> => {",
 	"	try {",

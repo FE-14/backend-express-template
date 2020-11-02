@@ -1,7 +1,7 @@
 import { writeFileSync, appendFileSync } from "fs";
 import moment from "moment";
 
-const fileNameGenerator = (nameArgs: String) => {
+const fileNameGenerator = (nameArgs: string) => {
 	return `${moment().format("YYYYMMDDHHmmssSS")}-${nameArgs}.ts`;
 };
 
@@ -17,7 +17,7 @@ export const generateFile = (
 	fileDestination: string,
 	nameArgs: string,
 	content: string[]
-) => {
+): void => {
 	/**
 	 * write the file
 	 * TODO replace with async for better experience
@@ -44,7 +44,7 @@ export const generateFileWithoutTs = (
 	fileDestination: string,
 	nameArgs: string,
 	content: string[]
-) => {
+): void => {
 	/**
 	 * write the file
 	 * TODO replace with async for better experience
@@ -62,7 +62,7 @@ export const generateFileWithoutTs = (
  * @param fileTarget path target file
  * @param content content to write
  */
-export const appendToaFile = (fileTarget: string, content: string) => {
+export const appendToaFile = (fileTarget: string, content: string): void => {
 	appendFileSync(fileTarget, content);
 
 	console.log(`file ${fileTarget} succeefully append`);

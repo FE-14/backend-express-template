@@ -1,7 +1,8 @@
 import { RouteDefinition } from "../interfaces/RouteDefinition.interface";
 import { GenerateApiDoc, Payload } from "../utils";
 
-export const Post = (properties: { path: string, tag: string }, payload: Payload, middlewares: any[] = []): MethodDecorator => {
+export const Post = (properties: { path: string, tag: string, isIndependentRoute?: boolean }, payload: Payload, middlewares: any[] = []): MethodDecorator => {
+  const isIndependentRoute = typeof properties.isIndependentRoute == "undefined" ? false : properties.isIndependentRoute;
   return (target, propertyKey: string): void => {
     // In case this is the first route to be registered the `routes` metadata is likely to be undefined at this point.
     // To prevent any further validation simply set it to an empty array here.
@@ -18,7 +19,8 @@ export const Post = (properties: { path: string, tag: string }, payload: Payload
       path: properties.path,
       methodName: propertyKey,
       apiDoc,
-      middlewares
+      middlewares,
+      isIndependentRoute
     });
     Reflect.defineMetadata("routes", routes, target.constructor);
   };

@@ -7,5 +7,6 @@ export interface RouteDefinition {
   // Method name within our class responsible for this route
   methodName: string;
   apiDoc?: { paths: Paths, schemas: Schemas[]},
-  middlewares?: any[]
+  middlewares?: any[],
+  isIndependentRoute?: boolean
 }

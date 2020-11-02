@@ -1,37 +1,69 @@
-import { Schemas, Response, Paths } from "../keys/apidoc";
-import { getSchemaResponse } from "./index";
+import { Schemas, Response, Paths, ItemModel, RequestBody, ParameterItem } from "../keys/apidoc";
+import { getSchemaResponse, getSchemaRequest } from "./index";
 export interface ResponseSwagger {
   [statusCode: number]: {
     description: string,
-    schema: string,
+    schema: string | ItemModel | object,
     responseType: "array" | "object"
   }
 }
 
 export interface Payload {
   responses: ResponseSwagger[],
-  request?: any,
-  parameters?: any
+  request?: string | ItemModel,
+  parameters?: ParameterItem[]
 }
 export const GenerateApiDoc = (properties: { path: string, tag: string, method: string }, schemas: Schemas[], payload: Payload): { paths: Paths, schemas: Schemas[] } => {
   const paths: any = {};
   const responses: Response = {};
-  for (const response of payload.responses) {
-    const statusCode = Object.keys(response);
-    const responseBody = Object.values(response);
-    responses[Number(statusCode[0])] = {
-      description: responseBody[0].description,
-      content: {
-        "application/json": {
-          schema: getSchemaResponse(responseBody[0].description, responseBody[0].schema, responseBody[0].responseType)
+  let requestBody: RequestBody;
+  // maping request body
+  if (payload.request) {
+    if (typeof payload.request == "string") {
+      requestBody = {
+        content: {
+          "application/json": {
+            schema: getSchemaRequest(payload.request)
+          }
         }
+      };
+    } else {
+      requestBody = {
+        content: {
+          "application/json": {
+            schema: payload.request
+          }
+        }
+      };
+    }
+  }
+  // mapping responses
+  for (const response of payload.responses) {
+    const statusCodes = Object.keys(response);
+    const responseBodies = Object.values(response);
+    for (let i = 0; i < statusCodes.length; i++) {
+      let schema: ItemModel;
+      if (typeof responseBodies[i].schema == "string") {
+        schema = getSchemaResponse(responseBodies[i].description, responseBodies[i].schema, responseBodies[i].responseType);
+      } else {
+        schema = responseBodies[i].schema;
       }
-    };
+      responses[Number(statusCodes[i])] = {
+        description: responseBodies[i].description,
+        content: {
+          "application/json": {
+            schema
+          }
+        }
+      };
+    }
   }
   paths[properties.path] = {};
   paths[properties.path][properties.method] = {
     tags: [properties.tag],
-    responses
+    responses,
+    requestBody,
+    parameters: payload.parameters
   };
 
   const apiDoc: { paths: Paths, schemas: Schemas[] } = {

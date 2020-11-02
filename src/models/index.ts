@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { sequelize_postgres, mongoose_mongo_url } from "../utils/dbConnection";
 import { Schemas } from "../keys/apidoc";
 import mongoose from "mongoose";
-
-const fs = require("fs");
+import fs from "fs";
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string) => {
-	return x != "index.ts";
+	return x != "index.ts" && !x.includes("mongo.model");
 });
 export let swaggerSchemas: Schemas[] = [];
 const models = files.map((d: string) => {
@@ -19,14 +19,10 @@ const models = files.map((d: string) => {
 	return model["default"];
 });
 
-const mongoose_mongo = mongoose
+const mongoose_mongo = mongoose;
 
-const modelInit = () => {
-	try {
-		mongoose_mongo.connect(mongoose_mongo_url, { useNewUrlParser: true, useUnifiedTopology: true })
-	} catch (e) {
-		console.error(Error(e))
-	}
+const modelInit = (): void => {
+	mongoose_mongo.connect(mongoose_mongo_url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 	models.forEach((model: any) => {
 		model.modelInit(sequelize_postgres);
@@ -37,5 +33,5 @@ const modelInit = () => {
 	});
 };
 
-export { mongoose_mongo }
+export { mongoose_mongo };
 export default modelInit;

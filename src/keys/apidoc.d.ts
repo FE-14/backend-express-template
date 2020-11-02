@@ -11,6 +11,10 @@ export interface ItemModel {
 	properties?: Properties;
 	required?: string[];
 	items?: ItemModel;
+	format?: "date-time" | "binary" | "password" | "email";
+	enum?: string[];
+	example?: Record<string, unknown>;
+	[key: string]: unknown;
 }
 
 /**
@@ -31,7 +35,10 @@ export interface Schemas {
  * set content
  */
 export interface Content {
-	"application/json": {
+	"application/json"?: {
+		schema: ItemModel;
+	};
+	"multipart/form-data"?: {
 		schema: ItemModel;
 	};
 }
@@ -58,13 +65,20 @@ export interface Response {
 	[key: number]: ResponseItem;
 }
 
+export interface SchemaParameter {
+	type?: "string" | "number";
+	enum?: string[];
+	required?: boolean;
+}
+
 /**
  * set Method Parameters Item
  */
 export interface ParameterItem {
 	name: string;
 	in: "query" | "path";
-	schema: Schemas;
+	schema: Schemas | SchemaParameter;
+	required?: boolean;
 }
 
 /**

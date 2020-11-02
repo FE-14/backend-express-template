@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { ItemModel } from "../keys/apidoc";
+import { ErrorResponse } from "./index";
 
 // Change the type to make not to ban types typescript
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -14,6 +15,14 @@ export const successResponse = (result: { res: Response; data: any }): Response 
 	return result.res.status(200).json({
 		success: true,
 		data: result.data
+	});
+};
+
+export const errorResponse = (result: { res: Response, msg: string, statusCode: number } ): Response => {
+	const error = new ErrorResponse(result.msg, result.statusCode);
+	return result.res.status(result.statusCode).json({
+		success: false,
+		msg: error.message
 	});
 };
 
