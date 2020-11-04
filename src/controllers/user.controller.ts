@@ -1,10 +1,8 @@
-import { Controller, Get, Put, Post, Delete, Patch } from "../decorators";
+import { Controller, Get, Put, Post, Delete } from "../decorators";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
 import { genSalt, hash } from "bcryptjs";
 import User from "../models/User.model";
-import Menu from "../models/Menu.model";
-import SubMenu from "../models/SubMenu.model";
 import { successResponse, errorResponse } from "../utils";
 import { _Request } from "../interfaces";
 
@@ -90,26 +88,6 @@ export default class UserController {
     )
     public async getCurrentUser(req: _Request, res: Response): Promise<Response> {
         const currentUser = req.user;
-        const menus = await Menu.findAll({
-            attributes: ["id", "url", "label"],
-            where: {},
-            include: {
-                association: Menu.associations.subMenus,
-                as: "submenus",
-                include: [
-                    {
-                        attributes: ["id", "url", "label"],
-                        association: SubMenu.associations.menu,
-                        as: "menu"
-                    }
-                ]
-            }
-        });
-        const parsedMenus: Menu[] = JSON.parse(JSON.stringify(menus));
-        const mappedMenus = parsedMenus.map((x: Menu) => {
-            x.subMenus = x.subMenus.map((y: any) => y = y.menu);
-            return x;
-        });
 
         const userWithMenu = JSON.parse(JSON.stringify(currentUser));
         return successResponse({ res, data: userWithMenu });

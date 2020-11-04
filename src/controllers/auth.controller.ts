@@ -105,12 +105,27 @@ export default class AuthController {
                 200: {
                     description: "Response token",
                     responseType: "object",
-                    schema: "User"
+                    schema: {
+                        properties: {
+                            token: {
+                                type: "string"
+                            }
+                        }
+                    }
                 },
                 500: {
                     description: "Response post object",
                     responseType: "object",
-                    schema: "User"
+                    schema: {
+                        properties: {
+                            success: {
+                                type: "boolean"
+                            },
+                            message: {
+                                type: "string"
+                            }
+                        }
+                    }
                 },
             }
         ]
