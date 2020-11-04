@@ -3,7 +3,7 @@
 	"version": "0.0.3",
 	"main": "index.js",
 	"scripts": {
-		"start": "yarn build && node dist/server.js",
+		"start": "node dist/server.js",
 		"build": "yarn clean && tsc",
 		"dev": "nodemon",
 		"clean": "rimraf dist",
