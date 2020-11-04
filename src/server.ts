@@ -15,7 +15,6 @@ const { app } = new App({
         bodyParser.json(),
         bodyParser.urlencoded({ extended: true }),
         cors(),
-        // TODO: simpan di file, pisah per hari
         morgan("combined"),
     ],
     actions: [

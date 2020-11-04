@@ -22,7 +22,6 @@ export function tokenExtractor(token: string): string {
 	return extracted;
 }
 
-// TODO: add expired time when reach thresshold
 export const auth = async (req: _Request, res: Response, next: NextFunction): Promise<Response> => {
 	let authHeader: string;
 	let token: string;
