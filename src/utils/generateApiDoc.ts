@@ -24,6 +24,17 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
         content: {
           "application/json": {
             schema: getSchemaRequest(payload.request)
+          },
+          "multipart/form-data": {
+            schema: {
+              type: 'object',
+              properties: {
+                file: {
+                  type: 'string',
+                  format: "binary"
+                }
+              }
+            }
           }
         }
       };
@@ -32,6 +43,17 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
         content: {
           "application/json": {
             schema: payload.request
+          },
+          "multipart/form-data": {
+            schema: {
+              type: 'object',
+              properties: {
+                file: {
+                  type: 'string',
+                  format: "binary"
+                }
+              }
+            }
           }
         }
       };

@@ -6,7 +6,7 @@ export interface ItemModel {
 	 * Special property load from other schema
 	 */
 	$ref?: string;
-	type?: "number" | "string" | "boolean" | "object" | "array";
+	type?: "number" | "string" | "boolean" | "object" | "array" | "file";
 	title?: string;
 	properties?: Properties;
 	required?: string[];
@@ -66,7 +66,7 @@ export interface Response {
 }
 
 export interface SchemaParameter {
-	type?: "string" | "number";
+	type?: "string" | "number" | "file";
 	enum?: string[];
 	required?: boolean;
 }
