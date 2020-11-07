@@ -17,7 +17,7 @@ export default class WelcomeController {
         }
       ]
     })
-  public async getUsers(req: Request, res: Response): Promise<any> {
+  public async index(req: Request, res: Response): Promise<Response> {
     return successResponse({
       res,
       data: {
@@ -37,10 +37,10 @@ export default class WelcomeController {
     },
     parameters: [
       {
-        name: 'file',
-        in: 'path',
+        name: "file",
+        in: "path",
         schema: {
-          type: 'file'
+          type: "file"
         }
       }
     ],
@@ -50,7 +50,7 @@ export default class WelcomeController {
           description: "Response get object",
           responseType: "object",
           schema: {
-            title: '',
+            title: "",
             properties: {
               filename: {
                 type: "string"
@@ -60,9 +60,9 @@ export default class WelcomeController {
         }
       }
     ]
-  }, [multer({ dest: 'uploads' }).single('file')])
-  public async uploadExample(req: Request, res: Response): Promise<any> {
-    console.log(req.file)
+  }, [multer({ dest: "uploads" }).single("file")])
+  public async uploadExample(req: Request, res: Response): Promise<Response> {
+    console.log(req.file);
     
     return successResponse({
       res,
