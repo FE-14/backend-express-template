@@ -3,6 +3,7 @@ import { sequelize_postgres, mongoose_mongo_url } from "../utils/dbConnection";
 import { Schemas } from "../keys/apidoc";
 import mongoose from "mongoose";
 import fs from "fs";
+import ModelInterface from "../interfaces/model.interface";
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string): boolean => {
@@ -27,11 +28,11 @@ const modelInit = (): void => {
     useUnifiedTopology: true
   });
 
-  models.forEach((model: any) => {
+  models.forEach((model: ModelInterface) => {
     model.modelInit(sequelize_postgres);
   });
 
-  models.forEach((model: any) => {
+  models.forEach((model: ModelInterface) => {
     model.setAssociation();
   });
 };
