@@ -77,7 +77,7 @@ export default class AuthController {
             await user.update({
                 lastLoginAt: new Date()
             });
-            
+
             token = sign({
                 claims: { user: user.id }
             }, JWT_SECRET, {
@@ -134,7 +134,7 @@ export default class AuthController {
         try {
             const token = tokenExtractor(req.headers["authorization"]);
             const tokenDecode: TokenDecode = jwt.verify(token, JWT_SECRET) as TokenDecode;
-            
+
             if (!tokenDecode) throw "invalid token";
 
             const userId = tokenDecode.claims.user;

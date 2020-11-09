@@ -16,6 +16,7 @@ const { app } = new App({
         bodyParser.urlencoded({ extended: true }),
         cors(),
         morgan("combined"),
+        // middleware baru
     ],
     actions: [
         modelInit

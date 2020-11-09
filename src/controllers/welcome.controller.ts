@@ -28,12 +28,12 @@ export default class WelcomeController {
 
   @Post({ path: "contoh-upload", tag: "Welcome" }, {
     request: {
-			title: "",
-			properties: {
-				file: {
-					type: "file",
-				},
-			},
+      title: "",
+      properties: {
+        file: {
+          type: "file",
+        },
+      },
     },
     parameters: [
       {
@@ -63,7 +63,7 @@ export default class WelcomeController {
   }, [multer({ dest: "uploads" }).single("file")])
   public async uploadExample(req: Request, res: Response): Promise<Response> {
     console.log(req.file);
-    
+
     return successResponse({
       res,
       data: {
