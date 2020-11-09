@@ -16,6 +16,7 @@
 		},
 		"experimentalDecorators": true
 	},
+	"compileOnSave": true,
 	"include": ["src/**/*"],
 	"exclude": ["dist"]
 }

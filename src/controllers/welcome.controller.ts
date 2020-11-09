@@ -23,7 +23,7 @@ export default class WelcomeController {
     return successResponse({
       res,
       data: {
-        message: "Welcome to API v1 Brader"
+        message: "Welcome to API v1"
       }
     });
   }

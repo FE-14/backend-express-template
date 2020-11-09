@@ -1,11 +1,11 @@
 {
 	"name": "boilerplate-express-typescript",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "dist/index.js",
 	"scripts": {
 		"start": "node dist/index.js",
 		"build": "yarn clean && tsc",
-		"dev": "nodemon",
+		"dev": "./node_modules/.bin/concurrently \"tsc -w\" \"nodemon\"",
 		"clean": "rimraf dist",
 		"prettier-format": "prettier --config .prettierrc src/**/*.ts --write",
 		"migrate:update": "ts-node ./src/utils/migrationsUpdater.ts",
@@ -54,6 +54,7 @@
 		"@types/yargs": "^15.0.5",
 		"@typescript-eslint/eslint-plugin": "^4.6.1",
 		"@typescript-eslint/parser": "^4.6.1",
+		"concurrently": "^5.3.0",
 		"cross-env": "^7.0.2",
 		"eslint": "^7.13.0",
 		"eslint-config-prettier": "^6.11.0",
