@@ -5,7 +5,8 @@ import multer from "multer";
 
 @Controller("/")
 export default class WelcomeController {
-  @Get({ path: "", tag: "Welcome" },
+  @Get(
+    { path: "", tag: "Welcome" },
     {
       responses: [
         {
@@ -16,7 +17,8 @@ export default class WelcomeController {
           }
         }
       ]
-    })
+    }
+  )
   public async index(req: Request, res: Response): Promise<Response> {
     return successResponse({
       res,
@@ -26,41 +28,45 @@ export default class WelcomeController {
     });
   }
 
-  @Post({ path: "contoh-upload", tag: "Welcome" }, {
-    request: {
-      title: "",
-      properties: {
-        file: {
-          type: "file",
-        },
-      },
-    },
-    parameters: [
-      {
-        name: "file",
-        in: "path",
-        schema: {
-          type: "file"
+  @Post(
+    { path: "contoh-upload", tag: "Welcome" },
+    {
+      request: {
+        title: "",
+        properties: {
+          file: {
+            type: "file"
+          }
         }
-      }
-    ],
-    responses: [
-      {
-        200: {
-          description: "Response get object",
-          responseType: "object",
+      },
+      parameters: [
+        {
+          name: "file",
+          in: "path",
           schema: {
-            title: "",
-            properties: {
-              filename: {
-                type: "string"
+            type: "file"
+          }
+        }
+      ],
+      responses: [
+        {
+          200: {
+            description: "Response get object",
+            responseType: "object",
+            schema: {
+              title: "",
+              properties: {
+                filename: {
+                  type: "string"
+                }
               }
             }
           }
         }
-      }
-    ]
-  }, [multer({ dest: "uploads" }).single("file")])
+      ]
+    },
+    [multer({ dest: "uploads" }).single("file")]
+  )
   public async uploadExample(req: Request, res: Response): Promise<Response> {
     console.log(req.file);
 

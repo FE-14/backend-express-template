@@ -11,19 +11,26 @@ export type DataType = object | object[];
  * @param res Reponse from express
  * @param data Model or Array of Model instance
  */
-export const successResponse = (result: { res: Response; data: any }): Response => {
-	return result.res.status(200).json({
-		success: true,
-		data: result.data
-	});
+export const successResponse = (result: {
+  res: Response;
+  data: any;
+}): Response => {
+  return result.res.status(200).json({
+    success: true,
+    data: result.data
+  });
 };
 
-export const errorResponse = (result: { res: Response, msg: string, statusCode: number } ): Response => {
-	const error = new ErrorResponse(result.msg, result.statusCode);
-	return result.res.status(result.statusCode).json({
-		success: false,
-		msg: error.message
-	});
+export const errorResponse = (result: {
+  res: Response;
+  msg: string;
+  statusCode: number;
+}): Response => {
+  const error = new ErrorResponse(result.msg, result.statusCode);
+  return result.res.status(result.statusCode).json({
+    success: false,
+    msg: error.message
+  });
 };
 
 /**
@@ -32,34 +39,34 @@ export const errorResponse = (result: { res: Response, msg: string, statusCode: 
  * @param schemaName string name on schema object
  */
 export const getSchemaResponse = (
-	title: string,
-	schemaName: string,
-	typeDataResp: "array" | "object"
+  title: string,
+  schemaName: string,
+  typeDataResp: "array" | "object"
 ): ItemModel => {
-	title = typeDataResp === "array" ? title + "s" : title;
-	const data: ItemModel =
-		typeDataResp === "array"
-			? {
-					type: "array",
-					items: {
-						$ref: "#/components/schemas/" + schemaName,
-					},
-			  }
-			: { $ref: "#/components/schemas/" + schemaName };
+  title = typeDataResp === "array" ? title + "s" : title;
+  const data: ItemModel =
+    typeDataResp === "array"
+      ? {
+          type: "array",
+          items: {
+            $ref: "#/components/schemas/" + schemaName
+          }
+        }
+      : { $ref: "#/components/schemas/" + schemaName };
 
-	return {
-		type: "object",
-		title: title + ".Response",
-		properties: {
-			success: {
-				type: "boolean"
-			},
-			message: {
-				type: "string",
-			},
-			data,
-		},
-	};
+  return {
+    type: "object",
+    title: title + ".Response",
+    properties: {
+      success: {
+        type: "boolean"
+      },
+      message: {
+        type: "string"
+      },
+      data
+    }
+  };
 };
 
 /**
@@ -67,7 +74,7 @@ export const getSchemaResponse = (
  * @param schemaName string of schema object
  */
 export const getSchemaRequest = (schemaName: string): ItemModel => {
-	return {
-		$ref: "#/components/schemas/" + schemaName,
-	};
+  return {
+    $ref: "#/components/schemas/" + schemaName
+  };
 };

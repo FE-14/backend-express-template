@@ -5,7 +5,7 @@ import { asyncHandler } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
 class App {
-  public app: Application
+  public app: Application;
 
   constructor(appInit: { middleWares: any; controllers?: any; actions?: any }) {
     this.app = express();
@@ -19,32 +19,45 @@ class App {
       }
     }
 
-    this.actions(appInit.actions)
+    this.actions(appInit.actions);
     this.middlewares(appInit.middleWares);
     this.routes(appInit.controllers);
   }
 
-  private async actions(actions: { forEach: (arg0: (action: any) => void) => void }) {
+  private async actions(actions: {
+    forEach: (arg0: (action: any) => void) => void;
+  }) {
     actions.forEach(async (action) => {
-      await action()
+      await action();
     });
   }
 
-  private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void }) {
-    middleWares.forEach(middleWare => {
+  private middlewares(middleWares: {
+    forEach: (arg0: (middleWare: any) => void) => void;
+  }) {
+    middleWares.forEach((middleWare) => {
       this.app.use(middleWare);
     });
   }
 
-  private routes(controllers: { forEach: (arg0: (controller: any) => void) => void }) {
-    controllers.forEach(controller => {
+  private routes(controllers: {
+    forEach: (arg0: (controller: any) => void) => void;
+  }) {
+    controllers.forEach((controller) => {
       const instance = new controller();
       const prefix = Reflect.getMetadata("prefix", controller);
-      const routes: Array<RouteDefinition> = Reflect.getMetadata("routes", controller);
+      const routes: Array<RouteDefinition> = Reflect.getMetadata(
+        "routes",
+        controller
+      );
       routes.forEach((route) => {
-        this.app[route.requestMethod](`/api/v1${prefix}${route.path}`, route.middlewares, asyncHandler((req: express.Request, res: express.Response) => {
-          instance[route.methodName](req, res);
-        }));
+        this.app[route.requestMethod](
+          `/api/v1${prefix}${route.path}`,
+          route.middlewares,
+          asyncHandler((req: express.Request, res: express.Response) => {
+            instance[route.methodName](req, res);
+          })
+        );
         const paths = route.apiDoc.paths;
         const routePaths = Object.keys(paths);
 
@@ -53,7 +66,10 @@ class App {
           if (typeof apiDoc.paths[currentPath] == "undefined") {
             apiDoc.paths[currentPath] = paths[path];
           } else {
-            apiDoc.paths[currentPath] = { ...apiDoc.paths[currentPath], ...paths[path] };
+            apiDoc.paths[currentPath] = {
+              ...apiDoc.paths[currentPath],
+              ...paths[path]
+            };
           }
         }
       });

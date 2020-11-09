@@ -3,13 +3,13 @@ import { ValidationError, validationResult } from "express-validator";
 import { ErrorResponse } from "./errorResponse";
 
 export const validationFailResponse = (
-	res: Response,
-	errorMessage: ValidationError[]
+  res: Response,
+  errorMessage: ValidationError[]
 ): Response => {
-	return res.status(422).json({
-		message: "Validation Fail",
-		data: errorMessage,
-	});
+  return res.status(422).json({
+    message: "Validation Fail",
+    data: errorMessage
+  });
 };
 
 /**
@@ -19,12 +19,12 @@ export const validationFailResponse = (
  * @param next Next Function Express
  */
 export const validationResultHelper = (
-	req: Request,
-	next: NextFunction
+  req: Request,
+  next: NextFunction
 ): void => {
-	const error = validationResult(req);
-	if (error) {
-		return next(new ErrorResponse("Validation Fail", 422));
-	}
-	next();
+  const error = validationResult(req);
+  if (error) {
+    return next(new ErrorResponse("Validation Fail", 422));
+  }
+  next();
 };

@@ -8,203 +8,222 @@ import { _Request } from "../interfaces";
 
 @Controller("/users")
 export default class UserController {
-    @Post({ path: "/", tag: "UserController" },
+  @Post(
+    { path: "/", tag: "UserController" },
+    {
+      responses: [
         {
-            responses: [
-                {
-                    200: {
-                        description: "Response post object",
-                        responseType: "object",
-                        schema: "User"
-                    },
-                }
-            ],
-            request: "NewUser"
-        },
-        // [auth]
-    )
-    public async index(req: Request, res: Response): Promise<Response> {
-        const {
-            username,
-            password,
-            firstName,
-            lastName,
-            lineId,
-            areaId,
-            stepId,
-            roleId
-        } = req.body;
-        try {
-            if (!req.body.username || !req.body.password) {
-                throw "username and password is required";
-            }
-            const currentUser = await User.findOne({
-                where: {
-                    username
-                }
-            });
-
-            if (currentUser) throw "user exist";
-
-            const salt = await genSalt(12);
-            const hashPassword = await hash(password, salt);
-
-            const user = await User.create({
-                firstName,
-                lastName,
-                username,
-                password: hashPassword,
-                lineId,
-                areaId,
-                stepId,
-                roleId,
-                avatarUrl: ""
-            });
-
-            if (!user) throw "cant create user";
-
-            return successResponse({ res, data: user });
-        } catch (e) {
-            return res.status(500).json({
-                sucess: false,
-                message: e
-            });
+          200: {
+            description: "Response post object",
+            responseType: "object",
+            schema: "User"
+          }
         }
+      ],
+      request: "NewUser"
     }
+    // [auth]
+  )
+  public async index(req: Request, res: Response): Promise<Response> {
+    const {
+      username,
+      password,
+      firstName,
+      lastName,
+      lineId,
+      areaId,
+      stepId,
+      roleId
+    } = req.body;
+    try {
+      if (!req.body.username || !req.body.password) {
+        throw "username and password is required";
+      }
+      const currentUser = await User.findOne({
+        where: {
+          username
+        }
+      });
 
-    @Get({ path: "/current-user", tag: "UserController", isIndependentRoute: true },
-        {
-            responses: [
-                {
-                    200: {
-                        description: "Response get object",
-                        responseType: "object",
-                        schema: "User"
-                    }
-                }
-            ]
-        },
-        [auth]
-    )
-    public async getCurrentUser(req: _Request, res: Response): Promise<Response> {
-        const currentUser = req.user;
+      if (currentUser) throw "user exist";
 
-        const userWithMenu = JSON.parse(JSON.stringify(currentUser));
-        return successResponse({ res, data: userWithMenu });
+      const salt = await genSalt(12);
+      const hashPassword = await hash(password, salt);
+
+      const user = await User.create({
+        firstName,
+        lastName,
+        username,
+        password: hashPassword,
+        lineId,
+        areaId,
+        stepId,
+        roleId,
+        avatarUrl: ""
+      });
+
+      if (!user) throw "cant create user";
+
+      return successResponse({ res, data: user });
+    } catch (e) {
+      return res.status(500).json({
+        sucess: false,
+        message: e
+      });
     }
+  }
 
-    @Get({ path: "/", tag: "UserController" },
+  @Get(
+    { path: "/current-user", tag: "UserController", isIndependentRoute: true },
+    {
+      responses: [
         {
-            responses: [
-                {
-                    200: {
-                        description: "Response get object",
-                        responseType: "array",
-                        schema: "User"
-                    }
-                }
-            ]
-        })
-    public async getUsers(req: Request, res: Response): Promise<Response> {
-        const users = await User.findAll({
-            attributes: {
-                exclude: ["password"]
+          200: {
+            description: "Response get object",
+            responseType: "object",
+            schema: "User"
+          }
+        }
+      ]
+    },
+    [auth]
+  )
+  public async getCurrentUser(req: _Request, res: Response): Promise<Response> {
+    const currentUser = req.user;
+
+    const userWithMenu = JSON.parse(JSON.stringify(currentUser));
+    return successResponse({ res, data: userWithMenu });
+  }
+
+  @Get(
+    { path: "/", tag: "UserController" },
+    {
+      responses: [
+        {
+          200: {
+            description: "Response get object",
+            responseType: "array",
+            schema: "User"
+          }
+        }
+      ]
+    }
+  )
+  public async getUsers(req: Request, res: Response): Promise<Response> {
+    const users = await User.findAll({
+      attributes: {
+        exclude: ["password"]
+      }
+    });
+    return successResponse({ res, data: users });
+  }
+
+  @Get(
+    { path: "/:id", tag: "UserController" },
+    {
+      responses: [
+        {
+          200: {
+            description: "Response get object",
+            responseType: "object",
+            schema: "User"
+          }
+        }
+      ],
+      parameters: [
+        {
+          in: "path",
+          name: "id",
+          schema: {
+            id: {
+              type: "number"
             }
-        });
-        return successResponse({ res, data: users });
+          },
+          required: true
+        }
+      ]
     }
+  )
+  public async getUserById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const user = await User.findOne({
+      where: {
+        id
+      },
+      attributes: {
+        exclude: ["password"]
+      }
+    });
 
-    @Get({ path: "/:id", tag: "UserController" },
+    if (!user)
+      return errorResponse({
+        res,
+        msg: `User with id ${id} not found`,
+        statusCode: 404
+      });
+
+    return successResponse({ res, data: user });
+  }
+
+  @Put(
+    { path: "/", tag: "UserPost" },
+    {
+      responses: [
         {
-            responses: [
-                {
-                    200: {
-                        description: "Response get object",
-                        responseType: "object",
-                        schema: "User"
-                    }
+          200: {
+            description: "Response put object",
+            responseType: "object",
+            schema: "User"
+          }
+        }
+      ]
+    }
+  )
+  public details(req: Request, res: Response): Response {
+    return res.send(`You are looking at the profile of ${req.params.name}`);
+  }
+
+  @Delete(
+    { path: "/:id", tag: "UserController" },
+    {
+      responses: [
+        {
+          200: {
+            description: "Response delete array",
+            responseType: "object",
+            schema: {
+              properties: {
+                success: {
+                  type: "boolean"
                 }
-            ],
-            parameters: [
-                {
-                    in: "path",
-                    name: "id",
-                    schema: {
-                        id: {
-                            type: "number"
-                        }
-                    },
-                    required: true
-                }
-            ]
-        })
-    public async getUserById(req: Request, res: Response): Promise<Response> {
-        const { id } = req.params;
-        const user = await User.findOne({
-            where: {
-                id
-            },
-            attributes: {
-                exclude: ["password"]
+              }
             }
-        });
+          }
+        }
+      ]
+    },
+    [auth]
+  )
+  public async deleteUser(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const user = await User.findOne({
+      where: {
+        id
+      },
+      attributes: {
+        exclude: ["password"]
+      }
+    });
 
-        if (!user) return errorResponse({ res, msg: `User with id ${id} not found`, statusCode: 404 });
+    if (!user)
+      return errorResponse({
+        res,
+        msg: `User with id ${id} not found`,
+        statusCode: 404
+      });
 
-        return successResponse({ res, data: user });
-    }
+    await user.destroy();
 
-    @Put({ path: "/", tag: "UserPost" },
-        {
-            responses: [
-                {
-                    200: {
-                        description: "Response put object",
-                        responseType: "object",
-                        schema: "User"
-                    }
-                }
-            ]
-        })
-    public details(req: Request, res: Response): Response {
-        return res.send(`You are looking at the profile of ${req.params.name}`);
-    }
-
-    @Delete({ path: "/:id", tag: "UserController" },
-        {
-            responses: [
-                {
-                    200: {
-                        description: "Response delete array",
-                        responseType: "object",
-                        schema: {
-                            properties: {
-                                success: {
-                                    type: "boolean"
-                                }
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        [auth]
-    )
-    public async deleteUser(req: Request, res: Response): Promise<Response> {
-        const { id } = req.params;
-        const user = await User.findOne({
-            where: {
-                id
-            },
-            attributes: {
-                exclude: ["password"]
-            }
-        });
-
-        if (!user) return errorResponse({ res, msg: `User with id ${id} not found`, statusCode: 404 });
-
-        await user.destroy();
-
-        return successResponse({ res, data: null });
-    }
+    return successResponse({ res, data: null });
+  }
 }

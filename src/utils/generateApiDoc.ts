@@ -1,19 +1,30 @@
-import { Schemas, Response, Paths, ItemModel, RequestBody, ParameterItem } from "../keys/apidoc";
+import {
+  Schemas,
+  Response,
+  Paths,
+  ItemModel,
+  RequestBody,
+  ParameterItem
+} from "../keys/apidoc";
 import { getSchemaResponse, getSchemaRequest } from "./index";
 export interface ResponseSwagger {
   [statusCode: number]: {
-    description: string,
-    schema: string | ItemModel | object,
-    responseType: "array" | "object"
-  }
+    description: string;
+    schema: string | ItemModel | object;
+    responseType: "array" | "object";
+  };
 }
 
 export interface Payload {
-  responses: ResponseSwagger[],
-  request?: string | ItemModel,
-  parameters?: ParameterItem[]
+  responses: ResponseSwagger[];
+  request?: string | ItemModel;
+  parameters?: ParameterItem[];
 }
-export const GenerateApiDoc = (properties: { path: string, tag: string, method: string }, schemas: Schemas[], payload: Payload): { paths: Paths, schemas: Schemas[] } => {
+export const GenerateApiDoc = (
+  properties: { path: string; tag: string; method: string },
+  schemas: Schemas[],
+  payload: Payload
+): { paths: Paths; schemas: Schemas[] } => {
   const paths: any = {};
   const responses: Response = {};
   let requestBody: RequestBody;
@@ -27,10 +38,10 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
           },
           "multipart/form-data": {
             schema: {
-              type: 'object',
+              type: "object",
               properties: {
                 file: {
-                  type: 'string',
+                  type: "string",
                   format: "binary"
                 }
               }
@@ -46,10 +57,10 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
           },
           "multipart/form-data": {
             schema: {
-              type: 'object',
+              type: "object",
               properties: {
                 file: {
-                  type: 'string',
+                  type: "string",
                   format: "binary"
                 }
               }
@@ -66,7 +77,11 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
     for (let i = 0; i < statusCodes.length; i++) {
       let schema: ItemModel;
       if (typeof responseBodies[i].schema == "string") {
-        schema = getSchemaResponse(responseBodies[i].description, responseBodies[i].schema, responseBodies[i].responseType);
+        schema = getSchemaResponse(
+          responseBodies[i].description,
+          responseBodies[i].schema,
+          responseBodies[i].responseType
+        );
       } else {
         schema = responseBodies[i].schema;
       }
@@ -88,7 +103,7 @@ export const GenerateApiDoc = (properties: { path: string, tag: string, method: 
     parameters: payload.parameters
   };
 
-  const apiDoc: { paths: Paths, schemas: Schemas[] } = {
+  const apiDoc: { paths: Paths; schemas: Schemas[] } = {
     paths,
     schemas
   };
@@ -103,13 +118,13 @@ export const apiDoc: any = {
     description: "This starting point to develop be using TS",
     license: {
       name: "MIT",
-      url: "https://opensource.org/licenses/MIT",
-    },
+      url: "https://opensource.org/licenses/MIT"
+    }
   },
   servers: [
     {
-      url: "/api/v1",
-    },
+      url: "/api/v1"
+    }
   ],
   authAction: {
     JWT: {
@@ -118,15 +133,15 @@ export const apiDoc: any = {
         type: "apiKey",
         in: "header",
         name: "Authorization",
-        description: "sda",
+        description: "sda"
       },
-      value: "Bearer <JWT>",
-    },
+      value: "Bearer <JWT>"
+    }
   },
   security: [
     {
-      Bearer: [""],
-    },
+      Bearer: [""]
+    }
   ],
   paths: {},
   components: {
@@ -135,20 +150,20 @@ export const apiDoc: any = {
         type: "object",
         properties: {
           status: {
-            type: "string",
+            type: "string"
           },
           message: {
-            type: "string",
-          },
-        },
-      },
+            type: "string"
+          }
+        }
+      }
     },
     securitySchemes: {
       Bearer: {
         type: "http",
         scheme: "bearer",
-        bearerFormat: "JWT",
-      },
-    },
-  },
+        bearerFormat: "JWT"
+      }
+    }
+  }
 };

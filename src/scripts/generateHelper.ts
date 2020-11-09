@@ -2,7 +2,7 @@ import { writeFileSync, appendFileSync } from "fs";
 import moment from "moment";
 
 const fileNameGenerator = (nameArgs: string) => {
-	return `${moment().format("YYYYMMDDHHmmssSS")}-${nameArgs}.ts`;
+  return `${moment().format("YYYYMMDDHHmmssSS")}-${nameArgs}.ts`;
 };
 
 /**
@@ -14,21 +14,21 @@ const fileNameGenerator = (nameArgs: string) => {
  * @param content content to insert
  */
 export const generateFile = (
-	fileDestination: string,
-	nameArgs: string,
-	content: string[]
+  fileDestination: string,
+  nameArgs: string,
+  content: string[]
 ): void => {
-	/**
-	 * write the file
-	 * TODO replace with async for better experience
-	 * TODO handle path with path resolve
-	 */
-	const filesGenerated = fileNameGenerator(nameArgs);
-	writeFileSync(`${fileDestination + filesGenerated}`, content.join("\n"));
+  /**
+   * write the file
+   * TODO replace with async for better experience
+   * TODO handle path with path resolve
+   */
+  const filesGenerated = fileNameGenerator(nameArgs);
+  writeFileSync(`${fileDestination + filesGenerated}`, content.join("\n"));
 
-	console.log(
-		`file ${filesGenerated} successfully generated at ${fileDestination}`
-	);
+  console.log(
+    `file ${filesGenerated} successfully generated at ${fileDestination}`
+  );
 };
 
 /**
@@ -41,18 +41,18 @@ export const generateFile = (
  * @param content content to insert
  */
 export const generateFileWithoutTs = (
-	fileDestination: string,
-	nameArgs: string,
-	content: string[]
+  fileDestination: string,
+  nameArgs: string,
+  content: string[]
 ): void => {
-	/**
-	 * write the file
-	 * TODO replace with async for better experience
-	 * TODO handle path with path resolve
-	 */
-	writeFileSync(`${fileDestination + nameArgs}`, content.join("\n"));
+  /**
+   * write the file
+   * TODO replace with async for better experience
+   * TODO handle path with path resolve
+   */
+  writeFileSync(`${fileDestination + nameArgs}`, content.join("\n"));
 
-	console.log(`file ${nameArgs} successfully generated at ${fileDestination}`);
+  console.log(`file ${nameArgs} successfully generated at ${fileDestination}`);
 };
 
 /**
@@ -63,7 +63,7 @@ export const generateFileWithoutTs = (
  * @param content content to write
  */
 export const appendToaFile = (fileTarget: string, content: string): void => {
-	appendFileSync(fileTarget, content);
+  appendFileSync(fileTarget, content);
 
-	console.log(`file ${fileTarget} succeefully append`);
+  console.log(`file ${fileTarget} succeefully append`);
 };

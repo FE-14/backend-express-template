@@ -5,52 +5,60 @@ import { envConfig } from "../utils";
 import User from "../models/User.model";
 
 interface Claims {
-	user: number
+  user: number;
 }
 
 interface TokenDecode {
-	claims: Claims,
-	iat: number,
-	exp: number
+  claims: Claims;
+  iat: number;
+  exp: number;
 }
 
 export function tokenExtractor(token: string): string {
-	const extracted = token.split(" ")[1];
+  const extracted = token.split(" ")[1];
 
-	if (!extracted) throw "Error no Bearer auth token provided";
-	
-	return extracted;
+  if (!extracted) throw "Error no Bearer auth token provided";
+
+  return extracted;
 }
 
-export const auth = async (req: _Request, res: Response, next: NextFunction): Promise<Response> => {
-	let authHeader: string;
-	let token: string;
+export const auth = async (
+  req: _Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response> => {
+  let authHeader: string;
+  let token: string;
 
-	try {
-		authHeader = req.headers["authorization"];
+  try {
+    authHeader = req.headers["authorization"];
 
-		if (!authHeader) throw "Error no authorization header";
+    if (!authHeader) throw "Error no authorization header";
 
-		token = tokenExtractor(authHeader);
+    token = tokenExtractor(authHeader);
 
-		jwt.verify(token, envConfig.JWT_SECRET, async (err, decoded: TokenDecode) => {
-			console.log({err});
-			if (err) throw err;
-			const user = await User.findOne({
-				where: {
-					id: decoded.claims.user
-				},
-				attributes: {
-					exclude: ["password"]
-				},
-			});
-			req.user = user;
-			next();
-		});
-	} catch (e) {
-		return res.status(500).json({
-			sucess: false,
-			message: e
-		});
-	}
+    jwt.verify(
+      token,
+      envConfig.JWT_SECRET,
+      async (err, decoded: TokenDecode) => {
+        console.log({ err });
+        if (err) throw err;
+        const user = await User.findOne({
+          where: {
+            id: decoded.claims.user
+          },
+          attributes: {
+            exclude: ["password"]
+          }
+        });
+        req.user = user;
+        next();
+      }
+    );
+  } catch (e) {
+    return res.status(500).json({
+      sucess: false,
+      message: e
+    });
+  }
 };
