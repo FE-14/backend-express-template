@@ -54,13 +54,7 @@ export default class AuthController {
       }
     }
   )
-  public async index({
-    req,
-    res
-  }: {
-    req: Request;
-    res: Response;
-  }): Promise<Response> {
+  public async index(req: Request, res: Response): Promise<Response> {
     const bodyLogin: BodyLogin = req.body;
     let user: User, hashResult: boolean, token: string;
 
