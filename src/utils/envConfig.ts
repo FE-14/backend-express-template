@@ -17,5 +17,6 @@ export const envConfig = {
   MONGO_DB_PASSWORD: process.env.MONGO_DB_PASSWORD || "laniuslab",
   MONGO_DB_HOST: process.env.MONGO_DB_HOST || "192.168.1.50",
   MONGO_DB_PORT: process.env.MONGO_DB_PORT || "27017",
-  MONGO_DB_NAME: process.env.MONGO_DB_NAME || "dryblend"
+  MONGO_DB_NAME: process.env.MONGO_DB_NAME || "dryblend",
+  MONGO_DB_ENABLE: process.env.MONGO_DB_ENABLE || "false"
 };

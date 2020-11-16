@@ -4,6 +4,7 @@ import { Schemas } from "../keys/apidoc";
 import mongoose from "mongoose";
 import fs from "fs";
 import ModelInterface from "../interfaces/model.interface";
+import { envConfig } from "../utils/envConfig";
 
 let files = fs.readdirSync(`${__dirname}`);
 files = files.filter((x: string): boolean => {
@@ -23,10 +24,12 @@ const models = files.map((d: string) => {
 const mongoose_mongo = mongoose;
 
 const modelInit = (): void => {
-  mongoose_mongo.connect(mongoose_mongo_url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+  if (envConfig.MONGO_DB_ENABLE == "true") {
+    mongoose_mongo.connect(mongoose_mongo_url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  }
 
   models.forEach((model: ModelInterface) => {
     model.modelInit(sequelize_postgres);
