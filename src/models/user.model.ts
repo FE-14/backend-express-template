@@ -3,7 +3,6 @@ import {
   Sequelize,
   DataTypes,
   QueryInterface,
-  Association
 } from "sequelize";
 import { BaseModel } from "../utils";
 
@@ -45,8 +44,6 @@ export class User
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
-
-  public static associations: {};
 
   public static setAssociation(): void {}
 
