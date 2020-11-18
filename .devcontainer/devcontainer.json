@@ -1,0 +1,11 @@
+{
+    "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:14",
+    "forwardPorts": [
+        4000
+    ],
+    "extensions": [
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}
