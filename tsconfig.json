@@ -14,7 +14,8 @@
 		"paths": {
 			"*": ["node_modules/*"]
 		},
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": false
 	},
 	"compileOnSave": true,
 	"include": ["src/**/*"],
