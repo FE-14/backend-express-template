@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 import { compare } from "bcryptjs";
 import BodyLogin from "../interfaces/BodyLogin.interface";
 import ErrorLog from "../interfaces/ErrorLog.interface";
-import User from "../models/User.model";
+import User from "../models/user.model";
 import { auth, tokenExtractor } from "../middleware/auth";
 import jwt from "jsonwebtoken";
 

@@ -1,5 +1,5 @@
 import { QueryInterface } from "sequelize";
-import User from "../models/User.model";
+import User from "../models/user.model";
 
 export const up = async (query: QueryInterface): Promise<void> => {
   try {

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import { _Request } from "../interfaces";
 import { envConfig } from "../utils";
-import User from "../models/User.model";
+import User from "../models/user.model";
 
 interface Claims {
   user: number;

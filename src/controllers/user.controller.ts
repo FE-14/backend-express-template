@@ -2,7 +2,7 @@ import { Controller, Get, Put, Post, Delete } from "../decorators";
 import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
 import { genSalt, hash } from "bcryptjs";
-import User from "../models/User.model";
+import User from "../models/user.model";
 import { successResponse, errorResponse } from "../utils";
 import { _Request } from "../interfaces";
 
