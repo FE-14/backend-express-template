@@ -1,5 +1,10 @@
 {
-    "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:14",
+    "name": "Machine Vision Node.js Environment",
+    "image": "machinevisionindonesia/nodejs-environment:latest",
+    
+    "settings": { 
+		"terminal.integrated.shell.linux": "/bin/zsh"
+	},
     "forwardPorts": [
         4000
     ],
