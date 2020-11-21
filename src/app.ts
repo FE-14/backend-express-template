@@ -4,6 +4,7 @@ import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import { asyncHandler } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
+import { isObject } from "lodash";
 class App {
   public app: Application;
 
@@ -28,7 +29,11 @@ class App {
     forEach: (arg0: (action: any) => void) => void;
   }) {
     actions.forEach(async (action) => {
-      await action();
+      if (action.type) {
+        await action.action(this.app);
+      } else {
+        await action();
+      }
     });
   }
 
@@ -74,6 +79,10 @@ class App {
         }
       });
     });
+
+    this.app.get("/", async (req: Request, res: Response) => {
+      return res.render('index');
+    })
 
     this.app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));
 

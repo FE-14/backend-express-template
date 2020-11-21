@@ -8,6 +8,7 @@
 		"dist": true,
 		"uploads": true,
 		"node_modules": true,
-		"logs": true
+		"logs": true,
+		"scripts": true
 	}
 }
