@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "node dist/index.js",
 		"build": "yarn clean && tsc",
-		"dev": "yarn build && ./node_modules/.bin/concurrently \"tsc -w\" \"nodemon\"",
+		"dev": "yarn build && ./node_modules/.bin/concurrently \"tsc -w --preserveWatchOutput\" \"nodemon\"",
 		"clean": "rimraf dist",
 		"prettier-format": "prettier --config .prettierrc src/**/*.ts --write",
 		"migrate:update": "ts-node ./src/utils/migrationsUpdater.ts",

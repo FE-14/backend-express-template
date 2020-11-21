@@ -4,10 +4,9 @@ WORKDIR /usr/local/app
 
 COPY --chown=node:node . .
 
-RUN rm *.lock
-
-RUN yarn
-RUN yarn build
+RUN rm *.lock \
+    && yarn \
+    && yarn build
 
 EXPOSE 4000
 

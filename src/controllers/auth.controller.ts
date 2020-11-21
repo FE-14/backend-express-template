@@ -167,7 +167,6 @@ export default class AuthController {
         }
       });
     } catch (e) {
-      console.error(e);
       return res.status(500).json({
         success: false,
         message: e
