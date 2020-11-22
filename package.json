@@ -8,9 +8,9 @@
 		"dev": "yarn build && ./node_modules/.bin/concurrently \"tsc -w --preserveWatchOutput\" \"nodemon\"",
 		"clean": "rimraf dist",
 		"prettier-format": "prettier --config .prettierrc src/**/*.ts --write",
-		"migrate:update": "ts-node ./src/utils/migrationsUpdater.ts",
-		"seed:update": "ts-node ./src/utils/seedersUpdater.ts",
-		"migrate": "yarn migrate:update && yarn build && ./node_modules/.bin/sequelize db:migrate",
+		"migrate:update": "node ./dist/utils/migrationsUpdater.js",
+		"seed:update": "node ./dist/utils/seedersUpdater.js",
+		"migrate": "yarn build && yarn migrate:update && ./node_modules/.bin/sequelize db:migrate",
 		"seed": "yarn build && ./node_modules/.bin/sequelize db:seed:all"
 	},
 	"repository": "git@gitlab.com:mv-lanius/products/service0/boiler-plate-be-ts.git",

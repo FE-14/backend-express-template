@@ -25,15 +25,16 @@ Berikut cara instalasi project
 
 ```sh
 $ cd project-dir
-$ npm install
+$ yarn install
 ```
 
 ### Development Mode
 Berikut cara menjalankan project dalam mode development
 
+*) Ubah nama file .env.example ke .env
 ```sh
 $ cd project-dir
-$ npm run dev
+$ yarn dev
 ```
 
 ### Production Mode
@@ -41,7 +42,7 @@ Berikut cara menjalankan project dalam mode development
 
 ```sh
 $ cd project-dir
-$ npm start
+$ yarn start
 ```
 
 ### Most used commands
@@ -50,5 +51,5 @@ Berikut ini perintah-perintah yang sering dipakai:
 Clear Node Modules
 ```sh
 $ cd project-dir
-$ npm clean
+$ yarn clean
 ```
