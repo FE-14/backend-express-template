@@ -7,6 +7,8 @@ import dotEnv from "dotenv";
 import modelInit from "./models";
 import controllers from "./controllers";
 import register from "@react-ssr/express/register";
+import fs from "fs";
+import path from "path";
 
 dotEnv.config();
 
