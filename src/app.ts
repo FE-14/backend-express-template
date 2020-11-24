@@ -4,8 +4,6 @@ import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import { asyncHandler } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
-import fs from "fs";
-import path from "path"
 
 class App {
   public app: Application;
@@ -47,29 +45,6 @@ class App {
     });
   }
 
-  private views(): void {
-    const views = fs.readdirSync(
-      path.join(__dirname, "views")
-    )
-
-    views.forEach((view: string) => {
-      const name = view.replace(".js", "")
-
-      if (name === "index") {
-        this.app.get("/", async (req: Request, res: Response) => {
-          return res.render(name);
-        })
-      } else {
-        if (name === "_document" || name === "_app") {
-        } else {
-          this.app.get(`/${name}`, async (req: Request, res: Response) => {
-            return res.render(name);
-          })
-        }
-      }
-    })
-  }
-
   private routes(controllers: {
     forEach: (arg0: (controller: any) => void) => void;
   }) {
@@ -104,8 +79,6 @@ class App {
         }
       });
     });
-
-    this.views()
 
     this.app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));
 

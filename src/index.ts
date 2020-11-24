@@ -6,9 +6,6 @@ import App from "./app";
 import dotEnv from "dotenv";
 import modelInit from "./models";
 import controllers from "./controllers";
-import register from "@react-ssr/express/register";
-import fs from "fs";
-import path from "path";
 
 dotEnv.config();
 
@@ -21,7 +18,7 @@ const { app } = new App({
     morgan("combined")
     // middleware baru
   ],
-  actions: [modelInit, { action: register, type: "express-register" }]
+  actions: [modelInit]
 });
 
 const PORT = +(process.env.PORT || 4000);

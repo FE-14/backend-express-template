@@ -4,19 +4,17 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-		"target": "es5",
+		"target": "esnext",
 		"lib": [
 			"es6",
-			"dom"
 		],
-		"jsx": "react",
 		"noImplicitAny": true,
 		"moduleResolution": "node",
 		"removeComments": true,
 		"sourceMap": false,
 		"outDir": "dist",
 		"rootDir": "src",
-		"baseUrl": ".",
+		"baseUrl": "src",
 		"paths": {
 			"*": [
 				"node_modules/*"

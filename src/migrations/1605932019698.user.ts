@@ -1,9 +1,9 @@
 import { QueryInterface } from "sequelize";
-import User from "../models/user.model";
+import Model from "../models/user.model";
 
 export const up = async (query: QueryInterface): Promise<void> => {
   try {
-    return User.createTable(query);
+    return Model.createTable(query);
   } catch (error) {
     return Promise.reject(error);
   }
@@ -11,7 +11,7 @@ export const up = async (query: QueryInterface): Promise<void> => {
 
 export const down = async (query: QueryInterface): Promise<void> => {
   try {
-    return User.dropTable(query);
+    return Model.dropTable(query);
   } catch (error) {
     return Promise.reject(error);
   }
