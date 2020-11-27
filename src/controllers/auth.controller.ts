@@ -1,10 +1,9 @@
 import { Controller, Post } from "../decorators";
-import { Request, Response } from "express";
-import { envConfig, successResponse } from "../utils";
+import { Request } from "express";
+import { envConfig, ErrorResponse } from "../utils";
 import { sign } from "jsonwebtoken";
 import { compare } from "bcryptjs";
 import BodyLogin from "../interfaces/BodyLogin.interface";
-import ErrorLog from "../interfaces/ErrorLog.interface";
 import User from "../models/user.model";
 import { auth, tokenExtractor } from "../middleware/auth";
 import jwt from "jsonwebtoken";
@@ -54,54 +53,41 @@ export default class AuthController {
       }
     }
   )
-  public async index(req: Request, res: Response): Promise<Response> {
+  public async index(req: Request): Promise<{ token: string }> {
     const bodyLogin: BodyLogin = req.body;
-    let user: User, hashResult: boolean, token: string;
-
-    try {
-      if (!bodyLogin.username || !bodyLogin.password) {
-        throw { code: 400, message: "User credential not found" };
-      }
-
-      user = await User.findOne({
-        where: {
-          username: bodyLogin.username
-        }
-      });
-
-      if (!user) throw { code: 404, message: "User Not found" };
-
-      hashResult = await compare(bodyLogin.password, user.password);
-
-      if (!hashResult) throw { code: 400, message: "Password didn't match" };
-
-      await user.update({
-        lastLoginAt: new Date()
-      });
-
-      token = sign(
-        {
-          claims: { user: user.id }
-        },
-        JWT_SECRET,
-        {
-          expiresIn: JWT_EXPIRE
-        }
-      );
-
-      if (!token) throw { code: 400, message: "Failed to generate token" };
-
-      return successResponse({
-        res,
-        data: { token }
-      });
-    } catch (e) {
-      const error: ErrorLog = e;
-      return res.status(error.code || 500).json({
-        success: false,
-        message: error.message
-      });
+    if (!bodyLogin.username || !bodyLogin.password) {
+      throw new ErrorResponse("User credential not found", 400);
     }
+
+    const user = await User.findOne({
+      where: {
+        username: bodyLogin.username
+      }
+    });
+
+    if (!user) throw new ErrorResponse("User Not found", 404);
+
+    const hashResult = await compare(bodyLogin.password, user.password);
+
+    if (!hashResult) throw new ErrorResponse("Password didn't match", 400);
+
+    await user.update({
+      lastLoginAt: new Date()
+    });
+
+    const token = sign(
+      {
+        claims: { user: user.id }
+      },
+      JWT_SECRET,
+      {
+        expiresIn: JWT_EXPIRE
+      }
+    );
+
+    if (!token) throw new ErrorResponse("Failed to generate token", 400);
+
+    return { token };
   }
 
   @Post(
@@ -139,38 +125,26 @@ export default class AuthController {
     },
     [auth]
   )
-  public async refresh(req: Request, res: Response): Promise<Response> {
-    try {
-      const token = tokenExtractor(req.headers["authorization"]);
-      const tokenDecode: TokenDecode = jwt.verify(
-        token,
-        JWT_SECRET
-      ) as TokenDecode;
+  public async refresh(req: Request): Promise<{ token: string }> {
+    const token = tokenExtractor(req.headers["authorization"]);
+    const tokenDecode: TokenDecode = jwt.verify(
+      token,
+      JWT_SECRET
+    ) as TokenDecode;
 
-      if (!tokenDecode) throw "invalid token";
+    if (!tokenDecode) throw "invalid token";
 
-      const userId = tokenDecode.claims.user;
-      const newToken: string = sign(
-        {
-          claims: { user: userId }
-        },
-        JWT_SECRET,
-        {
-          expiresIn: JWT_EXPIRE
-        }
-      );
+    const userId = tokenDecode.claims.user;
+    const newToken: string = sign(
+      {
+        claims: { user: userId }
+      },
+      JWT_SECRET,
+      {
+        expiresIn: JWT_EXPIRE
+      }
+    );
 
-      return successResponse({
-        res,
-        data: {
-          token: newToken
-        }
-      });
-    } catch (e) {
-      return res.status(500).json({
-        success: false,
-        message: e
-      });
-    }
+    return { token: newToken };
   }
 }

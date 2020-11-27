@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { auth } from "../middleware/auth";
 import { genSalt, hash } from "bcryptjs";
 import User from "../models/user.model";
-import { successResponse, errorResponse } from "../utils";
+import { successResponse, errorResponse, ErrorResponse } from "../utils";
 import { _Request } from "../interfaces";
 
 @Controller("/users")
@@ -24,53 +24,35 @@ export default class UserController {
     }
     // [auth]
   )
-  public async index(req: Request, res: Response): Promise<Response> {
-    const {
-      username,
-      password,
+  public async index(req: Request): Promise<User> {
+    const { username, password, firstName, lastName } = req.body;
+    if (!req.body.username || !req.body.password) {
+      throw new ErrorResponse("username and password is required", 500);
+    }
+    const currentUser = await User.findOne({
+      where: {
+        username
+      }
+    });
+
+    if (currentUser)
+      throw new ErrorResponse("username and password is required", 400);
+
+    const salt = await genSalt(12);
+    const hashPassword = await hash(password, salt);
+
+    const user = await User.create({
       firstName,
       lastName,
-      lineId,
-      areaId,
-      stepId,
-      roleId
-    } = req.body;
-    try {
-      if (!req.body.username || !req.body.password) {
-        throw "username and password is required";
-      }
-      const currentUser = await User.findOne({
-        where: {
-          username
-        }
-      });
+      username,
+      password: hashPassword,
+      avatarUrl: ""
+    });
 
-      if (currentUser) throw "user exist";
+    if (!user)
+      throw new ErrorResponse("username and password is required", 400);
 
-      const salt = await genSalt(12);
-      const hashPassword = await hash(password, salt);
-
-      const user = await User.create({
-        firstName,
-        lastName,
-        username,
-        password: hashPassword,
-        lineId,
-        areaId,
-        stepId,
-        roleId,
-        avatarUrl: ""
-      });
-
-      if (!user) throw "cant create user";
-
-      return successResponse({ res, data: user });
-    } catch (e) {
-      return res.status(500).json({
-        sucess: false,
-        message: e
-      });
-    }
+    return user;
   }
 
   @Get(
@@ -88,11 +70,14 @@ export default class UserController {
     },
     [auth]
   )
-  public async getCurrentUser(req: _Request, res: Response): Promise<Response> {
+  public async getCurrentUser(req: _Request): Promise<User> {
     const currentUser = req.user;
 
-    const userWithMenu = JSON.parse(JSON.stringify(currentUser));
-    return successResponse({ res, data: userWithMenu });
+    if (!currentUser) {
+      throw new ErrorResponse("User Not Found", 404);
+    }
+
+    return currentUser;
   }
 
   @Get(
@@ -109,13 +94,12 @@ export default class UserController {
       ]
     }
   )
-  public async getUsers(req: Request, res: Response): Promise<Response> {
-    const users = await User.findAll({
+  public async getUsers(): Promise<User[]> {
+    return await User.findAll({
       attributes: {
         exclude: ["password"]
       }
     });
-    return successResponse({ res, data: users });
   }
 
   @Get(

@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import swaggerUi from "swagger-ui-express";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
-import { asyncHandler } from "./utils";
+import { asyncHandler, errorResponse, successResponse } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
 
@@ -59,8 +59,16 @@ class App {
         this.app[route.requestMethod](
           `/api/v1${prefix}${route.path}`,
           route.middlewares,
-          asyncHandler((req: express.Request, res: express.Response) => {
-            instance[route.methodName](req, res);
+          asyncHandler(async (req: express.Request, res: express.Response) => {
+            try {
+              return successResponse({
+                res,
+                data: await instance[route.methodName](req)
+              });
+            } catch (e) {
+              console.log(e);
+              return errorResponse({ res, msg: e, statusCode: 500 });
+            }
           })
         );
         const paths = route.apiDoc.paths;

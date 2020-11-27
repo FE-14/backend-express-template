@@ -1,9 +1,4 @@
-import {
-  Optional,
-  Sequelize,
-  DataTypes,
-  QueryInterface,
-} from "sequelize";
+import { Optional, Sequelize, DataTypes, QueryInterface } from "sequelize";
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
@@ -14,10 +9,6 @@ export interface UserAttributes {
   firstName: string;
   lastName: string;
   avatarUrl: string;
-  roleId: number;
-  lineId: number;
-  areaId: number;
-  stepId: number;
   lastLoginAt?: Date;
 }
 
@@ -36,10 +27,6 @@ export class User
   public firstName!: string;
   public lastName!: string;
   public avatarUrl!: string;
-  public lineId!: number;
-  public areaId!: number;
-  public stepId!: number;
-  public roleId!: number;
   public lastLoginAt?: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -62,10 +49,6 @@ export class User
         firstName: new DataTypes.STRING(),
         lastName: new DataTypes.STRING(),
         avatarUrl: new DataTypes.STRING(),
-        lineId: new DataTypes.INTEGER(),
-        areaId: new DataTypes.INTEGER(),
-        stepId: new DataTypes.INTEGER(),
-        roleId: new DataTypes.INTEGER(),
         lastLoginAt: new DataTypes.DATE()
       },
       {
