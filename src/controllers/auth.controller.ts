@@ -21,10 +21,10 @@ interface TokenDecode {
   exp: number;
 }
 
-@Controller("/auths")
+@Controller("/auth")
 export default class AuthController {
   @Post(
-    { path: "/login", tag: "Login" },
+    { path: "/login", tag: "Auth" },
     {
       responses: [
         {
@@ -105,7 +105,7 @@ export default class AuthController {
   }
 
   @Post(
-    { path: "/refresh-token", tag: "Refresh-token" },
+    { path: "/refresh-token", tag: "Auth" },
     {
       responses: [
         {

@@ -9,7 +9,7 @@ import { _Request } from "../interfaces";
 @Controller("/users")
 export default class UserController {
   @Post(
-    { path: "/", tag: "UserController" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -28,12 +28,6 @@ export default class UserController {
     const {
       username,
       password,
-      firstName,
-      lastName,
-      lineId,
-      areaId,
-      stepId,
-      roleId
     } = req.body;
     try {
       if (!req.body.username || !req.body.password) {
@@ -51,15 +45,8 @@ export default class UserController {
       const hashPassword = await hash(password, salt);
 
       const user = await User.create({
-        firstName,
-        lastName,
         username,
         password: hashPassword,
-        lineId,
-        areaId,
-        stepId,
-        roleId,
-        avatarUrl: ""
       });
 
       if (!user) throw "cant create user";
@@ -74,7 +61,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/current-user", tag: "UserController", isIndependentRoute: true },
+    { path: "/current-user", tag: "User", isIndependentRoute: true },
     {
       responses: [
         {
@@ -96,7 +83,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/", tag: "UserController" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -119,7 +106,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/:id", tag: "UserController" },
+    { path: "/:id", tag: "User" },
     {
       responses: [
         {
@@ -166,7 +153,7 @@ export default class UserController {
   }
 
   @Put(
-    { path: "/", tag: "UserPost" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -184,7 +171,7 @@ export default class UserController {
   }
 
   @Delete(
-    { path: "/:id", tag: "UserController" },
+    { path: "/:id", tag: "User" },
     {
       responses: [
         {

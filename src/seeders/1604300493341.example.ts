@@ -1,13 +1,14 @@
 import { QueryInterface } from "sequelize";
 import { hash, genSalt } from "bcryptjs";
-import User from "../models/user.model";
+import Example from "../models/example.model";
 
 export const up = async (query: QueryInterface): Promise<object | number> => {
   try {
-    const users = await query.bulkInsert(User.tableName, [
+    const users = await query.bulkInsert(Example.tableName, [
       {
         username: "admin",
         password: await hash("admin", await genSalt(12)),
+        firstName: "Admin",
         createdAt: new Date(),
         updatedAt: new Date()
       }
@@ -21,7 +22,7 @@ export const up = async (query: QueryInterface): Promise<object | number> => {
 export const down = async (query: QueryInterface): Promise<object | number> => {
   try {
     const users = await query.bulkDelete(
-      User.tableName,
+      Example.tableName,
       {
         username: "admin"
       },

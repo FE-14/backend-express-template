@@ -11,13 +11,6 @@ export interface UserAttributes {
   id: number;
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl: string;
-  roleId: number;
-  lineId: number;
-  areaId: number;
-  stepId: number;
   lastLoginAt?: Date;
 }
 
@@ -26,21 +19,14 @@ export type UserCreationAttributes = Optional<UserAttributes, "id">;
 export class User
   extends BaseModel<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
+  id: number;
+  username: string;
+  password: string;
+  lastLoginAt?: Date;
   public static readonly tableName = "MT_User";
   public static readonly modelName = "User";
   public static readonly modelNamePlural = "Users";
   public static readonly defaultScope = {};
-  public id!: number;
-  public username!: string;
-  public password!: string;
-  public firstName!: string;
-  public lastName!: string;
-  public avatarUrl!: string;
-  public lineId!: number;
-  public areaId!: number;
-  public stepId!: number;
-  public roleId!: number;
-  public lastLoginAt?: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
@@ -59,13 +45,6 @@ export class User
           type: new DataTypes.STRING()
         },
         password: new DataTypes.STRING(),
-        firstName: new DataTypes.STRING(),
-        lastName: new DataTypes.STRING(),
-        avatarUrl: new DataTypes.STRING(),
-        lineId: new DataTypes.INTEGER(),
-        areaId: new DataTypes.INTEGER(),
-        stepId: new DataTypes.INTEGER(),
-        roleId: new DataTypes.INTEGER(),
         lastLoginAt: new DataTypes.DATE()
       },
       {
@@ -98,13 +77,6 @@ export class User
         type: DataTypes.STRING,
         allowNull: false
       },
-      firstName: {
-        type: DataTypes.STRING
-      },
-      lastName: {
-        type: DataTypes.STRING
-      },
-      avatarUrl: DataTypes.STRING,
       lastLoginAt: {
         type: DataTypes.DATE
       },
@@ -136,15 +108,6 @@ export const swaggerSchemas: Schemas[] = [
         username: {
           type: "string"
         },
-        firstName: {
-          type: "string"
-        },
-        lastName: {
-          type: "string"
-        },
-        avatarUrl: {
-          type: "string"
-        },
         lastLoginAt: {
           type: "string"
         }
@@ -159,18 +122,6 @@ export const swaggerSchemas: Schemas[] = [
         password: {
           type: "string"
         },
-        firstName: {
-          type: "string"
-        },
-        lastName: {
-          type: "string"
-        },
-        avatarUrl: {
-          type: "string"
-        },
-        roleId: {
-          type: "number"
-        }
       }
     }
   }
