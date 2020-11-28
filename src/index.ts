@@ -26,3 +26,5 @@ const PORT = +(process.env.PORT || 4000);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`[LISTEN] 🚀🚀🚀  starting http://localhost:${PORT}/api/v1`);
 });
+
+module.exports = app;
