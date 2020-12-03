@@ -23,11 +23,11 @@ const config = {
     port: 5432
   },
   test: {
-    username: "postgres",
-    password: "laniuslab",
-    database: "dummy",
-    host: "192.168.1.50",
-    port: 5432
+    username: "lanius",
+    password: "lanius",
+    database: "test_database",
+    host: "localhost",
+    port: 54329
   },
   production: {
     username: "postgres",
