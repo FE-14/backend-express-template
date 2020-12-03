@@ -28,6 +28,20 @@ export const GenerateApiDoc = (
   const paths: any = {};
   const responses: Response = {};
   let requestBody: RequestBody;
+  const convertPathToSwagger = (path: string): string => {
+    const arrayPaths = path.split("/");
+    if (arrayPaths.length <= 0) return path;
+    const processedPath = arrayPaths.map((x: string) => {
+      if (x.includes(":")) {
+        const tokenizedPath = x.replace(":", "");
+        x = `{${tokenizedPath}}`;
+      }
+      return x;
+    });
+    return processedPath.join("/");
+  };
+
+  properties.path = convertPathToSwagger(properties.path);
   // maping request body
   if (payload.request) {
     if (typeof payload.request == "string") {

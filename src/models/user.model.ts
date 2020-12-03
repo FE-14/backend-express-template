@@ -17,6 +17,10 @@ export type UserCreationAttributes = Optional<UserAttributes, "id">;
 export class User
   extends BaseModel<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
+  id: number;
+  username: string;
+  password: string;
+  lastLoginAt?: Date;
   public static readonly tableName = "MT_User";
   public static readonly modelName = "User";
   public static readonly modelNamePlural = "Users";
@@ -81,13 +85,6 @@ export class User
         type: DataTypes.STRING,
         allowNull: false
       },
-      firstName: {
-        type: DataTypes.STRING
-      },
-      lastName: {
-        type: DataTypes.STRING
-      },
-      avatarUrl: DataTypes.STRING,
       lastLoginAt: {
         type: DataTypes.DATE
       },
@@ -119,15 +116,6 @@ export const swaggerSchemas: Schemas[] = [
         username: {
           type: "string"
         },
-        firstName: {
-          type: "string"
-        },
-        lastName: {
-          type: "string"
-        },
-        avatarUrl: {
-          type: "string"
-        },
         lastLoginAt: {
           type: "string"
         }
@@ -142,18 +130,6 @@ export const swaggerSchemas: Schemas[] = [
         password: {
           type: "string"
         },
-        firstName: {
-          type: "string"
-        },
-        lastName: {
-          type: "string"
-        },
-        avatarUrl: {
-          type: "string"
-        },
-        roleId: {
-          type: "number"
-        }
       }
     }
   }

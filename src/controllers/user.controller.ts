@@ -9,7 +9,7 @@ import { _Request } from "../interfaces";
 @Controller("/users")
 export default class UserController {
   @Post(
-    { path: "/", tag: "UserController" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -56,7 +56,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/current-user", tag: "UserController", isIndependentRoute: true },
+    { path: "/current-user", tag: "User", isIndependentRoute: true },
     {
       responses: [
         {
@@ -81,7 +81,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/", tag: "UserController" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -103,7 +103,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/:id", tag: "UserController" },
+    { path: "/:id", tag: "User" },
     {
       responses: [
         {
@@ -150,7 +150,7 @@ export default class UserController {
   }
 
   @Put(
-    { path: "/", tag: "UserPost" },
+    { path: "/", tag: "User" },
     {
       responses: [
         {
@@ -168,7 +168,7 @@ export default class UserController {
   }
 
   @Delete(
-    { path: "/:id", tag: "UserController" },
+    { path: "/:id", tag: "User" },
     {
       responses: [
         {
