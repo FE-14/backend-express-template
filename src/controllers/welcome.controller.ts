@@ -1,6 +1,5 @@
 import { Controller, Get, Post } from "../decorators";
-import { Request, Response } from "express";
-import { successResponse } from "../utils";
+import { Request } from "express";
 import multer from "multer";
 
 @Controller("/")
@@ -13,19 +12,23 @@ export default class WelcomeController {
           200: {
             description: "Response get object",
             responseType: "object",
-            schema: "User"
+            schema: {
+              title: "Message",
+              properties: {
+                message: {
+                  type: "string"
+                }
+              }
+            }
           }
         }
       ]
     }
   )
-  public async index(req: Request, res: Response): Promise<Response> {
-    return successResponse({
-      res,
-      data: {
-        message: "Welcome to API v1"
-      }
-    });
+  public async index(): Promise<{ message: string }> {
+    return {
+      message: "Welcome to API v1"
+    };
   }
 
   @Post(
@@ -67,14 +70,11 @@ export default class WelcomeController {
     },
     [multer({ dest: "uploads" }).single("file")]
   )
-  public async uploadExample(req: Request, res: Response): Promise<Response> {
+  public async uploadExample(req: Request): Promise<{ message: string }> {
     console.log(req.file);
 
-    return successResponse({
-      res,
-      data: {
-        message: "Welcome to API v1"
-      }
-    });
+    return {
+      message: "Welcome to API v1"
+    };
   }
 }

@@ -1,9 +1,4 @@
-import {
-  Optional,
-  Sequelize,
-  DataTypes,
-  QueryInterface,
-} from "sequelize";
+import { Optional, Sequelize, DataTypes, QueryInterface } from "sequelize";
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
@@ -11,6 +6,9 @@ export interface UserAttributes {
   id: number;
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
   lastLoginAt?: Date;
 }
 
@@ -27,6 +25,13 @@ export class User
   public static readonly modelName = "User";
   public static readonly modelNamePlural = "Users";
   public static readonly defaultScope = {};
+  public id!: number;
+  public username!: string;
+  public password!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public avatarUrl!: string;
+  public lastLoginAt?: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
@@ -45,6 +50,9 @@ export class User
           type: new DataTypes.STRING()
         },
         password: new DataTypes.STRING(),
+        firstName: new DataTypes.STRING(),
+        lastName: new DataTypes.STRING(),
+        avatarUrl: new DataTypes.STRING(),
         lastLoginAt: new DataTypes.DATE()
       },
       {
