@@ -4,6 +4,7 @@
 	],
 	"editor.tabCompletion": "on",
 	"editor.tabSize": 2,
+	"javascript.format.semicolons": "insert",
 	"editor.trimAutoWhitespace": true,
 	"editor.formatOnSave": true,
 	"files.exclude": {

@@ -1,9 +1,10 @@
-import { Controller, Get, Post } from "../decorators";
+import { Controller, Post } from "../decorators";
 import { Request, Response } from "express";
 import { successResponse } from "../utils";
 import fs from "fs";
-import path from "path"
-const capitalize = require("just-capitalize")
+import path from "path";
+// eslint-disable-next-line
+const capitalize = require("just-capitalize");
 
 @Controller("/generator")
 export default class GeneratorController {
@@ -47,37 +48,37 @@ export default class GeneratorController {
     try {
       const {
         name
-      }: { name: string } = req.body
+      }: { name: string } = req.body;
       let migrations = fs.readdirSync(
         path.normalize(`${__dirname}/../../src/migrations`)
-      )
-      migrations = migrations.map((d: string) => d.split(".")[1])
-      const existIndex = migrations.indexOf(name)
+      );
+      migrations = migrations.map((d: string) => d.split(".")[1]);
+      const existIndex = migrations.indexOf(name);
 
       if (existIndex === -1) {
-        const now = new Date().getTime()
+        const now = new Date().getTime();
         let blankMigration: string | Buffer = fs.readFileSync(
           path.normalize(`${__dirname}/../../src/migrations/0.example.ts`)
-        )
-        blankMigration = blankMigration.toString("utf-8")
-        blankMigration = blankMigration.replace(/example/g, name)
+        );
+        blankMigration = blankMigration.toString("utf-8");
+        blankMigration = blankMigration.replace(/example/g, name);
 
         fs.writeFileSync(
           path.normalize(`${__dirname}/../../src/migrations/${now}.${name}.ts`),
           blankMigration
-        )
+        );
       }
 
       let blankModel: string | Buffer = fs.readFileSync(
         path.normalize(`${__dirname}/../../src/models/example.model.ts`)
-      )
-      blankModel = blankModel.toString("utf-8")
-      blankModel = blankModel.replace(/Example/g, capitalize(name))
+      );
+      blankModel = blankModel.toString("utf-8");
+      blankModel = blankModel.replace(/Example/g, capitalize(name));
 
       fs.writeFileSync(
         path.normalize(`${__dirname}/../../src/models/${name}.model.ts`),
         blankModel
-      )
+      );
 
       return successResponse({
         res,
@@ -89,7 +90,7 @@ export default class GeneratorController {
       return res.status(500).json({
         success: false,
         message: e
-      })
+      });
     }
   }
 }
