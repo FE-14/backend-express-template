@@ -20,10 +20,12 @@ interface TokenDecode {
   exp: number;
 }
 
+const tag = "Auth";
+
 @Controller("/auth")
 export default class AuthController {
   @Post(
-    { path: "/login", tag: "Auth" },
+    { path: "/login", tag },
     {
       responses: [
         {
@@ -91,7 +93,7 @@ export default class AuthController {
   }
 
   @Post(
-    { path: "/refresh-token", tag: "Auth" },
+    { path: "/refresh-token", tag },
     {
       responses: [
         {

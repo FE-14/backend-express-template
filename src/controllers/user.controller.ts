@@ -6,10 +6,12 @@ import { successResponse, errorResponse, ErrorResponse } from "../utils";
 import { _Request } from "../interfaces";
 import User from "../models/user.model";
 
+const tag = "User";
+
 @Controller("/users")
 export default class UserController {
   @Post(
-    { path: "/", tag: "User" },
+    { path: "/", tag },
     {
       responses: [
         {
@@ -56,7 +58,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/current-user", tag: "User", isIndependentRoute: true },
+    { path: "/current-user", tag },
     {
       responses: [
         {
@@ -81,7 +83,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/", tag: "User" },
+    { path: "/", tag },
     {
       responses: [
         {
@@ -103,7 +105,7 @@ export default class UserController {
   }
 
   @Get(
-    { path: "/:id", tag: "User" },
+    { path: "/:id", tag },
     {
       responses: [
         {
@@ -150,7 +152,7 @@ export default class UserController {
   }
 
   @Put(
-    { path: "/", tag: "User" },
+    { path: "/:id", tag },
     {
       responses: [
         {
@@ -158,6 +160,15 @@ export default class UserController {
             description: "Response put object",
             responseType: "object",
             schema: "User"
+          }
+        }
+      ],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          schema: {
+            type: "number"
           }
         }
       ]
@@ -168,7 +179,7 @@ export default class UserController {
   }
 
   @Delete(
-    { path: "/:id", tag: "User" },
+    { path: "/:id", tag },
     {
       responses: [
         {
