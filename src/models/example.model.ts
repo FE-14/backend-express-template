@@ -93,6 +93,7 @@ export const swaggerSchemas: Schemas[] = [
     {
         Example: {
             title: "",
+            type: "object",
             properties: {
                 id: {
                     type: "number"
@@ -116,6 +117,7 @@ export const swaggerSchemas: Schemas[] = [
         },
         NewExample: {
             title: "",
+            type: "object",
             properties: {
                 name: {
                     type: "string"

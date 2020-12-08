@@ -1,11 +1,14 @@
 import { Controller, Get, Post } from "../decorators";
 import { Request } from "express";
 import multer from "multer";
+import { upload } from "../middleware/upload";
+
+const tag: string = "Welcome";
 
 @Controller("/")
 export default class WelcomeController {
   @Get(
-    { path: "", tag: "Welcome" },
+    { path: "", tag },
     {
       responses: [
         {
@@ -32,25 +35,18 @@ export default class WelcomeController {
   }
 
   @Post(
-    { path: "contoh-upload", tag: "Welcome" },
+    { path: "", tag },
     {
       request: {
         title: "",
+        type: "object",
         properties: {
           file: {
-            type: "file"
+            type: "file",
+            format: "binary"
           }
         }
       },
-      parameters: [
-        {
-          name: "file",
-          in: "path",
-          schema: {
-            type: "file"
-          }
-        }
-      ],
       responses: [
         {
           200: {
@@ -68,13 +64,13 @@ export default class WelcomeController {
         }
       ]
     },
-    [multer({ dest: "uploads" }).single("file")]
+    [upload.defaultStorage.fields([
+      { name: "file", maxCount: 1 }
+    ])]
   )
-  public async uploadExample(req: Request): Promise<{ message: string }> {
-    console.log(req.file);
-
+  public async uploadExample(): Promise<{ message: string }> {
     return {
-      message: "Welcome to API v1"
+      message: "Uploaded successfully."
     };
   }
 }

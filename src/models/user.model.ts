@@ -105,6 +105,7 @@ export const swaggerSchemas: Schemas[] = [
   {
     User: {
       title: "",
+      type: "object",
       properties: {
         id: {
           type: "number"
@@ -119,6 +120,7 @@ export const swaggerSchemas: Schemas[] = [
     },
     NewUser: {
       title: "",
+      type: "object",
       properties: {
         username: {
           type: "string"
