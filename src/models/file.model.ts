@@ -4,39 +4,48 @@ import {
     DataTypes,
     QueryInterface,
     ModelAttributes,
+    Association,
 } from "sequelize";
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
-import { Json } from "sequelize/types/lib/utils";
-export interface ExampleAttributes {
+import User from "./user.model";
+export interface FileAttributes {
     id: number,
     name: string,
     description: string,
+    uploadedBy: number
 }
 
-export type ExampleCreationAttributes = Optional<ExampleAttributes, "id">;
+export type FileCreationAttributes = Optional<FileAttributes, "id">;
 
-export class Example
-    extends BaseModel<ExampleAttributes, ExampleCreationAttributes>
-    implements ExampleAttributes {
+export class File
+    extends BaseModel<FileAttributes, FileCreationAttributes>
+    implements FileAttributes {
     id: number;
     name: string;
     description: string;
-    public static readonly tableName = "Examples";
-    public static readonly modelName = "Example";
-    public static readonly modelNamePlural = "Examples";
+    uploadedBy: number;
+    public static readonly tableName = "Files";
+    public static readonly modelName = "File";
+    public static readonly modelNamePlural = "Files";
     public static readonly defaultScope = {};
     public readonly deletedAt: Date;
     public readonly createdAt: Date;
     public readonly updatedAt: Date;
 
     public static associations: {
+        user: Association<File, User>
     }
 
-    public static setAssociation(): void { }
+    public static setAssociation(): void {
+        this.belongsTo(User, {
+            foreignKey: "uploadedBy",
+            as: "user"
+        });
+    }
 
-    private static tableDefinitions: ModelAttributes<Example, ExampleAttributes> = {
+    private static tableDefinitions: ModelAttributes<File, FileAttributes> = {
         id: {
             type: new DataTypes.INTEGER(),
             primaryKey: true,
@@ -45,6 +54,7 @@ export class Example
         },
         name: new DataTypes.STRING(),
         description: new DataTypes.STRING(),
+        uploadedBy: new DataTypes.INTEGER()
     }
 
     public static modelInit(sequlize: Sequelize): void {
@@ -57,29 +67,42 @@ export class Example
                     plural: this.modelNamePlural
                 },
                 defaultScope: this.defaultScope,
-                comment: "Model for the accessible data of Example",
+                comment: "Model for the accessible data of File",
                 paranoid: true
             }
         );
     }
 
-    public static createTable(query: QueryInterface): Promise<void> {
-        return query.createTable(this.tableName, {
+    public static async createTable(query: QueryInterface): Promise<void> {
+        await query.createTable(this.tableName, {
             ...this.tableDefinitions,
             createdAt: new DataTypes.DATE(),
             updatedAt: new DataTypes.DATE(),
             deletedAt: new DataTypes.DATE()
         });
+
+        await query.addConstraint(this.tableName, {
+            fields: ["uploadedBy"],
+            type: "foreign key",
+            name: "Files_uploadedBy_fkey",
+            references: {
+                table: User.tableName,
+                field: "id"
+            },
+            onDelete: "no action",
+            onUpdate: "cascade",
+        });
     }
 
-    public static dropTable(query: QueryInterface): Promise<void> {
-        return query.dropTable(this.tableName);
+    public static async dropTable(query: QueryInterface): Promise<void> {
+        await query.removeConstraint(this.tableName, "Files_uploadedBy_fkey");
+        await query.dropTable(this.tableName);
     }
 }
 
 export const swaggerSchemas: Schemas[] = [
     {
-        Example: {
+        File: {
             title: "",
             type: "object",
             properties: {
@@ -92,9 +115,12 @@ export const swaggerSchemas: Schemas[] = [
                 description: {
                     type: "string"
                 },
+                uploadedBy: {
+                    $ref: "User"
+                }
             }
         },
-        NewExample: {
+        NewFile: {
             title: "",
             type: "object",
             properties: {
@@ -104,9 +130,12 @@ export const swaggerSchemas: Schemas[] = [
                 description: {
                     type: "string"
                 },
+                uploadedBy: {
+                    type: "number"
+                }
             }
         }
     }
 ];
 
-export default Example;
+export default File;
