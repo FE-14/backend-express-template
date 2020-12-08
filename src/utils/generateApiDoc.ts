@@ -10,6 +10,7 @@ import { getSchemaResponse, getSchemaRequest } from "./index";
 export interface ResponseSwagger {
   [statusCode: number]: {
     description: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     schema: string | ItemModel | object;
     responseType: "array" | "object";
   };
@@ -51,15 +52,7 @@ export const GenerateApiDoc = (
             schema: getSchemaRequest(payload.request)
           },
           "multipart/form-data": {
-            schema: {
-              type: "object",
-              properties: {
-                file: {
-                  type: "string",
-                  format: "binary"
-                }
-              }
-            }
+            schema: getSchemaRequest(payload.request)
           }
         }
       };
@@ -70,15 +63,7 @@ export const GenerateApiDoc = (
             schema: payload.request
           },
           "multipart/form-data": {
-            schema: {
-              type: "object",
-              properties: {
-                file: {
-                  type: "string",
-                  format: "binary"
-                }
-              }
-            }
+            schema: payload.request
           }
         }
       };
