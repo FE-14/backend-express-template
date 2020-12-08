@@ -25,18 +25,14 @@ export class User
   public static readonly modelName = "User";
   public static readonly modelNamePlural = "Users";
   public static readonly defaultScope = {};
-  public id!: number;
-  public username!: string;
-  public password!: string;
   public firstName!: string;
   public lastName!: string;
   public avatarUrl!: string;
-  public lastLoginAt?: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
 
-  public static setAssociation(): void {}
+  public static setAssociation(): void { }
 
   public static modelInit(sequlize: Sequelize): void {
     this.init(

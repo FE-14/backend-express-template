@@ -6,7 +6,7 @@ import path from "path";
 // eslint-disable-next-line
 const capitalize = require("just-capitalize");
 
-@Controller("/generator")
+@Controller("/generators")
 export default class GeneratorController {
   @Post(
     { path: "/model", tag: "Generator" },
@@ -44,7 +44,7 @@ export default class GeneratorController {
     },
     []
   )
-  public async index(req: Request, res: Response): Promise<Response> {
+  public async modelGenerator(req: Request, res: Response): Promise<Response> {
     try {
       const {
         name
