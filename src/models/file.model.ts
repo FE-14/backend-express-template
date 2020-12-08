@@ -14,7 +14,8 @@ export interface FileAttributes {
     id: number,
     name: string,
     description: string,
-    uploadedBy: number
+    uploadedBy: number,
+    uri: string,
 }
 
 export type FileCreationAttributes = Optional<FileAttributes, "id">;
@@ -22,6 +23,7 @@ export type FileCreationAttributes = Optional<FileAttributes, "id">;
 export class File
     extends BaseModel<FileAttributes, FileCreationAttributes>
     implements FileAttributes {
+    uri: string;
     id: number;
     name: string;
     description: string;
@@ -54,6 +56,7 @@ export class File
         },
         name: new DataTypes.STRING(),
         description: new DataTypes.STRING(),
+        uri: new DataTypes.STRING(),
         uploadedBy: new DataTypes.INTEGER()
     }
 
@@ -74,6 +77,8 @@ export class File
     }
 
     public static async createTable(query: QueryInterface): Promise<void> {
+        await this.dropTable(query);
+
         await query.createTable(this.tableName, {
             ...this.tableDefinitions,
             createdAt: new DataTypes.DATE(),
@@ -96,7 +101,7 @@ export class File
 
     public static async dropTable(query: QueryInterface): Promise<void> {
         await query.removeConstraint(this.tableName, "Files_uploadedBy_fkey");
-        await query.dropTable(this.tableName);
+        await query.dropTable(this.tableName, { force: true });
     }
 }
 
@@ -117,6 +122,9 @@ export const swaggerSchemas: Schemas[] = [
                 },
                 uploadedBy: {
                     $ref: "User"
+                },
+                uri: {
+                    type: "string"
                 }
             }
         },
