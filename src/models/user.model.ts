@@ -37,7 +37,7 @@ export class User
 
   public static setAssociation(): void { }
 
-  private static tableDefinitions: ModelAttributes<User, UserAttributes> = {
+  public static tableDefinitions: ModelAttributes<User, UserAttributes> = {
     id: {
       type: new DataTypes.INTEGER(),
       primaryKey: true,

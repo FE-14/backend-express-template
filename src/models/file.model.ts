@@ -47,7 +47,7 @@ export class File
         });
     }
 
-    private static tableDefinitions: ModelAttributes<File, FileAttributes> = {
+    public static tableDefinitions: ModelAttributes<File, FileAttributes> = {
         id: {
             type: new DataTypes.INTEGER(),
             primaryKey: true,
@@ -83,7 +83,9 @@ export class File
             updatedAt: new DataTypes.DATE(),
             deletedAt: new DataTypes.DATE()
         });
+    }
 
+    public static async addConstraints(query: QueryInterface): Promise<void> {
         await query.addConstraint(this.tableName, {
             fields: ["uploadedBy"],
             type: "foreign key",
@@ -97,8 +99,11 @@ export class File
         });
     }
 
-    public static async dropTable(query: QueryInterface): Promise<void> {
+    public static async removeConstraints(query: QueryInterface): Promise<void> {
         await query.removeConstraint(this.tableName, "Files_uploadedBy_fkey");
+    }
+
+    public static async dropTable(query: QueryInterface): Promise<void> {
         await query.dropTable(this.tableName, { force: false });
     }
 }

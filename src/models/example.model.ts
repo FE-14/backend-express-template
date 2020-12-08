@@ -8,7 +8,6 @@ import {
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
-import { Json } from "sequelize/types/lib/utils";
 export interface ExampleAttributes {
     id: number,
     name: string,
@@ -36,7 +35,7 @@ export class Example
 
     public static setAssociation(): void { }
 
-    private static tableDefinitions: ModelAttributes<Example, ExampleAttributes> = {
+    public static tableDefinitions: ModelAttributes<Example, ExampleAttributes> = {
         id: {
             type: new DataTypes.INTEGER(),
             primaryKey: true,
