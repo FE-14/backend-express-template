@@ -77,8 +77,6 @@ export class File
     }
 
     public static async createTable(query: QueryInterface): Promise<void> {
-        await this.dropTable(query);
-
         await query.createTable(this.tableName, {
             ...this.tableDefinitions,
             createdAt: new DataTypes.DATE(),
@@ -101,7 +99,7 @@ export class File
 
     public static async dropTable(query: QueryInterface): Promise<void> {
         await query.removeConstraint(this.tableName, "Files_uploadedBy_fkey");
-        await query.dropTable(this.tableName, { force: true });
+        await query.dropTable(this.tableName, { force: false });
     }
 }
 

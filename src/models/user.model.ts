@@ -1,15 +1,15 @@
-import { Optional, Sequelize, DataTypes, QueryInterface } from "sequelize";
+import { Optional, Sequelize, DataTypes, QueryInterface, ModelAttributes } from "sequelize";
 import { BaseModel } from "../utils";
 
 import { Schemas } from "../keys/apidoc";
 export interface UserAttributes {
-  id: number;
-  username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl: string;
-  lastLoginAt?: Date;
+  id: number,
+  username: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  avatarUrl: string,
+  lastLoginAt?: Date,
 }
 
 export type UserCreationAttributes = Optional<UserAttributes, "id">;
@@ -20,37 +20,40 @@ export class User
   id: number;
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
   lastLoginAt?: Date;
   public static readonly tableName = "MT_User";
   public static readonly modelName = "User";
   public static readonly modelNamePlural = "Users";
   public static readonly defaultScope = {};
-  public firstName!: string;
-  public lastName!: string;
-  public avatarUrl!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
 
+  public static associations: {
+  }
+
   public static setAssociation(): void { }
 
+  private static tableDefinitions: ModelAttributes<User, UserAttributes> = {
+    id: {
+      type: new DataTypes.INTEGER(),
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
+    username: new DataTypes.STRING(),
+    password: new DataTypes.STRING(),
+    firstName: new DataTypes.STRING(),
+    lastName: new DataTypes.STRING(),
+    avatarUrl: new DataTypes.STRING(),
+    lastLoginAt: new DataTypes.DATE(),
+  }
+
   public static modelInit(sequlize: Sequelize): void {
-    this.init(
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true
-        },
-        username: {
-          type: new DataTypes.STRING()
-        },
-        password: new DataTypes.STRING(),
-        firstName: new DataTypes.STRING(),
-        lastName: new DataTypes.STRING(),
-        avatarUrl: new DataTypes.STRING(),
-        lastLoginAt: new DataTypes.DATE()
-      },
+    this.init(this.tableDefinitions,
       {
         sequelize: sequlize,
         tableName: this.tableName,
@@ -59,31 +62,15 @@ export class User
           plural: this.modelNamePlural
         },
         defaultScope: this.defaultScope,
-        comment: "Model for the accessible data of user",
+        comment: "Model for the accessible data of File",
         paranoid: true
       }
     );
   }
 
-  public static createTable(query: QueryInterface): Promise<void> {
-    return query.createTable(this.tableName, {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true
-      },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      lastLoginAt: {
-        type: DataTypes.DATE
-      },
+  public static async createTable(query: QueryInterface): Promise<void> {
+    await query.createTable(this.tableName, {
+      ...this.tableDefinitions,
       createdAt: {
         type: DataTypes.DATE
       },
@@ -96,8 +83,8 @@ export class User
     });
   }
 
-  public static dropTable(query: QueryInterface): Promise<void> {
-    return query.dropTable(this.tableName);
+  public static async dropTable(query: QueryInterface): Promise<void> {
+    await query.dropTable(this.tableName, { force: false });
   }
 }
 
