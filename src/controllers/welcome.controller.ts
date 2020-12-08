@@ -1,9 +1,7 @@
 import { Controller, Get, Post } from "../decorators";
-import { Request } from "express";
-import multer from "multer";
 import { upload } from "../middleware/upload";
 
-const tag: string = "Welcome";
+const tag = "Welcome";
 
 @Controller("/")
 export default class WelcomeController {
