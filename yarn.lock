@@ -1400,6 +1400,13 @@ event-emitter@^0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
+express-static-gzip@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/express-static-gzip/-/express-static-gzip-2.1.0.tgz#fd85f9867e5cfc61a97a5ff33bc87e665b73e727"
+  integrity sha512-XGozfjgsfVKBc8lQmPco9zd1+sK9Wy1ZPEAYtH8E34FbBr5BFp2HV+V1PpmIYHaWg8+ecLl/JnQkREbtPSJyxQ==
+  dependencies:
+    serve-static "^1.14.1"
+
 express-validator@^6.6.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.7.0.tgz#ca315efcc9dfe8d00cbc300f2d0fad1df82d07d6"
@@ -3209,7 +3216,7 @@ serialize-javascript@5.0.1:
   dependencies:
     randombytes "^2.1.0"
 
-serve-static@1.14.1:
+serve-static@1.14.1, serve-static@^1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==

@@ -4,6 +4,8 @@ import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import { asyncHandler, errorResponse, successResponse } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
+import path from "path";
+import staticGzip from "express-static-gzip";
 
 class App {
   public app: Application;
@@ -89,6 +91,7 @@ class App {
     });
 
     this.app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));
+    this.app.use("/static", staticGzip(path.normalize(`${__dirname}/../uploads`), {}));
 
     this.app.use("*", async (req: Request, res: Response) => {
       res.json({
