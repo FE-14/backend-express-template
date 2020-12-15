@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import swaggerUi from "swagger-ui-express";
+import swaggerUi, { SwaggerUiOptions } from "swagger-ui-express";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
 import { asyncHandler, errorResponse, successResponse } from "./utils";
 import { apiDoc } from "./utils/generateApiDoc";
@@ -9,6 +9,11 @@ import staticGzip from "express-static-gzip";
 
 class App {
   public app: Application;
+  private swaggerOption: SwaggerUiOptions = {
+    swaggerOptions: {
+      filter: true
+    }
+  };
 
   constructor(appInit: { middleWares: any; controllers?: any; actions?: any }) {
     this.app = express();
@@ -68,7 +73,7 @@ class App {
                 data: await instance[route.methodName](req)
               });
             } catch (e) {
-              console.log(e);
+              console.error(e);
               return errorResponse({ res, msg: e, statusCode: 500 });
             }
           })
@@ -90,8 +95,15 @@ class App {
       });
     });
 
-    this.app.use("/explorer", swaggerUi.serve, swaggerUi.setup(apiDoc));
-    this.app.use("/static", staticGzip(path.normalize(`${__dirname}/../uploads`), {}));
+    this.app.use(
+      "/explorer",
+      swaggerUi.serve,
+      swaggerUi.setup(apiDoc, this.swaggerOption)
+    );
+    this.app.use(
+      "/static",
+      staticGzip(path.normalize(`${__dirname}/../uploads`), {})
+    );
 
     this.app.use("*", async (req: Request, res: Response) => {
       res.json({
