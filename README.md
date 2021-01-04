@@ -363,7 +363,11 @@ Untuk membuat Delete Method Remove berikut contohnya:
 
 ### Membuat Seeder
 
+<details>
+<summary>Selengkapnya</summary>
 Contoh seeder dapat dilihat pada directory seeders, seperti file berikut:
 [0.example.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/seeders/0.example.ts)
 
-Ubah kata "example" sesuai yang diinginkan.
+\*) Ubah kata "example" sesuai yang diinginkan.
+
+</details>
