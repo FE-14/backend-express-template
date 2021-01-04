@@ -1,5 +1,7 @@
-[![TypeScript version][ts-badge]][typescript-36]
-[![Node.js version][nodejs-badge]][nodejs]
+![badge typescript](https://img.shields.io/badge/Typescript-4.0.5-blue)
+![badge node](https://img.shields.io/badge/Nodejs-current-green)
+![badge swagger](https://img.shields.io/badge/Swagger%20UI%20Express-4.1.4-green)
+![badge express](https://img.shields.io/badge/Express-4.17.1-green)
 
 # Dokumentasi Backend Boilerplate
 
