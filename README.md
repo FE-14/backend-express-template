@@ -1,55 +1,31 @@
-# Boilerplate Backend Express
+# Dokumentasi Backend Boilerplate
 
-Boilerplate ini dibuat dengan standar pengembangan perangkat lunak PT Lanius Inovasi Indonesia.
-Berikut Standar-standar development:
-* [Lanius Tech Standard #1](https://docs.google.com/presentation/d/1iHHeaz40TfmQndThk6OI944dGhpHOvv09oPDQ0mwHFI/edit#slide=id.g9cb666bf1a_0_86)
+<details>
+  <summary>Lihat Daftar Isi</summary>
+ 
+  ## Daftar Isi  
+ 1. Penggunaan Boilerplate
+	 1. Memulai Project baru 
+ 2.
 
-### Project Description
-Isi deskripsi project
+</details>
 
-### Must Know
-Hal-hal yang perlu dipelajari sebelum memulai project:
+## Penggunaan Boilerplate
 
-* [Contoh Materi](https://google.com) - Penjelasan singkat
+### Memulai Project baru
 
-### Technology Stack
-Berikut teknologi (plugins / modules) yang dipakai pada project ini:
-* Express JS 
+Pada saat developer memulai project aplikasi baru maka diharuskan untuk melakukan clone pada boilerplate ini yang berada pada repository [Backend Express](https://gitlab.com/mv-lanius/boilerplates/backend-express.git) branch master. Setelah di clone maka perlu dilakukan penghapusan origin menggunakan perintah:
 
-### Pre-Installation Tutorial
-Berikut hal-hal yang perlu di install sebelum memulai project:
-* Chrome Browser
+> git remote remove origin
 
-### Installation Tutorial
-Berikut cara instalasi project
+Setelah menghapus origin awal maka rename file .env.example menjadi .env. Mulai instalasi module awal dengan perintah:
 
-```sh
-$ cd project-dir
-$ yarn install
-```
+> yarn
 
-### Development Mode
-Berikut cara menjalankan project dalam mode development
+Setelah itu kita perlu menggantinya dengan origin repository baru untuk project yang sedang dikerjakan. Lalu melakukan commit pertama dengan pertama dengan perintah:
 
-*) Ubah nama file .env.example ke .env
-```sh
-$ cd project-dir
-$ yarn dev
-```
+> git remote add origin [url-repository]
 
-### Production Mode
-Berikut cara menjalankan project dalam mode development
+> git add .
 
-```sh
-$ cd project-dir
-$ yarn start
-```
-
-### Most used commands
-Berikut ini perintah-perintah yang sering dipakai:
-
-Clear Node Modules
-```sh
-$ cd project-dir
-$ yarn clean
-```
+> git commit -m “[CREATE] project init”
