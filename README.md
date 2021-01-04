@@ -4,12 +4,13 @@
 
 1. [Memulai Project Baru](#memulai-project-baru)
 2. [Konfigurasi Database](#konfigurasi-database)
-3. Instalasi Module/Dependency Baru
+3. [Instalasi Module/Dependency Baru](#instalasi-moduledependency-baru)
+4. [Membuat Model](#membuat-model)
 
 ### Memulai Project baru
 
 <details>
-<summary>Lihat</summary>
+<summary>Selengkapnya</summary>
 Pada saat developer memulai project aplikasi baru maka diharuskan untuk melakukan clone pada boilerplate ini yang berada pada repository [Backend Express](https://gitlab.com/mv-lanius/boilerplates/backend-express.git) branch master. Setelah di clone maka perlu dilakukan penghapusan origin menggunakan perintah:
 > git remote remove origin
 
@@ -30,7 +31,7 @@ Setelah itu kita perlu menggantinya dengan origin repository baru untuk project 
 ### Konfigurasi Database
 
 <details>
-<summary>Lihat</summary>
+<summary>Selengkapnya</summary>
 Sistem database yang kita gunakan yaitu PostgreSQL dan MongoDB yang masing-masing memiliki peran. PostgreSQL digunakan untuk data bersifat fixed-field yang dimana field table tidak bertambah atau berkurang secara dinamis dan digunakan untuk database bersifat relasional. Sedangkan MongoDB digunakan untuk data bersifat dynamic-property yang data property dapat bertambah atau berkurang secara dinamis.
 Pada saat membuat project baru diharapkan untuk membuat inisialisasi database kosong dengan nama sesuai nama project tersebut misalkan: ``db_pg_petro_vr``, ``db_mongo_sim_engineering``. Setelah itu kita dapat mengisi database authentication pada file ``.env`` seperti berikut:
 
@@ -62,7 +63,7 @@ Pada saat membuat project baru diharapkan untuk membuat inisialisasi database ko
 ### Instalasi Module/Dependency Baru
 
 <details>
-<summary>Lihat</summary>
+<summary>Selengkapnya</summary>
 Instalasi module pada boilerplate ini menggunakan package manager Yarn. sehingga diharapkan untuk semua pemakaian command npm diganti dengan yarn. Berikut command instalasi awal boilerplate dengan perintah:
 >yarn
 
@@ -76,4 +77,85 @@ Ketika hendak menambahkan module baru bersifat development only maka menggunakan
 
 </details>
 
-### Membuat Model
+### Membuat Model dan Migrations
+
+<details>
+<summary>Selengkapnya</summary>
+
+Untuk membuat file model silahkan lihat terlebih dahulu file contoh berikut pada directory models: [example.model.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/models/example.model.ts)
+
+Replace All (ctrl + h) semua Kata ""Example"" menjadi nama model yang diinginkan
+
+Definisikan Attributes yang ada pada model pada baris berikut:
+
+    export interface ExampleAttributes {
+        id: number,
+        name: string,
+        description: string,
+    }
+
+Implementasikan Attributes yang didefinisikan pada interface diatas, seperti berikut:
+
+    export class Example
+        extends BaseModel<ExampleAttributes, ExampleCreationAttributes>
+        implements ExampleAttributes {
+        id: number;
+        name: string;
+        description: string;
+        ...
+
+Definiskan database table yang ingin dibuat pada baris berikut:
+
+    public static tableDefinitions: ModelAttributes<Example, ExampleAttributes> = {
+            id: {
+                type: new DataTypes.INTEGER(),
+                primaryKey: true,
+                autoIncrement: true,
+                allowNull: false,
+            },
+            name: new DataTypes.STRING(),
+            description: new DataTypes.STRING(),
+        }
+
+Buat dokumentasi Swagger pada baris berikut:
+
+\*) untuk tambahan New pada nama schema untuk atribut yang dibutuhkan pada saat membuat data baru.
+
+    export const swaggerSchemas: Schemas[] = [
+        {
+            Example: {
+                title: "",
+                type: "object",
+                properties: {
+                    id: {
+                        type: "number"
+                    },
+                    name: {
+                        type: "string"
+                    },
+                    description: {
+                        type: "string"
+                    },
+                }
+            },
+            NewExample: {
+                title: "",
+                type: "object",
+                properties: {
+                    name: {
+                        type: "string"
+                    },
+                    description: {
+                        type: "string"
+                    },
+                }
+            }
+        }
+    ];
+
+Buat File Migrations pada directory migrations seperti pada file contoh berikut:
+[0.example.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/migrations/0.example.ts)
+
+ubah kata "Example" menjadi nama model yang dibuat diatas.
+
+</details>
