@@ -6,6 +6,7 @@
 2. [Konfigurasi Database](#konfigurasi-database)
 3. [Instalasi Module/Dependency Baru](#instalasi-moduledependency-baru)
 4. [Membuat Model](#membuat-model)
+5. [Membuat Controller](#membuat-controller)
 
 ### Memulai Project baru
 
@@ -157,5 +158,204 @@ Buat File Migrations pada directory migrations seperti pada file contoh berikut:
 [0.example.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/migrations/0.example.ts)
 
 ubah kata "Example" menjadi nama model yang dibuat diatas.
+
+</details>
+
+### Membuat Controller
+
+<details>
+<summary>Selengkapnya</summary>
+Untuk membuat file model silahkan lihat terlebih dahulu file contoh berikut pada directory controllers: [example.controller.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/controllers/example.controller.ts)
+
+Ubah value variable tag sesuai yang diinginkan
+
+    const tag = "Example";
+
+Ubah /examples dan ExampleController sesuai yang diinginkan
+
+    @Controller("/examples")
+    export default class ExampleController {
+
+Untuk Membuat Get Method Find All, berikut contohnya:
+
+\*) Return typenya harus didefinisikan pada bagian Promise<Example[]>, ubah Example dengan nama Model / Interface / type yang diinginkan.
+
+    @Get({ path: "/", tag }, {
+        responses: [
+          {
+            200: {
+              description: "",
+              responseType: "array",
+              schema: "Example"
+            }
+          }
+        ],
+        parameters: []
+      }, [])
+      public async getAll(req: _Request, res: Response): Promise<Example[]> {
+        const data = await Example.findAll({});
+
+        return data;
+      }
+
+Untuk membuat Get Method Find One, berikut contohnya:
+
+    @Get({ path: "/:id", tag }, {
+        responses: [
+          {
+            200: {
+              description: "",
+              responseType: "array",
+              schema: "Example"
+            }
+          }
+        ],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            schema: {
+              type: "number"
+            }
+          }
+        ]
+      }, [])
+      public async getOne(req: _Request, res: Response): Promise<Example> {
+        const { id } = req.params;
+
+        const data = await Example.findOne({
+          where: {
+            id
+          }
+        });
+
+        if (!data) throw "Data not found";
+
+        return data;
+      }
+
+Untuk membuat Post Method Create berikut contohnya:
+
+    @Post({ path: "/", tag }, {
+        request: "NewExample",
+        responses: [
+          {
+            200: {
+              description: "",
+              responseType: "object",
+              schema: "Example"
+            }
+          }
+        ],
+      })
+      public async create(req: _Request, res: Response): Promise<Example> {
+        const {
+          name,
+          description
+        }: ExampleAttributes = req.body;
+
+        const data = await Example.create({
+          name,
+          description
+        });
+
+        return data;
+      }
+
+Untuk membuat Put Method Update berikut contohnya:
+
+    @Put({ path: "/:id", tag }, {
+        request: "NewExample",
+        responses: [
+          {
+            200: {
+              description: "",
+              responseType: "object",
+              schema: "Example"
+            }
+          }
+        ],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: {
+              type: "number"
+            }
+          }
+        ]
+      })
+      public async update(req: _Request, res: Response): Promise<Example> {
+        const {
+          id
+        } = req.params;
+        const {
+          name,
+          description
+        }: ExampleAttributes = req.body;
+
+        const update = await Example.update({
+          name,
+          description
+        }, {
+          where: {
+            id
+          }
+        });
+
+        const data = await Example.findOne({
+          where: {
+            id
+          }
+        });
+
+        return data;
+      }
+
+Untuk membuat Delete Method Remove berikut contohnya:
+
+    @Delete({ path: "/:id", tag }, {
+        responses: [
+          {
+            200: {
+              description: "",
+              responseType: "object",
+              schema: {
+                properties: {
+                  message: {
+                    type: "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: {
+              type: "number"
+            }
+          }
+        ]
+      })
+      public async remove(req: _Request, res: Response): Promise<unknown> {
+        const {
+          id
+        } = req.params;
+
+        const remove = await Example.destroy({
+          where: {
+            id
+          }
+        });
+
+        return {
+          message: "Deleted successfully."
+        };
+      }
 
 </details>
