@@ -7,6 +7,7 @@
 3. [Instalasi Module/Dependency Baru](#instalasi-moduledependency-baru)
 4. [Membuat Model](#membuat-model)
 5. [Membuat Controller](#membuat-controller)
+6. [Membuat Seeder](#membuat-seeder)
 
 ### Memulai Project baru
 
@@ -359,3 +360,10 @@ Untuk membuat Delete Method Remove berikut contohnya:
       }
 
 </details>
+
+### Membuat Seeder
+
+Contoh seeder dapat dilihat pada directory seeders, seperti file berikut:
+[0.example.ts](https://gitlab.com/mv-lanius/boilerplates/backend-express/-/blob/master/src/seeders/0.example.ts)
+
+Ubah kata "example" sesuai yang diinginkan.
