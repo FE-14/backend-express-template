@@ -1,3 +1,6 @@
+[![TypeScript version][ts-badge]][typescript-36]
+[![Node.js version][nodejs-badge]][nodejs]
+
 # Dokumentasi Backend Boilerplate
 
 ## Daftar Isi
