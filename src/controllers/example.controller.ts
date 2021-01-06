@@ -2,6 +2,8 @@ import { _Request } from "../interfaces";
 import { Controller, Delete, Get, Post, Put } from "../decorators";
 import { Response } from "express";
 import Example, { ExampleAttributes } from "../models/example.model";
+import { protoServices } from "..";
+import { credentials } from '@grpc/grpc-js'
 
 const tag = "Example";
 
@@ -21,6 +23,10 @@ export default class ExampleController {
   }, [])
   public async getAll(req: _Request, res: Response): Promise<Example[]> {
     const data = await Example.findAll({});
+    const client = new protoServices.Greeter(process.env.GRPC_SERVER, credentials.createInsecure())
+    client.sayHello({ name: 'World' }, function (err: any, response: any) {
+      console.log('Greeting:', response.message)
+    })
 
     return data;
   }

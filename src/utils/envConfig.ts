@@ -18,5 +18,9 @@ export const envConfig = {
   MONGO_DB_HOST: process.env.MONGO_DB_HOST || "192.168.1.50",
   MONGO_DB_PORT: process.env.MONGO_DB_PORT || "27017",
   MONGO_DB_NAME: process.env.MONGO_DB_NAME || "dryblend",
-  MONGO_DB_ENABLE: process.env.MONGO_DB_ENABLE || "false"
+  MONGO_DB_ENABLE: process.env.MONGO_DB_ENABLE || "false",
+  // gRPC
+  STATIC_URL: process.env.STATIC_URL || "http://localhost:4000/proto/default.proto",
+  PROTO_PATH: process.env.PROTO_PATH || "protos",
+  GRPC_SERVER: process.env.GRPC_SERVER || "localhost:4001"
 };

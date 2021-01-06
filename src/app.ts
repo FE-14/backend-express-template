@@ -6,9 +6,17 @@ import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
 import path from "path";
 import staticGzip from "express-static-gzip";
+import { GrpcObject, loadPackageDefinition, Server } from '@grpc/grpc-js'
+import { PackageDefinition, loadSync } from '@grpc/proto-loader'
+import { PROTO_PATH } from "./utils/getProto";
+import { Schemas } from "./keys/apidoc";
+import ExampleService from "./services/example.services";
 
 class App {
   public app: Application;
+  public grpcServer: Server;
+  public protoServices: GrpcObject;
+  public packageDefinition: PackageDefinition;
   private swaggerOption: SwaggerUiOptions = {
     swaggerOptions: {
       filter: true
@@ -17,7 +25,30 @@ class App {
 
   constructor(appInit: { middleWares: any; controllers?: any; actions?: any }) {
     this.app = express();
-    const schemas = swaggerSchemas;
+    this.grpcServer = new Server();
+
+    this.services();
+    this.schemas(swaggerSchemas);
+    this.actions(appInit.actions);
+    this.middlewares(appInit.middleWares);
+    this.routes(appInit.controllers);
+  }
+
+  private services() {
+    this.packageDefinition = loadSync(PROTO_PATH, {
+      keepCase: true,
+      longs: String,
+      enums: String,
+      defaults: true,
+      oneofs: true
+    })
+    this.protoServices = loadPackageDefinition(this.packageDefinition).HelloWorld
+    this.grpcServer.addService(this.protoServices.Greeter.service, {
+      sayHello: ExampleService.sayHello
+    })
+  }
+
+  private async schemas(schemas: Schemas[]) {
     for (const schema of schemas) {
       const routeSchemas = Object.keys(schema);
       for (const currentSchema of routeSchemas) {
@@ -26,10 +57,6 @@ class App {
         }
       }
     }
-
-    this.actions(appInit.actions);
-    this.middlewares(appInit.middleWares);
-    this.routes(appInit.controllers);
   }
 
   private async actions(actions: {
@@ -103,6 +130,10 @@ class App {
     this.app.use(
       "/static",
       staticGzip(path.normalize(`${__dirname}/../uploads`), {})
+    );
+    this.app.use(
+      "/proto",
+      staticGzip(path.normalize(`${__dirname}/../protos`), {})
     );
 
     this.app.use("*", async (req: Request, res: Response) => {
