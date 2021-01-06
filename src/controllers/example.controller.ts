@@ -9,8 +9,6 @@ const tag = "Example";
 
 @Controller("/examples")
 export default class ExampleController {
-  private greeter = new protoServices.Greeter(process.env.GRPC_SERVER, credentials.createInsecure())
-
   @Get({ path: "/", tag }, {
     responses: [
       {
@@ -25,10 +23,18 @@ export default class ExampleController {
   }, [])
   public async getAll(req: _Request, res: Response): Promise<Example[]> {
     const data = await Example.findAll({});
-    this.greeter.sayHello({ name: 'World' }, function (err: any, response: any) {
-      console.log('Greeting:', response.message)
-    })
+    const greeter = new protoServices.Greeter(process.env.GRPC_SERVER, credentials.createInsecure());
 
+    const greeting = new Promise((resolve, reject) => greeter.sayHello({ name: 'World' }, function (err: any, response: any) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(response)
+    }))
+
+    const exampleGrpcResponse = await greeting
+
+    console.log(exampleGrpcResponse)
     return data;
   }
 
