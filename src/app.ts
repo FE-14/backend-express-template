@@ -6,8 +6,8 @@ import { apiDoc } from "./utils/generateApiDoc";
 import { swaggerSchemas } from "./models";
 import path from "path";
 import staticGzip from "express-static-gzip";
-import { GrpcObject, loadPackageDefinition, Server } from '@grpc/grpc-js'
-import { PackageDefinition, loadSync } from '@grpc/proto-loader'
+import { GrpcObject, loadPackageDefinition, Server } from "@grpc/grpc-js";
+import { loadSync, PackageDefinition } from "@grpc/proto-loader";
 import { PROTO_PATH } from "./utils/getProto";
 import { Schemas } from "./keys/apidoc";
 import ExampleService from "./services/example.services";
@@ -15,7 +15,7 @@ import ExampleService from "./services/example.services";
 class App {
   public app: Application;
   public grpcServer: Server;
-  public protoServices: GrpcObject;
+  public protoServices: GrpcObject | any;
   public packageDefinition: PackageDefinition;
   private swaggerOption: SwaggerUiOptions = {
     swaggerOptions: {
@@ -41,11 +41,12 @@ class App {
       enums: String,
       defaults: true,
       oneofs: true
-    })
-    this.protoServices = loadPackageDefinition(this.packageDefinition).HelloWorld
+    });
+    this.protoServices = loadPackageDefinition(this.packageDefinition)
+      .HelloWorld as GrpcObject;
     this.grpcServer.addService(this.protoServices.Greeter.service, {
       sayHello: ExampleService.sayHello
-    })
+    });
   }
 
   private async schemas(schemas: Schemas[]) {

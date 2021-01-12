@@ -11,12 +11,17 @@ package HelloWorld;
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
-  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+  rpc create (HelloRequest) returns (HelloReply) {}
 }
 
 // The request message containing the user's name.
 message HelloRequest {
   string name = 1;
+}
+
+message CreateRequest {
+  string name = 1;
+  string description = 2;
 }
 
 // The response message containing the greetings

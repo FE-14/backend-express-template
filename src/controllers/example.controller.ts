@@ -3,61 +3,74 @@ import { Controller, Delete, Get, Post, Put } from "../decorators";
 import { Response } from "express";
 import Example, { ExampleAttributes } from "../models/example.model";
 import { protoServices } from "..";
-import { credentials } from '@grpc/grpc-js'
+import { credentials } from "@grpc/grpc-js";
 
 const tag = "Example";
 
 @Controller("/examples")
 export default class ExampleController {
-  @Get({ path: "/", tag }, {
-    responses: [
-      {
-        200: {
-          description: "",
-          responseType: "array",
-          schema: "Example"
+  @Get(
+    { path: "/", tag },
+    {
+      responses: [
+        {
+          200: {
+            description: "",
+            responseType: "array",
+            schema: "Example"
+          }
         }
-      }
-    ],
-    parameters: []
-  }, [])
+      ],
+      parameters: []
+    },
+    []
+  )
   public async getAll(req: _Request, res: Response): Promise<Example[]> {
     const data = await Example.findAll({});
-    const greeter = new protoServices.Greeter(process.env.GRPC_SERVER, credentials.createInsecure());
+    const greeter = new protoServices.Greeter(
+      process.env.GRPC_SERVER,
+      credentials.createInsecure()
+    );
 
-    const greeting = new Promise((resolve, reject) => greeter.sayHello({ name: 'World' }, function (err: any, response: any) {
-      if (err) {
-        return reject(err)
-      }
-      resolve(response)
-    }))
+    const greeting = new Promise((resolve, reject) =>
+      greeter.sayHello({ name: "World" }, function (err: any, response: any) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(response);
+      })
+    );
 
-    const exampleGrpcResponse = await greeting
+    const exampleGrpcResponse = await greeting;
 
-    console.log(exampleGrpcResponse)
+    console.log(exampleGrpcResponse);
     return data;
   }
 
-  @Get({ path: "/:id", tag }, {
-    responses: [
-      {
-        200: {
-          description: "",
-          responseType: "array",
-          schema: "Example"
+  @Get(
+    { path: "/:id", tag },
+    {
+      responses: [
+        {
+          200: {
+            description: "",
+            responseType: "array",
+            schema: "Example"
+          }
         }
-      }
-    ],
-    parameters: [
-      {
-        name: "id",
-        in: "path",
-        schema: {
-          type: "number"
+      ],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          schema: {
+            type: "number"
+          }
         }
-      }
-    ]
-  }, [])
+      ]
+    },
+    []
+  )
   public async getOne(req: _Request, res: Response): Promise<Example> {
     const { id } = req.params;
 
@@ -72,23 +85,23 @@ export default class ExampleController {
     return data;
   }
 
-  @Post({ path: "/", tag }, {
-    request: "NewExample",
-    responses: [
-      {
-        200: {
-          description: "",
-          responseType: "object",
-          schema: "Example"
+  @Post(
+    { path: "/", tag },
+    {
+      request: "NewExample",
+      responses: [
+        {
+          200: {
+            description: "",
+            responseType: "object",
+            schema: "Example"
+          }
         }
-      }
-    ],
-  })
+      ]
+    }
+  )
   public async create(req: _Request, res: Response): Promise<Example> {
-    const {
-      name,
-      description
-    }: ExampleAttributes = req.body;
+    const { name, description }: ExampleAttributes = req.body;
 
     const data = await Example.create({
       name,
@@ -98,45 +111,46 @@ export default class ExampleController {
     return data;
   }
 
-  @Put({ path: "/:id", tag }, {
-    request: "NewExample",
-    responses: [
-      {
-        200: {
-          description: "",
-          responseType: "object",
-          schema: "Example"
+  @Put(
+    { path: "/:id", tag },
+    {
+      request: "NewExample",
+      responses: [
+        {
+          200: {
+            description: "",
+            responseType: "object",
+            schema: "Example"
+          }
         }
-      }
-    ],
-    parameters: [
-      {
-        name: "id",
-        in: "path",
-        required: true,
-        schema: {
-          type: "number"
+      ],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "number"
+          }
         }
-      }
-    ]
-  })
+      ]
+    }
+  )
   public async update(req: _Request, res: Response): Promise<Example> {
-    const {
-      id
-    } = req.params;
-    const {
-      name,
-      description
-    }: ExampleAttributes = req.body;
+    const { id } = req.params;
+    const { name, description }: ExampleAttributes = req.body;
 
-    const update = await Example.update({
-      name,
-      description
-    }, {
-      where: {
-        id
+    const update = await Example.update(
+      {
+        name,
+        description
+      },
+      {
+        where: {
+          id
+        }
       }
-    });
+    );
 
     const data = await Example.findOne({
       where: {
@@ -147,37 +161,38 @@ export default class ExampleController {
     return data;
   }
 
-  @Delete({ path: "/:id", tag }, {
-    responses: [
-      {
-        200: {
-          description: "",
-          responseType: "object",
-          schema: {
-            properties: {
-              message: {
-                type: "string"
+  @Delete(
+    { path: "/:id", tag },
+    {
+      responses: [
+        {
+          200: {
+            description: "",
+            responseType: "object",
+            schema: {
+              properties: {
+                message: {
+                  type: "string"
+                }
               }
             }
           }
         }
-      }
-    ],
-    parameters: [
-      {
-        name: "id",
-        in: "path",
-        required: true,
-        schema: {
-          type: "number"
+      ],
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "number"
+          }
         }
-      }
-    ]
-  })
+      ]
+    }
+  )
   public async remove(req: _Request, res: Response): Promise<unknown> {
-    const {
-      id
-    } = req.params;
+    const { id } = req.params;
 
     const remove = await Example.destroy({
       where: {

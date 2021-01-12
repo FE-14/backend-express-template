@@ -27,13 +27,17 @@ const PORT = +(process.env.PORT || 4000);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`[LISTEN] 🚀🚀🚀  starting http://localhost:${PORT}/api/v1`);
-  updateProto()
+  updateProto();
 });
 
-grpcServer.bindAsync(`0.0.0.0:${PORT + 1}`, ServerCredentials.createInsecure(), () => {
-  grpcServer.start()
-  console.log(`[LISTEN] 🚀🚀🚀 grpc localhost:${PORT + 1}`)
-})
+grpcServer.bindAsync(
+  `0.0.0.0:${PORT + 1}`,
+  ServerCredentials.createInsecure(),
+  () => {
+    grpcServer.start();
+    console.log(`[LISTEN] 🚀🚀🚀 grpc localhost:${PORT + 1}`);
+  }
+);
 
 /**
  * add export to run in test
