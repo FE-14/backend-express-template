@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { Application, Request, Response } from "express";
 import swaggerUi, { SwaggerUiOptions } from "swagger-ui-express";
 import { RouteDefinition } from "./interfaces/RouteDefinition.interface";
