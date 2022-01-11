@@ -1,5 +1,5 @@
 import { QueryInterface } from "sequelize";
-import Model from "../models/example.model";
+import Model from "../models/book.model";
 
 export const up = async (query: QueryInterface): Promise<void> => {
   try {

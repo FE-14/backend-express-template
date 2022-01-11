@@ -1,14 +1,14 @@
 import { _Request } from "../interfaces";
 import { Controller, Delete, Get, Post, Put } from "../decorators";
 import { Response } from "express";
-import Example, { ExampleAttributes } from "../models/example.model";
+import book, { bookAttributes } from "../models/book.model";
 import { protoServices } from "..";
 import { credentials } from "@grpc/grpc-js";
 
-const tag = "Example";
+const tag = "book";
 
-@Controller("/examples")
-export default class ExampleController {
+@Controller("/book")
+export default class bookController {
   @Get(
     { path: "/", tag },
     {
@@ -17,7 +17,7 @@ export default class ExampleController {
           200: {
             description: "",
             responseType: "array",
-            schema: "Example"
+            schema: "book"
           }
         }
       ],
@@ -25,8 +25,8 @@ export default class ExampleController {
     },
     []
   )
-  public async getAll(req: _Request, res: Response): Promise<Example[]> {
-    const data = await Example.findAll({});
+  public async getAll(req: _Request, res: Response): Promise<book[]> {
+    const data = await book.findAll({});
     const greeter = new protoServices.Greeter(
       process.env.GRPC_SERVER,
       credentials.createInsecure()
@@ -41,9 +41,9 @@ export default class ExampleController {
       })
     );
 
-    const exampleGrpcResponse = await greeting;
+    const bookGrpcResponse = await greeting;
 
-    console.log(exampleGrpcResponse);
+    console.log(bookGrpcResponse);
     return data;
   }
 
@@ -55,7 +55,7 @@ export default class ExampleController {
           200: {
             description: "",
             responseType: "array",
-            schema: "Example"
+            schema: "book"
           }
         }
       ],
@@ -71,10 +71,10 @@ export default class ExampleController {
     },
     []
   )
-  public async getOne(req: _Request, res: Response): Promise<Example> {
+  public async getOne(req: _Request, res: Response): Promise<book> {
     const { id } = req.params;
 
-    const data = await Example.findOne({
+    const data = await book.findOne({
       where: {
         id
       }
@@ -88,23 +88,23 @@ export default class ExampleController {
   @Post(
     { path: "/", tag },
     {
-      request: "NewExample",
+      request: "NewBook",
       responses: [
         {
           200: {
             description: "",
             responseType: "object",
-            schema: "Example"
+            schema: "Book"
           }
         }
       ]
     }
   )
-  public async create(req: _Request, res: Response): Promise<Example> {
-    const { name, description }: ExampleAttributes = req.body;
+  public async create(req: _Request, res: Response): Promise<book> {
+    const { tittle, description }: bookAttributes = req.body;
 
-    const data = await Example.create({
-      name,
+    const data = await book.create({
+      tittle,
       description
     });
 
@@ -114,13 +114,13 @@ export default class ExampleController {
   @Put(
     { path: "/:id", tag },
     {
-      request: "NewExample",
+      request: "NewBook",
       responses: [
         {
           200: {
             description: "",
             responseType: "object",
-            schema: "Example"
+            schema: "book"
           }
         }
       ],
@@ -136,13 +136,13 @@ export default class ExampleController {
       ]
     }
   )
-  public async update(req: _Request, res: Response): Promise<Example> {
+  public async update(req: _Request, res: Response): Promise<book> {
     const { id } = req.params;
-    const { name, description }: ExampleAttributes = req.body;
+    const { tittle, description }: bookAttributes = req.body;
 
-    const update = await Example.update(
+    const update = await book.update(
       {
-        name,
+        tittle,
         description
       },
       {
@@ -152,7 +152,7 @@ export default class ExampleController {
       }
     );
 
-    const data = await Example.findOne({
+    const data = await book.findOne({
       where: {
         id
       }
@@ -194,7 +194,7 @@ export default class ExampleController {
   public async remove(req: _Request, res: Response): Promise<unknown> {
     const { id } = req.params;
 
-    const remove = await Example.destroy({
+    const remove = await book.destroy({
       where: {
         id
       }
