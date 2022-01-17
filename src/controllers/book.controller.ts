@@ -4,6 +4,7 @@ import { Response } from "express";
 import book, { bookAttributes } from "../models/book.model";
 import { protoServices } from "..";
 import { credentials } from "@grpc/grpc-js";
+import { auth } from "../middleware/auth";
 
 const tag = "book";
 
@@ -23,7 +24,7 @@ export default class bookController {
       ],
       parameters: []
     },
-    []
+    [auth]
   )
   public async getAll(req: _Request, res: Response): Promise<book[]> {
     const data = await book.findAll({});
@@ -69,7 +70,7 @@ export default class bookController {
         }
       ]
     },
-    []
+    [auth]
   )
   public async getOne(req: _Request, res: Response): Promise<book> {
     const { id } = req.params;
@@ -98,7 +99,8 @@ export default class bookController {
           }
         }
       ]
-    }
+    },
+    [auth]
   )
   public async create(req: _Request, res: Response): Promise<book> {
     const { tittle, description }: bookAttributes = req.body;
@@ -134,7 +136,8 @@ export default class bookController {
           }
         }
       ]
-    }
+    },
+    [auth]
   )
   public async update(req: _Request, res: Response): Promise<book> {
     const { id } = req.params;
@@ -189,7 +192,8 @@ export default class bookController {
           }
         }
       ]
-    }
+    },
+    [auth]
   )
   public async remove(req: _Request, res: Response): Promise<unknown> {
     const { id } = req.params;

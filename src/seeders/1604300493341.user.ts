@@ -10,6 +10,12 @@ export const up = async (query: QueryInterface): Promise<object | number> => {
         password: await hash("admin", await genSalt(12)),
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        username: "dadang",
+        password: await hash("dadang", await genSalt(12)),
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
     return Promise.resolve(users);
